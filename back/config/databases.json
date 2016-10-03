@@ -1,0 +1,17 @@
+[
+  {
+    "title": [
+      "lt"
+    ],
+    "conn": {
+      "ip": "122",
+      "port": 1521,
+      "service": "xx",
+      "user": "xx",
+      "password": "xxx"
+    },
+    "status": "false",
+    "rac": "true",
+    "dg": "true"
+  }
+]
