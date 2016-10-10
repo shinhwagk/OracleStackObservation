@@ -12,5 +12,3 @@ export async function text(x) {
 
   x.body = result.rows
 }
-
-
