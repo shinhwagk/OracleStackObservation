@@ -7,23 +7,28 @@
     "start": "tsc && concurrently \"tsc -w\" \"supervisor src/app.js\" ",
     "tsc": "tsc",
     "build": "tsc -p .",
-    "tsc:w": "tsc -w"
+    "tsc:w": "tsc -w",
+    "grunt": "grunt"
   },
   "author": "shinhwagk",
   "license": "ISC",
   "dependencies": {
     "koa": "^2.0.0",
-    "koa-router": "^7.0.0",
     "@types/koa": "2.0.33",
+    "koa-router": "^7.0.0",
     "@types/koa-router": "7.0.21",
-    "@types/node": "6.0.41",
     "oracledb": "1.11.0",
     "@types/oracledb": "1.5.32",
-    "rxjs": "5.0.0-beta.12",
+    "rxjs": "5.0.0-rc.1",
     "cron": "1.1.1",
     "@types/cron": "1.0.30",
     "nconf": "0.8.4",
-    "@types/nconf": "0.0.32"
+    "@types/nconf": "0.0.32",
+    "winston": "2.2.0",
+    "@types/winston": "0.0.28",
+    "ssh2": "0.5.2",
+    "@types/ssh2": "0.5.33",
+    "@types/node": "6.0.41"
   },
   "devDependencies": {
     "concurrently": "^2.2.0",

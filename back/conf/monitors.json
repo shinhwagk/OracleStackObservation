@@ -1,0 +1,4 @@
+[
+  {"name":"tablespace_space","category":"oracle","cron":"* * * * * *"},
+  {"name":"invalid_object","category":"oracle","cron":"* * * * * *"}
+]

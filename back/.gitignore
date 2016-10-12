@@ -1,6 +1,4 @@
-node_modules
-**/*.js
-**/*.map
 .tscache
-target
+node_modules
+compile
 src/.baseDir.ts

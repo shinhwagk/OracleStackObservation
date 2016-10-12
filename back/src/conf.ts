@@ -1,11 +1,29 @@
 import * as fs from 'fs';
-import * as nconf from 'nconf';
 
-nconf.overrides({
-  'always': 'be this value'
-});
+import { DatabaseConf } from './database';
+import { flatten } from './common'
 
-nconf.env().argv();
-// export let databasesFile = fs.readFileSync('config/databases.json',"utf-8")
-let a = nconf.file('bbb', 'src/conf/afdf.json');
-console.info(a.use('bbb').get("a"))
+function genDatabaseConf(node, n): DatabaseConf { return { ip: node.ip, port: n.port, service: n.service, user: n.user, password: n.password } }
+
+function getNodesConf(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    fs.readFile('./conf/nodes.json', 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
+      if (err) { reject(err); } else { resolve(data); }
+    })
+  })
+}
+
+async function getNodeConf(): Promise<string[]> {
+  let nodeConfStr: string = await getNodesConf()
+  return JSON.parse(nodeConfStr).map(node => node.ip)
+}
+
+async function getDatabaseConf(): Promise<DatabaseConf[]> {
+  let nodeConf = await getNodesConf()
+  return flatten(JSON.parse(nodeConf).map(node => node.databases.map(n => genDatabaseConf(node, n))))
+}
+
+export { getNodeConf, getDatabaseConf }
+
+//test
+// getDatabaseConf().then(console.info)
