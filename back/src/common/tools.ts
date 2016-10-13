@@ -47,6 +47,24 @@ function execRemoteShellCommand(node: { ip: string, port: number, username: stri
   })
 }
 
+// function getCurrentTimestamp(): number {
+//   let date = new Date()
+//   let year = pad(date.getFullYear(), 4)
+//   let mon = pad(date.getMonth() + 1, 2)
+//   let day = pad(date.getDay(), 2)
+//   let hour = pad(date.getHours(), 2)
+//   let min = pad(date.getMinutes(), 2)
+//   let sec = pad(date.getSeconds(), 2)
+//   let mis = pad(date.getMilliseconds(), 3)
+//   return Number(`${year}${mon}${day}${hour}${min}${sec}${mis}`)
+// }
+
+// function pad(num, size) {
+//   let s: string = num.toString();
+//   while (s.length < size) s = "0" + s;
+//   return s;
+// }
+
+export { pingCheck, portCheck, execRemoteShellCommand }
 //test
 // execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "df -hP | grep -v Filesystem").then(console.info)
-export { pingCheck, portCheck, execRemoteShellCommand }

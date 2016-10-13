@@ -3,17 +3,31 @@ import * as md_montior from './test-env-backup'
 import * as md_tools from '../common/tools'
 import * as md_store from '../store'
 
-function bbb() {
-  md_conf.getNodeConf().then(ips => ips.forEach(ip => md_tools.pingCheck(ip).then(bool => {
-    md_store.nodePing.set(ip, bool)
-  })))
+function genPingQueue() {
+  setInterval(() => md_conf.getNodeConf().then((ips: string[]) => ips.forEach(ip => md_store.ipQueue.push(ip))), 1000)
+}
+
+function pingCheck() {
+  setInterval(() => {
+    if (md_store.ipQueue.length >= 1) {
+      let ip = md_store.ipQueue.shift()
+      let timestamp = new Date().getTime()
+      md_tools.pingCheck(ip).then(bool => {
+        if (bool) {
+          md_store.nodePing.set(ip, [bool, timestamp, 0])
+        }
+        else {
+          let retry = md_store.nodePing.get(ip)[2]
+          md_store.nodePing.set(ip, [bool, timestamp, retry + 1])
+        }
+      })
+    }
+  }, 1000)
 }
 
 async function start() {
-  // setInterval(() => console.info("1"), 500)
-  // setInterval(() => bbb(), 1000)
-  setInterval(() => bbb(), 1000)
-  console.info("start")
+  genPingQueue()
+  pingCheck()
 }
 
-export {start}
+export { start }

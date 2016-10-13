@@ -1,3 +1,4 @@
-let nodePing: Map<string, boolean> = new Map<string, boolean>()
+let nodePing: Map<string, [boolean, number, number]> = new Map<string, [boolean, number, number]>()
+let ipQueue: string[] = []
 
-export { nodePing }
+export { nodePing, ipQueue }

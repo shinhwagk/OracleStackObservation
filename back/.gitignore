@@ -1,4 +1,4 @@
 .tscache
 node_modules
 compile
-src/.baseDir.ts
+dist

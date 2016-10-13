@@ -9,5 +9,12 @@
     "removeComments": false,
     "noImplicitAny": false,
     "outDir": "compile"
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
