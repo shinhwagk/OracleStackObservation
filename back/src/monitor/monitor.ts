@@ -12,15 +12,12 @@ function pingCheck() {
     if (md_store.ipQueue.length >= 1) {
       let ip = md_store.ipQueue.shift()
       let timestamp = new Date().getTime()
-      md_tools.pingCheck(ip).then(bool => {
-        if (bool) {
-          md_store.nodePing.set(ip, [bool, timestamp, 0])
-        }
-        else {
+      md_tools.pingCheck(ip)
+        .then(bool => md_store.nodePing.set(ip, [true, timestamp, 0]))
+        .catch(err => {
           let retry = md_store.nodePing.get(ip)[2]
-          md_store.nodePing.set(ip, [bool, timestamp, retry + 1])
-        }
-      })
+          md_store.nodePing.set(ip, [false, timestamp, retry + 1])
+        })
     }
   }, 1000)
 }

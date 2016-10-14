@@ -1,25 +1,25 @@
 import * as md_cp from 'child_process';
 import * as md_ssh2 from 'ssh2'
 
-function pingCheck(ip: string): Promise<boolean> {
+function pingCheck(ip: string): Promise<void> {
   return new Promise((resolve, reject) => {
     md_cp.exec(`ping -n 2 ${ip}`, (error, stdout, stderr) => {
       if (error) {
-        resolve(false)
+        resolve()
       } else {
-        resolve(true)
+        resolve()
       }
     })
   })
 }
 
-function portCheck(ip: string, port: number): Promise<boolean> {
+function portCheck(ip: string, port: number): Promise<void> {
   return new Promise((resolve, reject) => {
     md_cp.exec(`nc -v -w 4 ${ip} -z ${port}`, (error, stdout, stderr) => {
       if (error) {
-        reject(false)
+        reject()
       } else {
-        resolve(true)
+        resolve()
       }
     })
   })
@@ -47,6 +47,7 @@ function execRemoteShellCommand(node: { ip: string, port: number, username: stri
   })
 }
 
+
 // function getCurrentTimestamp(): number {
 //   let date = new Date()
 //   let year = pad(date.getFullYear(), 4)
@@ -68,3 +69,4 @@ function execRemoteShellCommand(node: { ip: string, port: number, username: stri
 export { pingCheck, portCheck, execRemoteShellCommand }
 //test
 // execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "df -hP | grep -v Filesystem").then(console.info)
+// execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "hostname").then(console.info)
