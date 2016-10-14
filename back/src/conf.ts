@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { DatabaseConf } from './database';
 import { flatten } from './common'
 
-function genDatabaseConf(node, n): DatabaseConf { return { ip: node.ip, port: n.port, service: n.service, user: n.user, password: n.password } }
+function genDatabaseConf(node, db): DatabaseConf { return { ip: node.ip, port: db.port, service: db.service, user: db.user, password: db.password } }
 
 function getNodesConf(): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ async function getNodeConf(): Promise<string[]> {
 
 async function getDatabaseConf(): Promise<DatabaseConf[]> {
   let nodeConf = await getNodesConf()
-  return flatten(JSON.parse(nodeConf).map(node => node.databases.map(n => genDatabaseConf(node, n))))
+  return flatten(JSON.parse(nodeConf).map(node => node.databases.map(db => genDatabaseConf(node, db))))
 }
 
 export { getNodeConf, getDatabaseConf }

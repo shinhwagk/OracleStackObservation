@@ -1,29 +1,26 @@
 import * as md_cp from 'child_process';
 import * as md_ssh2 from 'ssh2'
 
-function pingCheck(ip: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    md_cp.exec(`ping -n 2 ${ip}`, (error, stdout, stderr) => {
+
+// bug :(node:11849) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): TypeError: Cannot read property '2' of undefined   
+function commandCheck(command: string): Promise<boolean> {
+  let pro = new Promise((resolve, reject) => {
+    md_cp.exec(command, (error, stdout, stderr) => {
       if (error) {
-        resolve()
+        // console.info(`${command} failure.`)
+        resolve(false)
       } else {
-        resolve()
+        // console.info(`${command} success.`)
+        resolve(true)
       }
     })
   })
+  return pro
 }
 
-function portCheck(ip: string, port: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    md_cp.exec(`nc -v -w 4 ${ip} -z ${port}`, (error, stdout, stderr) => {
-      if (error) {
-        reject()
-      } else {
-        resolve()
-      }
-    })
-  })
-}
+function pingCheck(ip: string): Promise<boolean> { return commandCheck(`ping -c 2 ${ip}`) }
+
+function portCheck(ip: string, port: number): Promise<boolean> { return commandCheck(`nc -v -w 4 ${ip} -z ${port}`) }
 
 function execRemoteShellCommand(node: { ip: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {

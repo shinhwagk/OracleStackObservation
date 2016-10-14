@@ -14,7 +14,7 @@
   {"ip": "10.65.193.39", "status":true,"databases":[{"title":["dev"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"dev3"}]},
 
   {"ip": "10.65.212.193", "status":true,"databases":[{"title":["yali"], "port":1521,"status":true,"user":"system","password":"oracle11","service":"orayali"}]},
-  {"ip": "10.65.193.25", "status":true,"databases":[{"title":["yali"], "port":1521,"status":true,"user":"system","password":"oracle","service":"orayali2"}]},
+  {"ip": "10.65.193.25", "status":true,"databases":[{"title":["yali"], "port":1522,"status":true,"user":"system","password":"oracle","service":"orayali2"}]},
   {"ip": "10.65.193.26","status":false,"databases":[{"title":["yali"], "port":1521,"status":true,"user":"system","password":"oracle","service":"orayali3"}]},
 
     {"ip": "209.1.1.1","status":true,"databases":[{"title":["lt"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whlt"}]}

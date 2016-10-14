@@ -3,28 +3,28 @@ import * as md_montior from './test-env-backup'
 import * as md_tools from '../common/tools'
 import * as md_store from '../store'
 
-function genPingQueue() {
-  setInterval(() => md_conf.getNodeConf().then((ips: string[]) => ips.forEach(ip => md_store.ipQueue.push(ip))), 1000)
+async function check(ip: string, port: number) {
+  let pingBool = await md_tools.pingCheck(ip)
+  let ncBool = await md_tools.portCheck(ip, port)
+  md_store.nodeCheck.set(ip, { nodeCheck: pingBool, dbCheck: ncBool, timestamp: new Date().getTime() })
 }
 
-function pingCheck() {
+function genNodeCheckQueue() {
+  setInterval(() => md_conf.getNodeConf().then((ips: string[]) => ips.forEach(ip => md_store.ipQueue.push([ip, 1521]))), 5000)
+}
+
+function nodeCheck() {
   setInterval(() => {
-    if (md_store.ipQueue.length >= 1) {
-      let ip = md_store.ipQueue.shift()
-      let timestamp = new Date().getTime()
-      md_tools.pingCheck(ip)
-        .then(bool => md_store.nodePing.set(ip, [true, timestamp, 0]))
-        .catch(err => {
-          let retry = md_store.nodePing.get(ip)[2]
-          md_store.nodePing.set(ip, [false, timestamp, retry + 1])
-        })
+    while (md_store.ipQueue.length >= 1) {
+      let [ip, port] = md_store.ipQueue.shift()
+      check(ip, port).then(x => null)
     }
-  }, 1000)
+  }, 5000)
 }
 
 async function start() {
-  genPingQueue()
-  pingCheck()
+  genNodeCheckQueue()
+  nodeCheck()
 }
 
 export { start }

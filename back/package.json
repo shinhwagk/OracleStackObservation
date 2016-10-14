@@ -28,7 +28,6 @@
     "koa-router": "^7.0.0",
     "koa-websocket": "^3.0.1",
     "nconf": "0.8.4",
-    "oracledb": "1.11.0",
     "rxjs": "*",
     "ssh2": "*",
     "winston": "2.2.0",
