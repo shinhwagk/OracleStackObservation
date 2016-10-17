@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outDir": "compile"
+    "outDir": "dist"
   },
   "include": [
     "src/**/*.ts",

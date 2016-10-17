@@ -21,7 +21,7 @@ let PingDB: Map<string, CommandCheckInfo> = new Map<string, CommandCheckInfo>()
 
 export let PingCheckQueue: string[] = []
 
-export let NcCheckQueue: [string, [string, number]][] = []
+export let NcCheckQueue: [string, [string, string, number]][] = []
 
 export function genNCKey(ip: string, service: string): string { return `${ip}_${service}` }
 

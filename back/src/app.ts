@@ -26,7 +26,7 @@ api
 	})
 	// .get("/cc", (ctx) => ctx.body = JSON.stringify(Array.from(md_store.ncDB)))
 	.get("/api/nodes", (ctx) => {
-		ctx.body = JSON.stringify(md_store.nodesff())
+		ctx.body = JSON.stringify(md_store.NcDB)
 	})
 
 app.use(api.routes()).use(api.allowedMethods());
