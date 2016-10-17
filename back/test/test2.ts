@@ -1,0 +1,7 @@
+let b: Map<string, string> = new Map<string, string>()
+b.set("1", "a")
+console.info(b)
+b.set("1", "b")
+console.info(b)
+b.set("1", "c")
+console.info(b)

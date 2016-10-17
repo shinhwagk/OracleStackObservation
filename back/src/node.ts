@@ -15,7 +15,6 @@ class Node {
     return new Node(this.ip, new_status, this.timestamp, this.retry)
   }
 
-
   updateTimestamp(): Node { return new Node(this.ip, this.status, 1000, this.retry) }
 }
 // incRetry: Node = {Node(ip, port, status, hostname, timestamp, retry + 1)
@@ -33,7 +32,3 @@ enum NodeStatus {
 
 
 export { Node, NodeStatus }
-
-{
-
-}
