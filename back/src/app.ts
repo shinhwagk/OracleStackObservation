@@ -1,5 +1,5 @@
 import * as md_store from './store'
-import * as md_monitor from './monitor/monitor'
+import * as md_monitor from './monitor'
 import * as md_conf from './conf'
 
 md_monitor.start()
@@ -19,13 +19,10 @@ apiSocket.get('/api/', (ctx) => {
 	ctx.websocket.on('message', (message) => console.log(message));
 })
 
-api
-	.get("/bb", (ctx) => {
+api.get("/bb", (ctx) => {
 		ctx.type = 'application/json';
 		ctx.body = JSON.stringify(md_store.getNodeInfo)
-	})
-	// .get("/cc", (ctx) => ctx.body = JSON.stringify(Array.from(md_store.ncDB)))
-	.get("/api/nodes", md_store.getNodeInfo)
+}).get("/api/nodes", md_store.getNodeInfo)
 	.get("/api/node/:ip", md_monitor.abc)
 
 app.use(api.routes()).use(api.allowedMethods());

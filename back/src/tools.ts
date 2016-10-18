@@ -1,9 +1,17 @@
 import * as md_cp from 'child_process';
 import * as md_ssh2 from 'ssh2'
+import * as fs from 'fs';
 
-import { CommandCheckInfo, CheckStatus } from '../store'
+import { CheckInfo, CheckStatus } from './store'
 
-// bug :(node:11849) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): TypeError: Cannot read property '2' of undefined   
+export function readFile(path: string) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
+      if (err) { reject(err); } else { resolve(data); }
+    })
+  })
+}
+
 export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     md_cp.exec(command, (error, stdout, stderr) => {
@@ -18,7 +26,7 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   })
 }
 
-function verifyCheckInfo(currStatus: boolean, cci: CommandCheckInfo): CommandCheckInfo {
+function verifyCheckInfo(currStatus: boolean, cci: CheckInfo): CheckInfo {
   if (currStatus) {
     return { timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0 }
   } else {
@@ -52,26 +60,4 @@ function execRemoteShellCommand(node: { ip: string, port: number, username: stri
   })
 }
 
-
-// function getCurrentTimestamp(): number {
-//   let date = new Date()
-//   let year = pad(date.getFullYear(), 4)
-//   let mon = pad(date.getMonth() + 1, 2)
-//   let day = pad(date.getDay(), 2)
-//   let hour = pad(date.getHours(), 2)
-//   let min = pad(date.getMinutes(), 2)
-//   let sec = pad(date.getSeconds(), 2)
-//   let mis = pad(date.getMilliseconds(), 3)
-//   return Number(`${year}${mon}${day}${hour}${min}${sec}${mis}`)
-// }
-
-// function pad(num, size) {
-//   let s: string = num.toString();
-//   while (s.length < size) s = "0" + s;
-//   return s;
-// }
-
 export { execRemoteShellCommand, verifyCheckInfo }
-//test
-// execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "df -hP | grep -v Filesystem").then(console.info)
-// execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "hostname").then(console.info)

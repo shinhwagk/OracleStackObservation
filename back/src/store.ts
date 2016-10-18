@@ -1,10 +1,4 @@
-import { NodeConf, getNodeConf, getDatabaseConf, DatabaseConf } from './conf'
-
-interface NodeInfo {
-    nodeCheck: boolean
-    dbCheck: boolean
-    timestamp: number
-}
+import { Node, getNodeConf, getDatabaseConf, Database } from './conf'
 
 enum CheckStatus {
     DIE = 1,
@@ -13,30 +7,30 @@ enum CheckStatus {
     DOUBT = 4
 }
 
-interface CommandCheckInfo {
+interface CheckInfo {
     timestamp?: number
     status?: CheckStatus
     retry?: number
 }
 
-let PingDB: Map<string, CommandCheckInfo> = new Map<string, CommandCheckInfo>()
+let PingDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
 export let PingCheckQueue: string[] = []
 
 export let NcCheckQueue: [string, number][] = []
 
-let NcDB: Map<string, CommandCheckInfo> = new Map<string, CommandCheckInfo>()
+let NcDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
 let NodeDB: Map<string, number> = new Map<string, number>()
 
 async function getNodeInfo(ctx) {
-    const ncs: NodeConf[] = await getNodeConf()
-    const dcs: DatabaseConf[] = await getDatabaseConf()
+    const ncs: Node[] = await getNodeConf()
+    const dcs: Database[] = await getDatabaseConf()
     let test = []
     const currTIme = new Date().getTime()
-    ncs.forEach((nc: NodeConf) => {
+    ncs.forEach((nc: Node) => {
         let pcci = PingDB.get(nc.ip)
-        let dc = dcs.filter((dc: DatabaseConf) => dc.ip === nc.ip).map((dc: DatabaseConf) => {
+        let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
             let ncci = NcDB.get(`${dc.ip}_${dc.port}`)
             return { service: dc.service, timestamp: (currTIme - ncci.timestamp), status: ncci.status, port: dc.port, alert: [] }
         })
@@ -48,5 +42,5 @@ async function getNodeInfo(ctx) {
 
 let CheckQueue: [string, number][] = []
 
-export { CheckQueue, NcDB, PingDB, CommandCheckInfo, CheckStatus, getNodeInfo, NodeDB }
+export { CheckQueue, NcDB, PingDB, CheckInfo, CheckStatus, getNodeInfo, NodeDB }
 

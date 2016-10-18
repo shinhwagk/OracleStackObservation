@@ -23,3 +23,10 @@ wss.on('connection', (ws) => {
 app.use(router.routes())
 app.use(router.allowedMethods());
 
+
+
+export function bbc(){
+
+}
+
+bbc()
