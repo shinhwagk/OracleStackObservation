@@ -1,0 +1,651 @@
+<htmp lang="en">
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+body.awr {font:bold 10pt Arial,Helvetica,Geneva,sans-serif;color:black; background:White;}
+pre.awr  {font:8pt Courier;color:black; background:White;}
+h1.awr   {font:bold 20pt Arial,Helvetica,Geneva,sans-serif;color:#336699;background-color:White;border-bottom:1px solid #cccc99;margin-top:0pt; margin-bottom:0pt;padding:0px 0px 0px 0px;}
+h2.awr   {font:bold 18pt Arial,Helvetica,Geneva,sans-serif;color:#336699;background-color:White;margin-top:4pt; margin-bottom:0pt;}
+h3.awr {font:bold 16pt Arial,Helvetica,Geneva,sans-serif;color:#336699;background-color:White;margin-top:4pt; margin-bottom:0pt;}
+li.awr {font: 8pt Arial,Helvetica,Geneva,sans-serif; color:black; background:White;}
+th.awrnobg {font:bold 8pt Arial,Helvetica,Geneva,sans-serif; color:black; background:White;padding-left:4px; padding-right:4px;padding-bottom:2px}
+th.awrbg {font:bold 8pt Arial,Helvetica,Geneva,sans-serif; color:White; background:#0066CC;padding-left:4px; padding-right:4px;padding-bottom:2px}
+td {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;}
+td.awrcgk {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC;vertical-align:top;}
+td.awrc    {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;}
+td.awrnclb {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;border-left: thin solid black;}
+td.awrncbb {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;border-left: thin solid black;border-right: thin solid black;}
+td.awrncrb {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;border-right: thin solid black;}
+td.awrcrb    {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;border-right: thin solid black;}
+td.awrclb    {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;border-left: thin solid black;}
+td.awrcbb    {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;border-left: thin solid black;border-right: thin solid black;}
+a.awr {font:bold 8pt Arial,Helvetica,sans-serif;color:#663300; vertical-align:top;margin-top:0pt; margin-bottom:0pt;}
+td.awrnct {font:8pt Arial,Helvetica,Geneva,sans-serif;border-top: thin solid black;color:black;background:White;vertical-align:top;}
+td.awrct   {font:8pt Arial,Helvetica,Geneva,sans-serif;border-top: thin solid black;color:black;background:#FFFFCC; vertical-align:top;}
+td.awrnclbt  {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;border-top: thin solid black;border-left: thin solid black;}
+td.awrncbbt  {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;border-left: thin solid black;border-right: thin solid black;border-top: thin solid black;}
+td.awrncrbt {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:White;vertical-align:top;border-top: thin solid black;border-right: thin solid black;}
+td.awrcrbt     {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;border-top: thin solid black;border-right: thin solid black;}
+td.awrclbt     {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;border-top: thin solid black;border-left: thin solid black;}
+td.awrcbbt   {font:8pt Arial,Helvetica,Geneva,sans-serif;color:black;background:#FFFFCC; vertical-align:top;border-top: thin solid black;border-left: thin solid black;border-right: thin solid black;}
+table.tdiff {  border_collapse: collapse; }
+.hidden   {position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
+.pad   {margin-left:17px;}
+.doublepad {margin-left:34px;}
+</style>
+</head>
+<body class="awr">
+<h1 class="awr"> weekly check list: ip:10.65.193.40test: dwdb. date: 2016-09-28 13:18:42</h2>
+<h3 class="awr">OS</h3>
+<p>Backup Statue</p>
+<p>
+<table border="1">
+<tr><th class="awrbg">dump file</th><th class="awrbg">backup statue</th><tr>
+</table>
+</p>
+<p>Disk Space</p>
+<p>
+<table border="1">
+<tr><th class="awrbg">Filesystem</th><th class="awrbg">Size</th><th class="awrbg">Used</th><th class="awrbg">Avail</th><th class="awrbg">Use%</th><th class="awrbg">Mounted on</th><tr>
+<tr><td>/dev/sda2</td><td>34G</td><td>22G</td><td>11G</td><td>67%</td><td>/</td></tr>
+<tr><td class="awrcgk">tmpfs</td><td class="awrcgk">32G</td><td class="awrcgk">6.1G</td><td class="awrcgk">26G</td><td class="awrcgk">20%</td><td class="awrcgk">/dev/shm</td></tr>
+<tr><td>/dev/mapper/vg_data-lv_data</td><td>345G</td><td>90G</td><td>238G</td><td>28%</td><td>/u02/oradata</td></tr>
+<tr><td class="awrcgk">10.65.212.193:/bak_nfs/func/dwdb</td><td class="awrcgk">5.4T</td><td class="awrcgk">1.4T</td><td class="awrcgk">3.8T</td><td class="awrcgk">27%</td><td class="awrcgk">/bak_nfs</td></tr>
+</table>
+</p>
+<h3 class="awr">Oracle</h3>
+<p>Tablespace Space</p><p><table border="1">
+<tr><th class="awrbg">TABLESPACE_NAME</th><th class="awrbg">USED</th><th class="awrbg">MAXUSE</th><th class="awrbg">USERATE</th><tr>
+<tr><td>USERS</td><td>5</td><td>32</td><td>14%</td></tr>
+<tr><td class="awrcgk">SYSTEM</td><td class="awrcgk">4</td><td class="awrcgk">32</td><td class="awrcgk">14%</td></tr>
+<tr><td>SYSAUX</td><td>1</td><td>32</td><td>5%</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">0</td><td class="awrcgk">32</td><td class="awrcgk">0%</td></tr>
+<tr><td>RS_DOMAIN</td><td>0</td><td>32</td><td>0%</td></tr>
+<tr><td class="awrcgk">UNDOTBS1</td><td class="awrcgk">0</td><td class="awrcgk">32</td><td class="awrcgk">0%</td></tr>
+</table>
+</p>
+<p>Oracle Invalid Object</p><p><table border="1">
+<tr><th class="awrbg">OWNER</th><th class="awrbg">OBJECT_TYPE</th><th class="awrbg">COUNT(*)</th><tr>
+<tr><td>APEX_030200</td><td>PACKAGE BODY</td><td>57</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">TRIGGER</td><td class="awrcgk">32</td></tr>
+<tr><td>APEX_030200</td><td>VIEW</td><td>4</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">VIEW</td><td class="awrcgk">3</td></tr>
+<tr><td>APEX_030200</td><td>SYNONYM</td><td>2</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">PACKAGE</td><td class="awrcgk">1</td></tr>
+</table>
+</p>
+<p>Table NO Primary key</p><p><table border="1">
+<tr><th class="awrbg">OWNER</th><th class="awrbg">TABLE_NAME</th><tr>
+<tr><td>OUTLN</td><td>OL$</td></tr>
+<tr><td class="awrcgk">OUTLN</td><td class="awrcgk">OL$HINTS</td></tr>
+<tr><td>OUTLN</td><td>OL$NODES</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_SNAPSHOT</td></tr>
+<tr><td>DBSNMP</td><td>MGMT_SNAPSHOT_SQL</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_BASELINE</td></tr>
+<tr><td>DBSNMP</td><td>MGMT_BASELINE_SQL</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_CAPTURE</td></tr>
+<tr><td>DBSNMP</td><td>MGMT_CAPTURE_SQL</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_RESPONSE_CONFIG</td></tr>
+<tr><td>DBSNMP</td><td>MGMT_LATEST</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_LATEST_SQL</td></tr>
+<tr><td>DBSNMP</td><td>MGMT_HISTORY</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_HISTORY_SQL</td></tr>
+<tr><td>APPQOSSYS</td><td>WLM_METRICS_STREAM</td></tr>
+<tr><td class="awrcgk">APPQOSSYS</td><td class="awrcgk">WLM_CLASSIFIER_PLAN</td></tr>
+<tr><td>APPQOSSYS</td><td>WLM_MPA_STREAM</td></tr>
+<tr><td class="awrcgk">APPQOSSYS</td><td class="awrcgk">WLM_VIOLATION_STREAM</td></tr>
+<tr><td>ORDSYS</td><td>ORD_USAGE_RECS</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_DAREFS</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_PREFS_DEF_VALUES_TAB</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_PREFS_VALID_VALUES_TAB</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_PRED_OPRD</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_MACRO_PAR</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_MACRO_DEP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_PRED_PAR</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_ACTION</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_LOCATORPATHS</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_VLD_MSG</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_DAREFS_WRK</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_PRED_OPRD_WRK</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_MACRO_PAR_WRK</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_MACRO_DEP_WRK</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_PRED_PAR_WRK</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_LOCATORPATHS_WRK</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_ACTION_WRK</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_DEBUG</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_BANNER</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_DUAL100</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_SHORTCUT_USAGE_MAP</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_MAIL_LOG</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_FILE_OBJECTS$PART</td></tr>
+<tr><td>APEX_030200</td><td>SYS_IOT_OVER_72960</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_FND_USER</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_FND_GROUP_USERS</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_CLICKTHRU_LOG_NUMBER$</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_CLICKTHRU_LOG$</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_CLICKTHRU_LOG2$</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_WORKSHEET_HISTORY</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_WORKSHEET_GEOCACHE</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_UPGRADE_PROGRESS</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_DATA_LOAD_BAD_LOG</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_PURGED_SESSIONS$</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_DATA</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_ACTIVITY_LOG_NUMBER$</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_ACTIVITY_LOG1$</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_ACTIVITY_LOG2$</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_USER_ACCESS_LOG_NUM$</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_USER_ACCESS_LOG1$</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_USER_ACCESS_LOG2$</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_DICTIONARY$</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_MIG_RESERVED_WORDS</td></tr>
+<tr><td>OWBSYS</td><td>OWBRTPS</td></tr>
+<tr><td class="awrcgk">COST</td><td class="awrcgk">TEST</td></tr>
+<tr><td>DWDB</td><td>T_FACT_MEMBER_REGISTER</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">T_FACT_ACCOUNT_BALANCE_DETAIL</td></tr>
+<tr><td>DWDB</td><td>T_FACT_P2P_TARGET</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">T_FACT_MEMBER_REALNAME</td></tr>
+<tr><td>DWDB</td><td>T_FACT_BIND_CARD</td></tr>
+<tr><td class="awrcgk">COSTA</td><td class="awrcgk">TEST</td></tr>
+<tr><td>DOMAIN</td><td>PC_DBOBJECT</td></tr>
+<tr><td class="awrcgk">DOMAIN</td><td class="awrcgk">PR_ATTRIBUTE</td></tr>
+<tr><td>DOMAIN</td><td>PR_GANNOTATIONS</td></tr>
+<tr><td class="awrcgk">DOMAIN</td><td class="awrcgk">ISP_RUN_LOG</td></tr>
+<tr><td>DOMAIN</td><td>ISP_MASTER_ELECTION</td></tr>
+<tr><td class="awrcgk">DOMAIN</td><td class="awrcgk">ISP_MASTER_ELECT_LOCK</td></tr>
+<tr><td>RS_DOMAIN</td><td>ISP_RUN_LOG</td></tr>
+<tr><td class="awrcgk">RS_DOMAIN</td><td class="awrcgk">ISP_MASTER_ELECTION</td></tr>
+<tr><td>RS_DOMAIN</td><td>ISP_MASTER_ELECT_LOCK</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_REPOSIT</td></tr>
+<tr><td>RS_USER</td><td>OPB_DBD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SUBJECT</td></tr>
+<tr><td>RS_USER</td><td>OPB_SCHEMA</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TARGINDEX</td></tr>
+<tr><td>RS_USER</td><td>OPB_TARGINDEXFLD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PICDSC</td></tr>
+<tr><td>RS_USER</td><td>OPB_SRC_FLD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SRC</td></tr>
+<tr><td>RS_USER</td><td>OPB_SELINFO</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TARG</td></tr>
+<tr><td>RS_USER</td><td>OPB_TARG_FLD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_RTSEQ</td></tr>
+<tr><td>RS_USER</td><td>OPB_KEYWORD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MAPPING</td></tr>
+<tr><td>RS_USER</td><td>OPB_DBDS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TDS</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_DEP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDGET</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_EXPR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_EXPRESSION</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_INST</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MAP_TARG_INFO</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_FIELD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_NORM_FLD</td></tr>
+<tr><td>RS_USER</td><td>OPB_OBJECT_TYPE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MAP_OPTIONS</td></tr>
+<tr><td>RS_USER</td><td>OPB_USERS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_GROUPS</td></tr>
+<tr><td>RS_USER</td><td>OPB_USER_GROUPS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_USER_GROUP</td></tr>
+<tr><td>RS_USER</td><td>OPB_ROLE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_OBJECT_ACCESS</td></tr>
+<tr><td>RS_USER</td><td>OPB_REPOSIT_INFO</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SHORTCUT</td></tr>
+<tr><td>RS_USER</td><td>OPB_SERVER_INFO</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_ANALYZE_DEP</td></tr>
+<tr><td>RS_USER</td><td>OPB_TARG_FLD_EXPR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TARG_TBL_EXPR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_CUBE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_DIMENSION</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_LEVEL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_LEVEL_FIELD</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_HIERARCHY</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_LVL_HRCHY</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_HIER_GRAPH</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_FACT</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_CUBE_FIELD</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_FACT_LEVEL</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_CUBE_HRCHY</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_FACT_FIELD</td></tr>
+<tr><td>RS_USER</td><td>OPB_GEN_OBJECT</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_GEN_OBJ_REFS</td></tr>
+<tr><td>RS_USER</td><td>OPB_SCHEMA_IDS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SCHEMA_DEPLOY</td></tr>
+<tr><td>RS_USER</td><td>OPB_SRV_LOC_VARS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDGET_INIT</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDG_FLD_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROGRAM_INFO</td></tr>
+<tr><td>RS_USER</td><td>OPB_BCF_TREE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_BCF_BUSCOMPS</td></tr>
+<tr><td>RS_USER</td><td>OPB_TABLE_GROUP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_XML_INFO</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_FUNC</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_FUNC_PARAM</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_STRUCT</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_STRUCT_FLD</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_FUNC_INST</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_DSQ_OPRT</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_FUNC_VARS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_CODEBLK</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_PGMFLOW</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MAP_PARMVAR</td></tr>
+<tr><td>RS_USER</td><td>OPB_SEBL_JOIN_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SEBL_MVL_LREL</td></tr>
+<tr><td>RS_USER</td><td>OPB_SEBL_MVL_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SEBL_LINK</td></tr>
+<tr><td>RS_USER</td><td>OPB_SEBL_LINKX</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_DOMAIN</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_METAEXT</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_METAEXT_VAL</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_INST</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WORKFLOW</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_DEP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_EXPR</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_VAR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_PERVAL</td></tr>
+<tr><td>RS_USER</td><td>OPB_EVENT</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SCHEDULER</td></tr>
+<tr><td>RS_USER</td><td>OPB_SCHEDULE_LOGIC</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESSION</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESSION_CONFIG</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CFG_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_COMPONENT</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SWIDGET_INST</td></tr>
+<tr><td>RS_USER</td><td>OPB_EXTN_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CNX</td></tr>
+<tr><td>RS_USER</td><td>OPB_CNX_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_CNX_REFS</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESS_EXTNS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_FILE_REF</td></tr>
+<tr><td>RS_USER</td><td>OPB_FILE_DESC</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PARTITION_DEF</td></tr>
+<tr><td>RS_USER</td><td>OPB_KEY_RANGE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_TASK_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_TATTR_VAL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_CFG_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_CFGAT_VAL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_SESS_EXTNS</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_LIBS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_EXTN_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_EATTR_VAL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_DBTYP2EXTN</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_EXTN_CNXN</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_ECNXN_REF</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_CNX</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_CNX_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_CATTR_VAL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_CATALOG</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_PLGCOMP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_DBTYPE</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_DBSUBTYPE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_KEYTYPE</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_DATATYPE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_FLDATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESS_TASK_LOG</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SWIDGINST_LOG</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_RUN</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_INST_RUN</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_VAR_RUN</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_DEP_RUN</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_CACHE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MAP_PERSISVAL</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_EXTN_WATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_VAL_LIST</td></tr>
+<tr><td>RS_USER</td><td>OPB_HASH_KEY</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_CATTR2EXTN</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_EATTR2CNX</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_EXTN_FILE</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESS_CNX_VALS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_FILE_VALS</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESS_PER_FILES</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_UPGRADE_HIST</td></tr>
+<tr><td>RS_USER</td><td>OPB_DTL_SWIDG_LOG</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_REPO_PARAM</td></tr>
+<tr><td>RS_USER</td><td>OPB_VERSION_PROPS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CM_QUERY</td></tr>
+<tr><td>RS_USER</td><td>OPB_CM_QUERY_PARAM</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CM_LABEL</td></tr>
+<tr><td>RS_USER</td><td>OPB_CM_LABEL_REF</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CM_DEPLOY</td></tr>
+<tr><td>RS_USER</td><td>OPB_CM_DEPLOY_REF</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CM_DEPLOY_LOG</td></tr>
+<tr><td>RS_USER</td><td>OPB_CM_DEPDETAIL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SERVER_NET</td></tr>
+<tr><td>RS_USER</td><td>OPB_SERVER_NET_REF</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLD_ATTR_DEF</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLD_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLD_INOUTDEP</td></tr>
+<tr><td>RS_USER</td><td>OPB_SWIDG_GROUP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_VALIDATE</td></tr>
+<tr><td>RS_USER</td><td>OPB_XML_QUAL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROF_RULESET</td></tr>
+<tr><td>RS_USER</td><td>OPB_PROF_METADATA</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROF_SRC_REF</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_TEMPLATE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_TMPL_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_TMPL2EXTN</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_ATTR_CATEGORY</td></tr>
+<tr><td>RS_USER</td><td>OPB_PROF_RESOURCE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROF_RES_DATA</td></tr>
+<tr><td>RS_USER</td><td>OPB_PROF_RES_REF</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_DBTY2WATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_DBTY2WAVAL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_STATS</td></tr>
+<tr><td>RS_USER</td><td>OPB_SERVICE_LEVEL</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_SLVL_ATTR</td></tr>
+<tr><td>RS_USER</td><td>OPB_SLEVEL_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_RES_REFS</td></tr>
+<tr><td>RS_USER</td><td>OPB_OBJECT_LOCKS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SERVICED_REQ</td></tr>
+<tr><td>RS_USER</td><td>OPB_REQ_REPLY</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CLIENT_CONN</td></tr>
+<tr><td>RS_USER</td><td>OPB_MMD_FUNCTION</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MMD_FUNC_GRP</td></tr>
+<tr><td>RS_USER</td><td>OPB_MACRO</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MACRO_EXPR</td></tr>
+<tr><td>RS_USER</td><td>OPB_MACRO_ARGS</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MACRO_REF</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDG_MCR_DEP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_LINK_MCR_DEP</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK_MCR_DEP</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_RUN_BRK</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK_INST_BRK</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROXYUSER_INFO</td></tr>
+<tr><td>RS_USER</td><td>OPB_NOTIF_MSG</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_OBJECT_NOTIF</td></tr>
+<tr><td>RS_USER</td><td>OPB_SERVER_NODE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PERF_COUNT</td></tr>
+<tr><td>RS_USER</td><td>OPB_SWIDGET_ATTR</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WF_RUNINFO</td></tr>
+<tr><td>RS_USER</td><td>REP_PIC_USAGE</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">REP_FLD_DATATYPE</td></tr>
+<tr><td>RS_USER</td><td>REP_SRC_KEY_TYPES</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">REP_TARG_KEY_TYPES</td></tr>
+<tr><td>RS_USER</td><td>REP_DB_TYPES</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">REP_CARD_TYPE</td></tr>
+<tr><td>RS_USER</td><td>REP_TARG_TYPE</td></tr>
+<tr><td class="awrcgk">RS_DOMAIN</td><td class="awrcgk">PC_DBOBJECT</td></tr>
+<tr><td>RS_DOMAIN</td><td>PR_ATTRIBUTE</td></tr>
+<tr><td class="awrcgk">RS_DOMAIN</td><td class="awrcgk">PR_GANNOTATIONS</td></tr>
+<tr><td>RS_USER</td><td>OPB_MACRO_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_VERSION_PROPS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MACRO_ARGS_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MACRO_EXPR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MACRO_REF_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TARG_FLD_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TARG_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_FILE_DESC_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TARGINDEX_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TARGINDEXFLD_</td></tr>
+<tr><td>RS_USER</td><td>OPB_KEYWORD_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDG_FLD_ATTR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_ATTR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_METAEXT_VAL_</td></tr>
+<tr><td>RS_USER</td><td>OPB_XML_INFO_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_XML_QUAL_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TABLE_GROUP_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_VALIDATE_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SRC_FLD_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SRC_</td></tr>
+<tr><td>RS_USER</td><td>OPB_DBD_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SELINFO_</td></tr>
+<tr><td>RS_USER</td><td>OPB_PICDSC_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SEBL_MVL_LREL_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SEBL_MVL_ATTR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SEBL_JOIN_ATTR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SEBL_LINK_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SEBL_LINKX_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_CUBE_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_DIMENSION_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_LEVEL_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_LEVEL_FIELD_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_HIERARCHY_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_LVL_HRCHY_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_HIER_GRAPH_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_FACT_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_CUBE_FIELD_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_FACT_LEVEL_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MD_CUBE_HRCHY_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MD_FACT_FIELD_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_FUNC_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_FUNC_PARAM_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_STRUCT_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_STRUCT_FLD_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDGET_FIELD_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_EXPR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_EXPRESSION_</td></tr>
+<tr><td>RS_USER</td><td>OPB_NORM_FLD_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDGET_INIT_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLD_ATTR_DEF_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLD_ATTR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLD_INOUTDEP_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDG_MCR_DEP_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MAPPING_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_DBDS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TDS_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WIDGET_INST_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MAP_TARG_INFO_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_MAP_OPTIONS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TARG_FLD_EXPR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TARG_TBL_EXPR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WIDGET_DEP_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_FUNC_INST_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_DSQ_OPRT_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_FUNC_VARS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SAP_CODEBLK_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SAP_PGMFLOW_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MAP_PARMVAR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SCHEDULER_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SCHEDULE_LOGIC_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESSION_CONFIG_</td></tr>
+<tr><td>RS_USER</td><td>OPB_CFG_ATTR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK_VAL_LIST_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_ATTR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK_RES_REFS_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_MCR_DEP_</td></tr>
+<tr><td>RS_USER</td><td>OPB_COMPONENT_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_INST_</td></tr>
+<tr><td>RS_USER</td><td>OPB_MAP_PERSISVAL_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_PERVAL_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WORKFLOW_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_DEP_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_EXPR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_VAR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_EVENT_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_LINK_MCR_DEP_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WF_RUNINFO_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESSION_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SWIDGET_INST_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_EXTNS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESS_FILE_REF_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_FILE_VALS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_PARTITION_DEF_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_KEY_RANGE_</td></tr>
+<tr><td>RS_USER</td><td>OPB_HASH_KEY_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SWIDG_GROUP_</td></tr>
+<tr><td>RS_USER</td><td>OPB_EXTN_ATTR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_CNX_REFS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SESS_CNX_VALS_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_CNX_ATTR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SWIDGET_ATTR_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SHORTCUT_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SERVER_INFO_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SRV_LOC_VARS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_CNX_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_OBJECT_ACCESS_</td></tr>
+<tr><td>RS_USER</td><td>OPB_ANALYZE_DEP_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROGRAM_INFO_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SERVICE_LEVEL_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SLEVEL_ATTR_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SUBJECT_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_BCF_TREE_</td></tr>
+<tr><td>RS_USER</td><td>OPB_BCF_BUSCOMPS_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROF_RULESET_</td></tr>
+<tr><td>RS_USER</td><td>OPB_PROF_METADATA_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROF_SRC_REF_</td></tr>
+<tr><td>RS_USER</td><td>OPB_PROF_RES_REF_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_RUN_</td></tr>
+<tr><td>RS_USER</td><td>OPB_TASK_INST_RUN_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_SESS_TASK_LOG_</td></tr>
+<tr><td>RS_USER</td><td>OPB_SWIDGINST_LOG_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_DTL_SWIDG_LOG_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_DEP_RUN_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_WFLOW_CACHE_</td></tr>
+<tr><td>RS_USER</td><td>OPB_WFLOW_RUN_BRK_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_TASK_INST_BRK_</td></tr>
+<tr><td>RS_USER</td><td>OPB_PROF_RESOURCE_</td></tr>
+<tr><td class="awrcgk">RS_USER</td><td class="awrcgk">OPB_PROF_RES_DATA_</td></tr>
+<tr><td>DWDB</td><td>DEMO_STATES</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">T_FACT_INST_ORDER</td></tr>
+<tr><td>DWDB</td><td>ETL_SP_LOG</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">TEMP_TRADE_ORDER</td></tr>
+<tr><td>DWDB</td><td>TEMP_PAYMENT_ORDER</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">TEMP_PAYMENT_PARTY</td></tr>
+<tr><td>DWDB</td><td>TEMP_PAY_METHOD</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">EBA_MTGMIN_ATTENDEE</td></tr>
+<tr><td>DWDB</td><td>TXT</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">FP_DROP</td></tr>
+<tr><td>CFSX_V1</td><td>GETCHECK_PK</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">GETCNTRNO_ID</td></tr>
+<tr><td>CFSX_V1</td><td>GETFPPH</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">GETFP_DE_PK</td></tr>
+<tr><td>CFSX_V1</td><td>GETTD_NO</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">GETW_NO</td></tr>
+<tr><td>CFSX_V1</td><td>GETZXPK</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">JC_CARGO</td></tr>
+<tr><td>CFSX_V1</td><td>JC_CARGO_SEAT</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">LAST_FP_NO</td></tr>
+<tr><td>CFSX_V1</td><td>PBCATCOL</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">PBCATEDT</td></tr>
+<tr><td>CFSX_V1</td><td>PBCATFMT</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">PBCATTBL</td></tr>
+<tr><td>CFSX_V1</td><td>PBCATVLD</td></tr>
+<tr><td class="awrcgk">CFSX_V1</td><td class="awrcgk">SYSSET</td></tr>
+<tr><td>CODE</td><td>GETMV_KEY</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">CNTR_HIS</td></tr>
+<tr><td>TMS</td><td>DRIVER_RD</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">FINE_SET</td></tr>
+<tr><td>TMS</td><td>FREIGHT</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">GETCHECK_PK</td></tr>
+<tr><td>TMS</td><td>GETFPPH</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">GETMV_KEY</td></tr>
+<tr><td>TMS</td><td>GETPCD_NO</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">GETTD_NO</td></tr>
+<tr><td>TMS</td><td>INSURANCE</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">JT_BX</td></tr>
+<tr><td>TMS</td><td>JT_BZ</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">PBCATCOL</td></tr>
+<tr><td>TMS</td><td>PBCATEDT</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">PBCATFMT</td></tr>
+<tr><td>TMS</td><td>PBCATTBL</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">PBCATVLD</td></tr>
+<tr><td>TMS</td><td>REPAIR_D</td></tr>
+<tr><td class="awrcgk">TMS</td><td class="awrcgk">SYSSET</td></tr>
+<tr><td>TMS</td><td>TD_HIS</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">ACTIONJX</td></tr>
+<tr><td>CY2003</td><td>ACTION_SEAT</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">ACTLOG</td></tr>
+<tr><td>CY2003</td><td>AGREE_SWBF</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">AGREE_SWBF2</td></tr>
+<tr><td>CY2003</td><td>AGREE_SWBF3</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">AGREE_SWBK</td></tr>
+<tr><td>CY2003</td><td>AGREE_SWBK2</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">AGREE_SW_BF</td></tr>
+<tr><td>CY2003</td><td>CHARGEREDTMP</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">CTN_WIGHT_COPY</td></tr>
+<tr><td>CY2003</td><td>DBAREMOTE</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">EDILOG10</td></tr>
+<tr><td>CY2003</td><td>EDILOG20</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">EDILOGERROR</td></tr>
+<tr><td>CY2003</td><td>EDI_FILE</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">EDI_GJFILE</td></tr>
+<tr><td>CY2003</td><td>EDI_HGFILE</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">GETCHECK_PK</td></tr>
+<tr><td>CY2003</td><td>GETCMZ_NO</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">GETCNTRNO_ID</td></tr>
+<tr><td>CY2003</td><td>GETCNTRTMP</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">GETFPPH</td></tr>
+<tr><td>CY2003</td><td>GETFPPH_SCY</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">GETID</td></tr>
+<tr><td>CY2003</td><td>GETPLANLX_ID</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">GETPLAN_CARGOID</td></tr>
+<tr><td>CY2003</td><td>GETPLAN_ID</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">GETTMPID</td></tr>
+<tr><td>CY2003</td><td>GETYARDNO</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">KIND_CMDM</td></tr>
+<tr><td>CY2003</td><td>LAST_FP_NO</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">LXZYGZ</td></tr>
+<tr><td>CY2003</td><td>PBCATCOL</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">PBCATEDT</td></tr>
+<tr><td>CY2003</td><td>PBCATFMT</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">PBCATTBL</td></tr>
+<tr><td>CY2003</td><td>PBCATVLD</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">PLANGJ</td></tr>
+<tr><td>CY2003</td><td>PLANHG</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">PLANHGBK</td></tr>
+<tr><td>CY2003</td><td>PLANIN2</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">PLAN_TMP</td></tr>
+<tr><td>CY2003</td><td>RPT_TEMP</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">SHIFTFL</td></tr>
+<tr><td>CY2003</td><td>SYSSET</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">TUNDG_NOTYS</td></tr>
+<tr><td>CY2003</td><td>TXFYJCS_ALL</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">TXZYGZ</td></tr>
+<tr><td>CY2003</td><td>VNAME1</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">WAREHOUSE_RK_M_SEAT</td></tr>
+<tr><td>CY2003</td><td>XFB</td></tr>
+<tr><td class="awrcgk">DBSNMP</td><td class="awrcgk">MGMT_TEMPT_SQL</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_DOCS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_STD_ATTRS_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_PRV_ATTRS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_DOC_REFS_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_DAREFS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_MAPPING_DOCS_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_MAPPED_PATHS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_ANON_RULES_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_ANON_ATTRS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_RT_PREF_PARAMS_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_UID_DEFS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_STORED_TAGS_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_PRED_OPRD_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_PRED_PAR_TMP</td></tr>
+<tr><td>ORDDATA</td><td>ORDDCM_CT_LOCATORPATHS_TMP</td></tr>
+<tr><td class="awrcgk">ORDDATA</td><td class="awrcgk">ORDDCM_CT_ACTION_TMP</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_LOV_TEMP</td></tr>
+<tr><td class="awrcgk">APEX_030200</td><td class="awrcgk">WWV_FLOW_TEMP_TABLE</td></tr>
+<tr><td>APEX_030200</td><td>WWV_FLOW_TEMP_TREES</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">T_TRADE_ORDER</td></tr>
+<tr><td>DWDB</td><td>T_FACT_TRADE_ORDER</td></tr>
+<tr><td class="awrcgk">DWDB</td><td class="awrcgk">T_FACT_UNBIND_CARD</td></tr>
+</table>
+</p>
+<p>Table Fragment Size</p><p><table border="1">
+<tr><th class="awrbg">OWNER</th><th class="awrbg">TABLE_NAME</th><th class="awrbg">FRAGMENT_SIZE</th><tr>
+<tr><td>CMF</td><td>TT_CMF_ORDER</td><td>215 MB</td></tr>
+<tr><td class="awrcgk">DPM</td><td class="awrcgk">T_DPM_INNER_ACCOUNT_DETAIL</td><td class="awrcgk">87 MB</td></tr>
+<tr><td>DPM</td><td>T_DPM_OUTER_ACCOUNT_DETAIL</td><td>68 MB</td></tr>
+<tr><td class="awrcgk">DPM</td><td class="awrcgk">T_DPM_OUTER_ACCOUNT_SUB_DETAIL</td><td class="awrcgk">45 MB</td></tr>
+<tr><td>CMF</td><td>TT_INST_ORDER</td><td>41 MB</td></tr>
+<tr><td class="awrcgk">VOUCHER</td><td class="awrcgk">T_GATEWAY_ACCESS</td><td class="awrcgk">24 MB</td></tr>
+<tr><td>CY2003</td><td>ACTION</td><td>18 MB</td></tr>
+<tr><td class="awrcgk">VOUCHER</td><td class="awrcgk">T_PAYMENT_VOUCHER</td><td class="awrcgk">17 MB</td></tr>
+<tr><td>TRADE</td><td>T_PAYMENT_PARTY</td><td>16 MB</td></tr>
+<tr><td class="awrcgk">TRADE</td><td class="awrcgk">T_TRADE_ORDER</td><td class="awrcgk">15 MB</td></tr>
+<tr><td>TRADE</td><td>T_PAYMENT_ORDER</td><td>14 MB</td></tr>
+<tr><td class="awrcgk">VOUCHER</td><td class="awrcgk">T_TRADE_VOUCHER</td><td class="awrcgk">13 MB</td></tr>
+<tr><td>CY2003</td><td>PLAN_HIS</td><td>12 MB</td></tr>
+<tr><td class="awrcgk">TRADE</td><td class="awrcgk">T_PAY_METHOD</td><td class="awrcgk">12 MB</td></tr>
+<tr><td>TRADE</td><td>T_TRADE_STATUS_HIS</td><td>11 MB</td></tr>
+<tr><td class="awrcgk">DPM</td><td class="awrcgk">T_DPM_OUTER_ACCOUNT_SUBSET</td><td class="awrcgk">10 MB</td></tr>
+<tr><td>CY2003</td><td>EDI_FILE</td><td>9 MB</td></tr>
+<tr><td class="awrcgk">CY2003</td><td class="awrcgk">PLAN_TMP</td><td class="awrcgk">6 MB</td></tr>
+<tr><td>DPM</td><td>T_DPM_OUTER_ACCOUNT</td><td>6 MB</td></tr>
+</table>
+</p>
+</div>
+</body>

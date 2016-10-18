@@ -1,0 +1,47 @@
+.fa-circle {
+    color: red;
+}
+
+.card-header {
+    border-bottom: 0px;
+    padding: 11px 2px 5px;
+    /*padding: 1px 15px 0;*/
+    font-size: 14px;
+    color: black;
+}
+
+.card-block {
+    background-color: #f5f5f5;
+    padding: 2px 15px 15px;
+    font-size: 14px;
+}
+
+.column-list {
+    background: #fff;
+    min-height: 4000px;
+    padding: 20px 20px 40px;
+}
+
+a:hover {
+    /*color: #607D8B;*/
+    /*background-color: #DDD;*/
+    left: .3em;
+    text-decoration: none;
+}
+
+code {
+    color: black;
+}
+
+.blocker-mini {
+    color: #fff;
+    background: #f75454;
+    font-size: 13px;
+    padding: 8px 15px;
+}
+
+.alert {
+   border-style: ridge ;
+   border-color:#FFF8DC;
+   padding: 0 0 0 0;
+}
