@@ -1,3 +1,5 @@
+import { NodeConf, getNodeConf, getDatabaseConf, DatabaseConf } from './conf'
+
 interface NodeInfo {
     nodeCheck: boolean
     dbCheck: boolean
@@ -5,44 +7,46 @@ interface NodeInfo {
 }
 
 enum CheckStatus {
-    DIE,
-    STOP,
-    NORMAL,
-    DOUBT
+    DIE = 1,
+    STOP = 2,
+    NORMAL = 3,
+    DOUBT = 4
 }
 
 interface CommandCheckInfo {
     timestamp?: number
     status?: CheckStatus
-    retry: number
+    retry?: number
 }
 
 let PingDB: Map<string, CommandCheckInfo> = new Map<string, CommandCheckInfo>()
 
 export let PingCheckQueue: string[] = []
 
-export let NcCheckQueue: [string, [string, string, number]][] = []
-
-export function genNCKey(ip: string, service: string): string { return `${ip}_${service}` }
+export let NcCheckQueue: [string, number][] = []
 
 let NcDB: Map<string, CommandCheckInfo> = new Map<string, CommandCheckInfo>()
 
 let NodeDB: Map<string, number> = new Map<string, number>()
 
-let test: Map<string, { ip: string, title: string, ping: {}, nc: {} }> = new Map<string, { ip: string, title: string, ping: {}, nc: {} }>()
-
-function nodesff() {
-    for (let p of NodeDB.keys()) {
-        let px = PingDB.get(p)
-        let ncx = NcDB.get(p)
-        let ping = { timestamp: px.timestamp, status: px.status }
-        let nc = { timestamp: ncx.timestamp, status: ncx.status }
-        let node = { ip: p, title: "dev", ping: ping, nc: nc }
-        test.set(p, node)
-    }
-    return Array.from(test.values())
+async function getNodeInfo(ctx) {
+    const ncs: NodeConf[] = await getNodeConf()
+    const dcs: DatabaseConf[] = await getDatabaseConf()
+    let test = []
+    const currTIme = new Date().getTime()
+    ncs.forEach((nc: NodeConf) => {
+        let pcci = PingDB.get(nc.ip)
+        let dc = dcs.filter((dc: DatabaseConf) => dc.ip === nc.ip).map((dc: DatabaseConf) => {
+            let ncci = NcDB.get(`${dc.ip}_${dc.port}`)
+            return { service: dc.service, timestamp: (currTIme - ncci.timestamp), status: ncci.status, port: dc.port, alert: [] }
+        })
+        test.push({ ip: nc.ip, title: nc.title, ping: { timestamp: (currTIme - pcci.timestamp), status: pcci.status, alert: [], port: nc.port }, ds: dc })
+    })
+    ctx.type = 'application/json';
+    ctx.body = JSON.stringify(test)
 }
 
 let CheckQueue: [string, number][] = []
 
-export { CheckQueue, NcDB, PingDB, CommandCheckInfo, CheckStatus, nodesff, NodeDB }
+export { CheckQueue, NcDB, PingDB, CommandCheckInfo, CheckStatus, getNodeInfo, NodeDB }
+

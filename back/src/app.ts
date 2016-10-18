@@ -22,12 +22,11 @@ apiSocket.get('/api/', (ctx) => {
 api
 	.get("/bb", (ctx) => {
 		ctx.type = 'application/json';
-		ctx.body = JSON.stringify(md_store.nodesff())
+		ctx.body = JSON.stringify(md_store.getNodeInfo)
 	})
 	// .get("/cc", (ctx) => ctx.body = JSON.stringify(Array.from(md_store.ncDB)))
-	.get("/api/nodes", (ctx) => {
-		ctx.body = JSON.stringify(md_store.NcDB)
-	})
+	.get("/api/nodes", md_store.getNodeInfo)
+	.get("/api/node/:ip", md_monitor.abc)
 
 app.use(api.routes()).use(api.allowedMethods());
 

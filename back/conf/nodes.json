@@ -1,19 +1,19 @@
 [
-  {"ip": "10.65.193.13","port":"22","title":"lt","status":true,"databases":[{"title":["lt"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whlt"}]},
+  {"ip": "10.65.193.13","port":"22","title":"lt","status":true,"databases":[{"title":"lt", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whlt"}]},
 
-  {"ip": "10.65.193.11","port":"22","title":"test","status":true,"databases":[{"title":["test"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whpay"}]},
-  {"ip": "10.65.193.27","port":"22","title":"test", "status":true,"databases":[{"title":["test"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whdb2"}]},
-  {"ip": "10.65.193.40","port":"22","title":"test","status":true,"databases":[{"title":["test"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"dwdb"}]},
-  {"ip": "10.65.193.37","port":"22","title":"test", "status":true,"databases":[{"title":["test"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"cloud"}]},
-  {"ip": "10.65.193.20","port":"22","title":"test",  "status":true,"databases":[{"title":["test"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"jyhdb"}]},
-  {"ip": "10.65.193.38","port":"22","title":"test",  "status":true,"databases":[{"title":["test"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"func3"}]},
+  {"ip": "10.65.193.11","port":"22","title":"test","status":true,"databases":[{"title":"test", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whpay"}]},
+  {"ip": "10.65.193.27","port":"22","title":"test", "status":true,"databases":[{"title":"test", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whdb2"}]},
+  {"ip": "10.65.193.40","port":"22","title":"test","status":true,"databases":[{"title":"test", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"dwdb"}]},
+  {"ip": "10.65.193.37","port":"22","title":"test", "status":true,"databases":[{"title":"test", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"cloud"}]},
+  {"ip": "10.65.193.20","port":"22","title":"test",  "status":true,"databases":[{"title":"test", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"jyhdb"}]},
+  {"ip": "10.65.193.38","port":"22","title":"test",  "status":false,"databases":[{"title":"test", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"func3"}]},
 
-  {"ip": "10.65.193.12","port":"22","title":"dev","status":true,"databases":[{"title":["dev"], "port":1521,"status":true,"user":"system","password":"sys123SYS","service":"whpay"}]},
-  {"ip": "10.65.193.21","port":"22","title":"dev", "status":true,"databases":[{"title":["dev"], "port":1521,"status":true,"user":"system","password":"oracle","service":"dev2"}]},
-  {"ip": "10.65.193.28","port":"22","title":"dev", "status":true,"databases":[{"title":["dev"], "port":1521,"status":true,"user":"system","password":"oracle","service":"wh12cdb1"}]},
-  {"ip": "10.65.193.39","port":"22","title":"dev", "status":true,"databases":[{"title":["dev"], "port":1521,"status":true,"user":"system","password":"oracle1171","service":"dev3"}]},
+  {"ip": "10.65.193.12","port":"22","title":"dev","status":true,"databases":[{"title":"dev", "port":1521,"status":true,"user":"system","password":"sys123SYS","service":"whpay"}]},
+  {"ip": "10.65.193.21","port":"22","title":"dev", "status":true,"databases":[{"title":"dev", "port":1521,"status":true,"user":"system","password":"oracle","service":"dev2"}]},
+  {"ip": "10.65.193.28","port":"22","title":"dev", "status":true,"databases":[{"title":"dev", "port":1521,"status":true,"user":"system","password":"oracle","service":"wh12cdb1"}]},
+  {"ip": "10.65.193.39","port":"22","title":"dev", "status":true,"databases":[{"title":"dev", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"dev3"}]},
 
-  {"ip": "10.65.212.193","port":"22", "title":"yali","status":true,"databases":[{"title":["yali"], "port":1521,"status":true,"user":"system","password":"oracle11","service":"orayali"}]},
-  {"ip": "10.65.193.25","port":"22","title":"yali", "status":true,"databases":[{"title":["yali"], "port":1522,"status":true,"user":"system","password":"oracle","service":"orayali2"}]},
-  {"ip": "10.65.193.26","port":"22","title":"yali","status":false,"databases":[{"title":["yali"], "port":1521,"status":true,"user":"system","password":"oracle","service":"orayali3"}]}
+  {"ip": "10.65.212.193","port":"22", "title":"yali","status":true,"databases":[{"title":"yali", "port":1521,"status":true,"user":"system","password":"oracle11","service":"orayali"}]},
+  {"ip": "10.65.193.25","port":"22","title":"yali", "status":true,"databases":[{"title":"yali", "port":1522,"status":true,"user":"system","password":"oracle","service":"orayali2"}]},
+  {"ip": "10.65.193.26","port":"22","title":"yali","status":true,"databases":[{"title":"yali", "port":1521,"status":false,"user":"system","password":"oracle","service":"orayali3"}]}
 ]

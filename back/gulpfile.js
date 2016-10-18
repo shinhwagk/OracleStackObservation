@@ -8,7 +8,8 @@ gulp.task("default", () => {
     .js.pipe(gulp.dest("dist"));
 });
 
-gulp.task('watch', () => {
-  gulp.watch(['src/**/*.ts', 'test/**/*.ts']).on('change', (e) => {
-  }));
+gulp.task('watch', ['default'], () => {
+  gulp.watch(['src/**/*.ts', 'test/**/*.ts'], ['default']).on('change', (e) => {
+    console.info(e.path)
+  })
 });

@@ -1,42 +1,113 @@
-import * as md_conf from '../conf'
-import * as md_montior from './test-env-backup'
+import { NodeConf, getNodeConf, getDatabaseConf, DatabaseConf, genMonitor, getMonitorCode } from '../conf'
 import * as md_tools from '../common/tools'
-import * as md_store from '../store'
-import { CommandCheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, genNCKey, CheckStatus } from '../store'
-
-async function check(ip: string, port: number): Promise<void> {
-  let pingBool = await pingCheck(ip)
-  let ncBool = await ncCheck(ip, port)
-  PingDB.set(ip, md_tools.commandCheck(pingBool, PingDB.get(ip)))
-  NcDB.set(ip, md_tools.commandCheck(ncBool, NcDB.get(ip)))
-  return
-}
+import { CommandCheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus } from '../store'
 
 function genCheckQueue() {
-  md_conf.getNodeConf().then((nodeConfs: md_conf.NodeConf[]) => {
-    nodeConfs.forEach((nodeConf: md_conf.NodeConf) => {
-      let ip = nodeConf.ip
-      if (nodeConf.status) {
-        PingCheckQueue.push(ip)
-        PingDB.set(ip, { status: CheckStatus.DOUBT, retry: 0, timestamp: new Date().getTime() })
-        nodeConf.databases.forEach((dbs: md_conf.DatabaseConf) => {
-          let port = dbs.port
-          if (dbs.status) {
-            NcCheckQueue.push([genNCKey(ip, dbs.service), [ip, dbs.service, port]])
-            NcDB.set(genNCKey(ip, dbs.service), { status: CheckStatus.DOUBT, retry: 0, timestamp: new Date().getTime() })
-          } else {
-            NcDB.set(genNCKey(ip, dbs.service), { status: md_store.CheckStatus.STOP, retry: 0, timestamp: new Date().getTime() })
-          }
-        })
-      } else {
-        PingDB.set(ip, { status: md_store.CheckStatus.STOP, retry: 0, timestamp: new Date().getTime() })
+  //ping queue
+  // getNodeConf().then((ncs: NodeConf[]) => {
+  //   ncs.forEach((nc: NodeConf) => {
+  //     const ip = nc.ip
+  //     if (nc.status) {
+  //       PingCheckQueue.push(ip)
+  //       if (!PingDB.has(ip)) {
+  //         PingDB.set(ip, { status: CheckStatus.DOUBT, retry: 0, timestamp: new Date().getTime() })
+  //       }
+  //     } else {
+  //       PingDB.set(ip, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
+  //     }
+  //   })
+  // })
+
+  //natcat queue
+  getDatabaseConf().then((dcs: DatabaseConf[]) => {
+    dcs.forEach((dc: DatabaseConf) => {
+      const ip = dc.ip
+      const port = dc.port
+      const key = `${ip}_${port}`
+
+      if (!NcDB.has(key)) {
+        if (dc.status) {
+          NcDB.set(key, { status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0 })
+        } else {
+          NcDB.set(key, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
+        }
       }
+
+      const commandCheckINfo: CommandCheckInfo = NcDB.get(key)
+      const status: CheckStatus = commandCheckINfo.status
+      const timestamp: number = commandCheckINfo.timestamp + 1000 * 5
+      const currTimestamp: number = new Date().getTime()
+      if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp)) {
+        // NcCheckQueue.push([ip, port])
+        ncCheck(ip, port).then(bool => {
+          let cci = NcDB.get(`${ip}_${port}`)
+          if (cci.status !== CheckStatus.DIE)
+            NcDB.set(`${ip}_${port}`, md_tools.verifyCheckInfo(bool, cci))
+        })
+
+      }
+      // if ((status === CheckStatus.DOUBT) || (status === CheckStatus.NORMAL)) {
+      //   NcCheckQueue.push([ip, port])
+      // }
     })
   })
 }
 
+function nodePingCheck() {
+  getNodeConf().then((ncs: NodeConf[]) => {
+    ncs.forEach((nc: NodeConf) => {
+      const ip = nc.ip
+
+      if (!PingDB.has(ip)) {
+        if (nc.status) {
+          PingDB.set(ip, { status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0 })
+        } else {
+          PingDB.set(ip, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
+        }
+      }
+
+      pingCheck(ip).then(bool => {
+        const cci: CommandCheckInfo = PingDB.get(ip)
+        const status: CheckStatus = cci.status
+        const timestamp: number = cci.timestamp + 1000 * 5
+        const currTimestamp: number = new Date().getTime()
+        if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp))
+          PingDB.set(ip, md_tools.verifyCheckInfo(bool, cci))
+      }).catch(console.info)
+    })
+  })
+}
+
+function databasePortCheck() {
+  getDatabaseConf().then((dcs: DatabaseConf[]) => {
+    dcs.forEach((dc: DatabaseConf) => {
+      const ip = dc.ip
+      const port = dc.port
+      const key = `${ip}_${port}`
+
+      if (!NcDB.has(key)) {
+        if (dc.status) {
+          NcDB.set(key, { status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0 })
+        } else {
+          NcDB.set(key, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
+        }
+      }
+
+      ncCheck(ip, port).then(bool => {
+        const cci: CommandCheckInfo = NcDB.get(key)
+        const status: CheckStatus = cci.status
+        const timestamp: number = cci.timestamp + 1000 * 5
+        const currTimestamp: number = new Date().getTime()
+        if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp))
+          NcDB.set(`${ip}_${port}`, md_tools.verifyCheckInfo(bool, cci))
+      }).catch(console.info)
+    })
+  })
+}
+
+
 function pingCheck(ip: string): Promise<boolean> {
-  const command = `ping -c 2 -t 2 ${ip}`
+  const command = `ping -c 2 -W 2 ${ip}`
   return md_tools.executeNoLoginShellCommand(command)
 }
 
@@ -47,26 +118,17 @@ function ncCheck(ip: string, port: number): Promise<boolean> {
 
 function executeCheck() {
   setInterval(() => {
-    while (PingCheckQueue.length >= 1) {
-      let ip: string = PingCheckQueue.shift()
-      pingCheck(ip).then(bool => {
-        let retry = PingDB.get(ip).retry + 1
-        PingDB.set(ip, md_tools.commandCheck(bool, { retry: retry }))
-      })
-    }
-    while (NcCheckQueue.length >= 1) {
-      let [key, [ip, service, port]] = NcCheckQueue.shift()
-      ncCheck(ip, port).then(bool => {
-        let retry = NcDB.get(key).retry + 1
-        NcDB.set(genNCKey(ip, service), md_tools.commandCheck(bool, { retry: retry }))
-      })
-    }
+    databasePortCheck()
+    nodePingCheck()
+    // console.info(NcDB)
+    // console.info(PingDB)
   }, 1000)
 }
 
-async function start() {
-  setInterval(() => genCheckQueue(), 1000)
-  executeCheck()
+export async function abc(ctx) {
+  const gm: { name: string, category: string }[] = await genMonitor()
+  const b = await Promise.all(gm.filter(g => g.category === "oracle").map(g => getMonitorCode(g.name, g.category)))
+  ctx.body = b
 }
 
-export { start }
+export function start() { executeCheck() }

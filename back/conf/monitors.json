@@ -1,4 +1,15 @@
 [
-  {"name":"tablespace_space","category":"oracle","alert":""},
-  {"name":"invalid_object","category":"oracle","alert":""}
+  {
+    "name": "tablespace_space",
+    "category": "oracle",
+    "title": [
+      "rac"
+    ],
+    "alert": ""
+  },
+  {
+    "name": "invalid_object",
+    "category": "oracle",
+    "alert": ""
+  }
 ]

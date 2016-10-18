@@ -5,7 +5,7 @@ import { CommandCheckInfo, CheckStatus } from '../store'
 
 // bug :(node:11849) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): TypeError: Cannot read property '2' of undefined   
 export function executeNoLoginShellCommand(command: string): Promise<boolean> {
-  let pro = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     md_cp.exec(command, (error, stdout, stderr) => {
       if (error) {
         // console.info(`${command} failure.`)
@@ -16,24 +16,19 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
       }
     })
   })
-  return pro
 }
 
-function commandCheck(currStatus: boolean, cci: CommandCheckInfo): CommandCheckInfo {
+function verifyCheckInfo(currStatus: boolean, cci: CommandCheckInfo): CommandCheckInfo {
   if (currStatus) {
     return { timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0 }
   } else {
-    if (cci.retry > 5) {
+    if (cci.retry >= 5) {
       return { timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0 }
     } else {
       return { timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1 }
     }
   }
 }
-
-function pingCheck(ip: string): Promise<boolean> { return executeNoLoginShellCommand(`ping -c 2 ${ip}`) }
-
-function portCheck(ip: string, port: number): Promise<boolean> { return executeNoLoginShellCommand(`nc -v -w 4 ${ip} -z ${port}`) }
 
 function execRemoteShellCommand(node: { ip: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -76,7 +71,7 @@ function execRemoteShellCommand(node: { ip: string, port: number, username: stri
 //   return s;
 // }
 
-export { pingCheck, portCheck, execRemoteShellCommand, commandCheck }
+export { execRemoteShellCommand, verifyCheckInfo }
 //test
 // execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "df -hP | grep -v Filesystem").then(console.info)
 // execRemoteShellCommand({ ip: "10.65.193.39", port: 22, username: "root", password: "oracle" }, "hostname").then(console.info)
