@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {"ip": "10.65.193.13","port":"22","title":"lt","status":true,"databases":[{"title":"lt", "port":1521,"status":true,"user":"system","password":"oracle1171","service":"whlt"}]},
 
@@ -17,3 +18,6 @@
   {"ip": "10.65.193.25","port":"22","title":"yali", "status":true,"databases":[{"title":"yali", "port":1522,"status":true,"user":"system","password":"oracle","service":"orayali2"}]},
   {"ip": "10.65.193.26","port":"22","title":"yali","status":true,"databases":[{"title":"yali", "port":1521,"status":false,"user":"system","password":"oracle","service":"orayali3"}]}
 ]
+=======
+
+>>>>>>> 48beb891553a1222156ab6be1b8dd4ca63a79e0c
