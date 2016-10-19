@@ -17,7 +17,6 @@
     "@types/koa": "2.0.33",
     "@types/koa-router": "7.0.21",
     "@types/nconf": "0.0.32",
-    "@types/node": "6.0.41",
     "@types/oracledb": "1.5.32",
     "@types/ssh2": "0.5.33",
     "@types/winston": "0.0.28",
@@ -28,22 +27,22 @@
     "koa-router": "^7.0.0",
     "koa-websocket": "^3.0.1",
     "nconf": "0.8.4",
-    "rxjs": "*",
-    "ssh2": "*",
+    "oracledb": "^1.11.0",
+    "rxjs": "5.0.0-rc.1",
+    "ssh2": "^0.5.2",
     "winston": "2.2.0",
     "ws": "^1.1.1"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.41",
     "concurrently": "^2.2.0",
-    "gulp": "*",
-    "gulp-cli": "*",
-    "gulp-typescript": "*",
+    "gulp": "3.9.1",
+    "gulp-cli": "1.2.2",
+    "gulp-typescript": "3.0.2",
     "merge2": "^1.0.2",
     "mocha": "^3.1.2",
     "supervisor": "0.11.0",
     "typescript": "^2.0.3",
-    "webpack": "*"
+    "webpack": "1.13.2"
   }
 }

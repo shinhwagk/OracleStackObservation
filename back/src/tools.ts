@@ -1,10 +1,11 @@
 import * as md_cp from 'child_process';
 import * as md_ssh2 from 'ssh2'
 import * as fs from 'fs';
-
+import { logger } from './logger'
+import { Monitor } from './conf'
 import { CheckInfo, CheckStatus } from './store'
 
-export function readFile(path: string) {
+export function readFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
       if (err) { reject(err); } else { resolve(data); }
@@ -12,11 +13,29 @@ export function readFile(path: string) {
   })
 }
 
+export function threeMapToArray(map: Map<string, Map<string, Map<string, string>>>) {
+  return Array.from(map).map(([l, v]) => [l, Array.from(v).map(([kk, vv]) => [kk, Array.from(vv)])])
+}
+// export function readMonitorFile(monitor: Monitor): Promise<string> {
+//   let path: string
+//   if (monitor.category === 'oracle') {
+//     path = `conf/monitors/oracle/${monitor.name}.sql`
+//   } else {
+//     path = `conf/monitors/os/${monitor.name}.sh`
+//   }
+
+//   return new Promise((resolve, reject) => {
+//     fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
+//       if (err) { reject(err); } else { resolve(data); }
+//     })
+//   })
+// }
+
 export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     md_cp.exec(command, (error, stdout, stderr) => {
       if (error) {
-        console.info(`${command} failure.`)
+        logger.error(`${command} failure.`)
         resolve(false)
       } else {
         // console.info(`${command} success.`)

@@ -23,6 +23,10 @@ let NcDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
 let NodeDB: Map<string, number> = new Map<string, number>()
 
+
+
+export const MonitorDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
+
 async function getNodeInfo(ctx) {
     const ncs: Node[] = await getNodeConf()
     const dcs: Database[] = await getDatabaseConf()

@@ -4,13 +4,21 @@ import { CheckStatus } from './store'
 
 function readNodeConf(): Promise<string> { return readFile('./conf/nodes.json') }
 
-function readMonitorConf(): Promise<string> { return readFile('./confi/monitors.json') }
+function readMonitorConf(): Promise<string> { return readFile('./conf/monitors.json') }
 
 export function readMonitorCode(monitor: Monitor): Promise<string> {
   if (monitor.category === 'oracle') {
-    return readFile(`./conf/monitors/${name}.sql`)
+    return readFile(`./conf/monitors/oracle/${monitor.name}.sql`)
   } else if (monitor.category === 'shell') {
-    return readFile(`./conf/monitor/${name}.sh`)
+    return readFile(`./conf/monitors/os/${monitor.name}.sh`)
+  }
+}
+
+export function readAlertCode(monitor: Monitor): Promise<string> {
+  if (monitor.category === 'oracle') {
+    return readFile(`./conf/alerts/oracle/${monitor.name}.sql`)
+  } else if (monitor.category === 'shell') {
+    return readFile(`./conf/alerts/os/${monitor.name}.sh`)
   }
 }
 
@@ -53,9 +61,9 @@ export async function getDatabaseConf(): Promise<Database[]> {
   const nodeConfs: Node[] = await getNodeConf()
   const genDatabaseConf = function (node, db) {
     if (node.status) {
-      return { ip: node.ip, port: db.port, service: db.service, status: db.status }
+      return { ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password }
     } else {
-      return { ip: node.ip, port: db.port, service: db.service, status: false }
+      return { ip: node.ip, port: db.port, service: db.service, status: false, user: db.user, password: db.password }
     }
   }
   return flatten(nodeConfs.map(node => node.databases.map(db => genDatabaseConf(node, db))))

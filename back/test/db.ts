@@ -1,9 +1,16 @@
 import * as db from '../src/db'
+import * as fs from '../src/tools'
 
-db.fff({
-  ip: "122.225.54.25",
-  port: 1521,
-  service: 'test',
-  user: 'system',
-  password: 'wingewq'
-}, "select * from ").then(console.info)
+async function a() {
+  let b: string = await fs.readFile('conf/monitors/tablespace_space.sql')
+
+  db.fff({
+    ip: "122.225.54.25",
+    port: 1521,
+    service: 'test',
+    user: 'system',
+    password: 'wingewq'
+  }, b).then(console.info)
+}
+
+a().then(console.info).catch(console.info)

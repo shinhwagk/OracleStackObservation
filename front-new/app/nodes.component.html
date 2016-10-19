@@ -5,7 +5,7 @@
 			<div class=".column-list">
 				<div class="card" *ngFor="let n of _env_filter(env); trackBy:trackByHeroes">
 					<div class="card-header">
-						<table>
+						<table style="width:100%">
 							<tr>
 								<td><i class="fa fa-circle" aria-hidden="true" [ngStyle]="setStyles(n.ping.status)"></i><code>ip:</code>{{ n.ip }}</td>
 								<td><span><code>sshPort:</code>{{ n.ping.port }}</span></td>
@@ -14,29 +14,27 @@
 						</table>
 					</div>
 					<div class="card-block">
-						<div class="card" *ngFor="let d of n.ds">
-							<div class="card-header">
-								<code>service:</code>{{d.service}}
-								<code>port:</code>{{d.port}}
-								<span><code>status:</code><i class="fa fa-circle" aria-hidden="true" [ngStyle]="setStyles(d.status)"></i></span>
-								<span><code>delay:</code>{{ d.timestamp }}</span>
-							</div>
+						<div class="list-group">
+							<a href="" class="list-group-item list-group-item-success" *ngFor="let d of n.ds">
+									service:{{d.service}}									port:{{d.port}}									<span>delay:{{ d.timestamp }}</span>
+							</a>
 						</div>
-						<!--<div class="row">-->
-						<!--<div class="col-lg-6">-->
-						<!--<i class="fa fa-circle" aria-hidden="true" [ngStyle]="setStyles(n.status)"></i>-->
-						<!--<code>({{n.hostname}}) : {{n.timestamp}} ms</code>-->
-						<!--</div>-->
-						<!--<div class="col-lg-6" *ngIf="alert.length > 0">-->
-						<!--<div class="alert">-->
-						<!--<div *ngFor="let a of getAlert(n.hostname)">-->
-						<!--<span style="color:black">{{a}}</span>-->
-						<!--</div>-->
-						<!--</div>-->
-						<!--</div>-->
 					</div>
 				</div>
 			</div>
-			<!--</div>-->
 		</div>
 	</div>
+</div>
+
+<ul class="list-group">
+
+	<li class="list-group-item list-group-item-info">
+		xx xx
+		<div class="list-group">
+			<a href="#" class="list-group-item list-group-item-success">Dapibus ac facilisis in</a>
+			<a href="#" class="list-group-item list-group-item-info">Cras sit amet nibh libero</a>
+			<a href="#" class="list-group-item list-group-item-warning">Porta ac consectetur ac</a>
+			<a href="#" class="list-group-item list-group-item-danger">Vestibulum at eros</a>
+		</div>
+	</li>
+</ul>

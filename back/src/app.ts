@@ -24,9 +24,9 @@ api.get("/bb", (ctx) => {
 		ctx.body = JSON.stringify(md_store.getNodeInfo)
 }).get("/api/nodes", md_store.getNodeInfo)
 	.get("/api/node/:ip", md_monitor.abc)
+	.get("/api/node/:ip/db/:service", md_monitor.abc)
 
 app.use(api.routes()).use(api.allowedMethods());
-
 app.ws.use(apiSocket.routes()).use(apiSocket.allowedMethods());
 
 app.listen(3000);

@@ -1,6 +1,6 @@
 import * as oracledb from 'oracledb';
 
-interface DatabaseConnectInfo {
+export interface DatabaseConnectInfo {
   ip: string
   port: number
   service: string
@@ -20,11 +20,12 @@ export async function genConnection(dci: DatabaseConnectInfo): Promise<oracledb.
     })
 }
 
-export async function fff(dci: DatabaseConnectInfo, sql: string) {
+export async function fff(dci: DatabaseConnectInfo, sql: string): Promise<Array<Array<any>> | Array<any>> {
   const conn: oracledb.IConnection = await genConnection(dci)
   const result: oracledb.IExecuteReturn = await conn.execute(sql)
-  const colname: string[] = result.metaData.map(e => e.name)
+  const colname = result.metaData.map(e => e.name)
   const rows = result.rows
   const close = await conn.close()
-  return [rows].concat([result.rows])
+  return [colname].concat(rows)
 }
+

@@ -5,11 +5,19 @@
     "title": [
       "rac"
     ],
-    "alert": ""
+    "alert": "",
+    "version": ""
   },
   {
     "name": "invalid_object",
     "category": "oracle",
-    "alert": ""
+    "alert": "",
+    "version": ""
+  },
+    {
+    "name": "disk_space",
+    "category": "shell",
+    "alert": "",
+    "version": ""
   }
 ]

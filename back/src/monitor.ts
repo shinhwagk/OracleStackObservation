@@ -1,38 +1,9 @@
 import * as os from 'os'
 import { Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor } from './conf'
 import * as md_tools from './tools'
-import { CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus } from './store'
-
-function genCheckQueue() {
-  getDatabaseConf().then((dcs: Database[]) => {
-    dcs.forEach((dc: Database) => {
-      const ip = dc.ip
-      const port = dc.port
-      const key = `${ip}_${port}`
-
-      if (!NcDB.has(key)) {
-        if (dc.status) {
-          NcDB.set(key, { status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0 })
-        } else {
-          NcDB.set(key, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
-        }
-      }
-
-      const ci: CheckInfo = NcDB.get(key)
-      const status: CheckStatus = ci.status
-      const timestamp: number = ci.timestamp + 1000 * 5
-      const currTimestamp: number = new Date().getTime()
-      if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp)) {
-        // NcCheckQueue.push([ip, port])
-        ncCheck(ip, port).then(bool => {
-          let cci = NcDB.get(`${ip}_${port}`)
-          if (cci.status !== CheckStatus.DIE)
-            NcDB.set(`${ip}_${port}`, md_tools.verifyCheckInfo(bool, cci))
-        })
-      }
-    })
-  })
-}
+import { CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus, MonitorDB } from './store'
+import { DatabaseConnectInfo, fff } from './db'
+import { flatten } from './common'
 
 function nodePingCheck() {
   getNodeConf().then((ncs: Node[]) => {
@@ -86,89 +57,96 @@ function databasePortCheck() {
   })
 }
 
-function genPingCheckFun(): (string) => Promise<boolean> {
-  function genPingCommandFun() {
-    const platform = os.platform()
-    if (platform === 'darwin') {
-      return function (ip: string) { return `ping -c 2 -t 2 ${ip}` }
-    }
-    else if (platform === 'linux') {
-      return function (ip: string) { return `ping -c 2 -W 2 ${ip}` }
-    } else {
-      throw new Error("no set this platform for ping command: " + platform);
-    }
-  }
-
-  let genPingCommand: (string) => string = genPingCommandFun()
-
-  return function (ip: string) {
-    const command: string = genPingCommand(ip)
-    return md_tools.executeNoLoginShellCommand(command)
-  }
-}
-
-function genNcCheckCommand(): (string, number) => Promise<boolean> {
-  function genNcCommandFun() {
-    const platform = os.platform()
-    if (platform === 'win32') {
-      return function (ip: string, port: number) { return `nc64.exe -v -w 4 ${ip} -z ${port}` }
-    }
-    else if (platform === 'linux') {
-      return function (ip: string, port: number) { return `nc64.exe -v -w 4 ${ip} -z ${port}` }
-    } else {
-      throw new Error("no set this platform for nc command: " + platform);
-    }
-  }
-
-  let genNcCommand: (string, number) => string = genNcCommandFun()
-
-  return function (ip: string, port: number) {
-    const command: string = genNcCommand(ip, port)
-    return md_tools.executeNoLoginShellCommand(command)
-  }
-}
-
-function platformCheckCommand(win32Fun, linuxFun) {
+function platformCheckCommand(win32Fun: (CommandArguments) => string, linuxFun: (CommandArguments) => string) {
   const platform = os.platform()
   if (platform === 'win32') { return win32Fun }
   else if (platform === 'linux') { return linuxFun }
   else { throw new Error("no set this platform for nc command: " + platform); }
 }
 
-interface commandArguments { args: Array<number | string> }
+interface CommandArguments { args: Array<number | string> }
 
-function pingWin32Command(ca: commandArguments) { return `ping -n 2 -w 2 ${ca[0]}` }
+function pingWin32Command(ca: CommandArguments) { return `ping -n 2 -w 2 ${ca.args[0]}` }
 
-function pingLinuxCommand(ca: commandArguments) { return `ping -n 2 -w 2 ${ca[0]}` }
+function pingLinuxCommand(ca: CommandArguments) { return `ping -n 2 -w 2 ${ca.args[0]}` }
 
-function ncWin32Command(ca: commandArguments) { return `nc64.exe -v -w 4 ${ca[0]} -z ${ca[1]}` }
+function ncWin32Command(ca: CommandArguments) { return `nc64.exe -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
 
-function ncLinuxCommand(ca: commandArguments) { return `nc64.exe -v -w 4 ${ca[0]} -z ${ca[1]}` }
+function ncLinuxCommand(ca: CommandArguments) { return `nc64.exe -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
 
-const pingCheckCommand: (commandArguments) => string = platformCheckCommand(pingWin32Command, pingLinuxCommand)
+export const pingCheckCommand: (commandArguments) => string = platformCheckCommand(pingWin32Command, pingLinuxCommand)
 
-const ncCheckCommand: (commandArguments) => string = platformCheckCommand(ncWin32Command, ncLinuxCommand)
+export const ncCheckCommand: (commandArguments) => string = platformCheckCommand(ncWin32Command, ncLinuxCommand)
 
-export function executeCheckCommand(ca: commandArguments, f: (commandArguments) => string): Promise<boolean> {
+export function executeCheckCommand(ca: CommandArguments, f: (commandArguments) => string): Promise<boolean> {
   const command = f(ca)
   return md_tools.executeNoLoginShellCommand(command)
 }
 
-export function ncCheck(ca: commandArguments): Promise<boolean> {
-  const command = ncCheckCommand(ca)
-  return md_tools.executeNoLoginShellCommand(command)
+export async function oracleMonitorQueue(): Promise<[DatabaseConnectInfo, string, string][]> {
+  const monitorConf: Monitor[] = await getMonitorConf()
+  const databaseConf: Database[] = await getDatabaseConf()
+
+  const oracleMonitorConf: Monitor[] = monitorConf.filter((m: Monitor) => m.category === 'oracle')
+
+  let monitorCode: string[][] = await Promise.all(monitorConf.map((m: Monitor) => readMonitorCode(m).then(code => [m.name, code])))
+
+  return flatten(databaseConf.filter((db: Database) => db.status).map((db: Database) => oracleMonitorConf.map((m: Monitor) => {
+    let dci: DatabaseConnectInfo = { ip: db.ip, port: db.port, service: db.service, user: db.user, password: db.password }
+    const code: string = monitorCode.filter(c => c[0] === m.name)[0][1]
+    return [dci, m.name, code]
+  })))
 }
 
-export function pingCheck(ca: commandArguments): Promise<boolean> {
-  const command = pingCheckCommand(ca)
-  return md_tools.executeNoLoginShellCommand(command)
+
+
+export async function monitorStart(): Promise<void> {
+  const omq: [DatabaseConnectInfo, string, string][] = await oracleMonitorQueue()
+  omq.forEach((dss: [DatabaseConnectInfo, string, string]) => {
+    fff(dss[0], dss[2]).then(rows => {
+      if (!MonitorDB.has(dss[0].ip)) {
+        MonitorDB.set(dss[0].ip, new Map<string, Map<string, any>>())
+      }
+
+      let dbMap: Map<string, Map<string, any>> = MonitorDB.get(dss[0].ip)
+
+      if (!dbMap.has(dss[0].service)) {
+        dbMap.set(dss[0].service, new Map<string, any>())
+      }
+      let monitorMap = dbMap.get(dss[0].service)
+      monitorMap.set(dss[1], rows)
+    })
+  })
 }
+
+export const alertDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
+
+export async function alertStart(): Promise<void> {
+  const omq: [DatabaseConnectInfo, string, string][] = await oracleMonitorQueue()
+  omq.forEach((dss: [DatabaseConnectInfo, string, string]) => {
+    fff(dss[0], dss[2]).then(rows => {
+      if (!MonitorDB.has(dss[0].ip)) {
+        MonitorDB.set(dss[0].ip, new Map<string, Map<string, any>>())
+      }
+
+      let dbMap: Map<string, Map<string, any>> = MonitorDB.get(dss[0].ip)
+
+      if (!dbMap.has(dss[0].service)) {
+        dbMap.set(dss[0].service, new Map<string, any>())
+      }
+      let monitorMap = dbMap.get(dss[0].service)
+      monitorMap.set(dss[1], rows)
+    })
+  })
+}
+
 
 function executeCheck() {
   setInterval(() => {
     databasePortCheck()
     nodePingCheck()
-    // console.info(NcDB)
+    monitorStart()
+
     // console.info(PingDB)
   }, 1000)
 }
@@ -176,7 +154,9 @@ function executeCheck() {
 export async function abc(ctx) {
   const monitors: Monitor[] = await getMonitorConf()
   const b: string[] = await Promise.all(monitors.map(readMonitorCode))
-  ctx.body = b
+  console.info(ctx.params.ip)
+  console.info(ctx.params.service)
+  ctx.body = JSON.stringify(md_tools.threeMapToArray(MonitorDB))
 }
 
 export function start() { executeCheck() }
