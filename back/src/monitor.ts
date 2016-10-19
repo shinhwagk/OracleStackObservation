@@ -57,26 +57,31 @@ function databasePortCheck() {
   })
 }
 
-function platformCheckCommand(win32Fun: (CommandArguments) => string, linuxFun: (CommandArguments) => string) {
+function platformCheckCommand(win32Fun: (CommandArguments) => string, linuxFun: (CommandArguments) => string, macFun: (CommandArguments) => string) {
   const platform = os.platform()
   if (platform === 'win32') { return win32Fun }
   else if (platform === 'linux') { return linuxFun }
+  else if (platform === 'darwin') { return macFun }
   else { throw new Error("no set this platform for nc command: " + platform); }
 }
 
-interface CommandArguments { args: Array<number | string> }
+interface CommandArguments { args: Array<number | string> } //0:ip,1:port
 
 function pingWin32Command(ca: CommandArguments) { return `ping -n 2 -w 2 ${ca.args[0]}` }
 
 function pingLinuxCommand(ca: CommandArguments) { return `ping -n 2 -w 2 ${ca.args[0]}` }
 
+function pingMacCommand(ca: CommandArguments) { return `ping -c 2 -t 2 ${ca.args[0]}` }
+
 function ncWin32Command(ca: CommandArguments) { return `nc64.exe -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
 
-function ncLinuxCommand(ca: CommandArguments) { return `nc64.exe -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
+function ncLinuxCommand(ca: CommandArguments) { return `nc -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
 
-export const pingCheckCommand: (commandArguments) => string = platformCheckCommand(pingWin32Command, pingLinuxCommand)
+function ncMacCommand(ca: CommandArguments) { return `nc -v -z ${ca.args[0]} ${ca.args[1]}` }
 
-export const ncCheckCommand: (commandArguments) => string = platformCheckCommand(ncWin32Command, ncLinuxCommand)
+export const pingCheckCommand: (commandArguments) => string = platformCheckCommand(pingWin32Command, pingLinuxCommand, pingMacCommand)
+
+export const ncCheckCommand: (commandArguments) => string = platformCheckCommand(ncWin32Command, ncLinuxCommand, ncMacCommand)
 
 export function executeCheckCommand(ca: CommandArguments, f: (commandArguments) => string): Promise<boolean> {
   const command = f(ca)
@@ -98,8 +103,6 @@ export async function oracleMonitorQueue(): Promise<[DatabaseConnectInfo, string
   })))
 }
 
-
-
 export async function monitorStart(): Promise<void> {
   const omq: [DatabaseConnectInfo, string, string][] = await oracleMonitorQueue()
   omq.forEach((dss: [DatabaseConnectInfo, string, string]) => {
@@ -115,9 +118,36 @@ export async function monitorStart(): Promise<void> {
       }
       let monitorMap = dbMap.get(dss[0].service)
       monitorMap.set(dss[1], rows)
+    }).catch(e => {
+
     })
   })
 }
+
+let c: [string, string, any][] = []
+
+function aaa(dss: [DatabaseConnectInfo, string, string][], rs): void {
+  if (dss.length === 0) {
+    c = rs
+  } else {
+    const ds = dss.pop()
+    const dc = ds[0]
+    const sql = dc[2]
+    const ip = dc.ip
+    const service = dc.service
+    fff(dc, sql).then(rows => {
+      rs.push([ip, service, rows])
+      aaa(dss, rs)
+    }).catch(e => {
+      console.info(e)
+      aaa(dss, rs)
+    })
+  }
+}
+
+oracleMonitorQueue().then(dss => aaa(dss, []))
+
+
 
 export const alertDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
 

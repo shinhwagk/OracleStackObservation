@@ -27,6 +27,7 @@
     "koa-router": "^7.0.0",
     "koa-websocket": "^3.0.1",
     "nconf": "0.8.4",
+    "ng2-bootstrap": "^1.1.14",
     "oracledb": "^1.11.0",
     "rxjs": "5.0.0-rc.1",
     "ssh2": "^0.5.2",
