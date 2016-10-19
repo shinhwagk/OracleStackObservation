@@ -16,7 +16,7 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     md_cp.exec(command, (error, stdout, stderr) => {
       if (error) {
-        // console.info(`${command} failure.`)
+        console.info(`${command} failure.`)
         resolve(false)
       } else {
         // console.info(`${command} success.`)

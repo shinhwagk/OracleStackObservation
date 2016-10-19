@@ -47,7 +47,7 @@ function nodePingCheck() {
         }
       }
 
-      pingCheck(ip).then(bool => {
+      executeCheckCommand({ args: [ip] }, pingCheckCommand).then(bool => {
         const ci: CheckInfo = PingDB.get(ip)
         const status: CheckStatus = ci.status
         const timestamp: number = ci.timestamp + 1000 * 5
@@ -74,7 +74,7 @@ function databasePortCheck() {
         }
       }
 
-      ncCheck(ip, port).then(bool => {
+      executeCheckCommand({ args: [ip, port] }, ncCheckCommand).then(bool => {
         const ci: CheckInfo = NcDB.get(key)
         const status: CheckStatus = ci.status
         const timestamp: number = ci.timestamp + 1000 * 5
@@ -98,7 +98,7 @@ function genPingCheckFun(): (string) => Promise<boolean> {
       throw new Error("no set this platform for ping command: " + platform);
     }
   }
-  
+
   let genPingCommand: (string) => string = genPingCommandFun()
 
   return function (ip: string) {
@@ -107,10 +107,60 @@ function genPingCheckFun(): (string) => Promise<boolean> {
   }
 }
 
-const pingCheck = genPingCheckFun()
+function genNcCheckCommand(): (string, number) => Promise<boolean> {
+  function genNcCommandFun() {
+    const platform = os.platform()
+    if (platform === 'win32') {
+      return function (ip: string, port: number) { return `nc64.exe -v -w 4 ${ip} -z ${port}` }
+    }
+    else if (platform === 'linux') {
+      return function (ip: string, port: number) { return `nc64.exe -v -w 4 ${ip} -z ${port}` }
+    } else {
+      throw new Error("no set this platform for nc command: " + platform);
+    }
+  }
 
-function ncCheck(ip: string, port: number): Promise<boolean> {
-  const command = `nc -v -w 4 ${ip} -z ${port}`
+  let genNcCommand: (string, number) => string = genNcCommandFun()
+
+  return function (ip: string, port: number) {
+    const command: string = genNcCommand(ip, port)
+    return md_tools.executeNoLoginShellCommand(command)
+  }
+}
+
+function platformCheckCommand(win32Fun, linuxFun) {
+  const platform = os.platform()
+  if (platform === 'win32') { return win32Fun }
+  else if (platform === 'linux') { return linuxFun }
+  else { throw new Error("no set this platform for nc command: " + platform); }
+}
+
+interface commandArguments { args: Array<number | string> }
+
+function pingWin32Command(ca: commandArguments) { return `ping -n 2 -w 2 ${ca[0]}` }
+
+function pingLinuxCommand(ca: commandArguments) { return `ping -n 2 -w 2 ${ca[0]}` }
+
+function ncWin32Command(ca: commandArguments) { return `nc64.exe -v -w 4 ${ca[0]} -z ${ca[1]}` }
+
+function ncLinuxCommand(ca: commandArguments) { return `nc64.exe -v -w 4 ${ca[0]} -z ${ca[1]}` }
+
+const pingCheckCommand: (commandArguments) => string = platformCheckCommand(pingWin32Command, pingLinuxCommand)
+
+const ncCheckCommand: (commandArguments) => string = platformCheckCommand(ncWin32Command, ncLinuxCommand)
+
+export function executeCheckCommand(ca: commandArguments, f: (commandArguments) => string): Promise<boolean> {
+  const command = f(ca)
+  return md_tools.executeNoLoginShellCommand(command)
+}
+
+export function ncCheck(ca: commandArguments): Promise<boolean> {
+  const command = ncCheckCommand(ca)
+  return md_tools.executeNoLoginShellCommand(command)
+}
+
+export function pingCheck(ca: commandArguments): Promise<boolean> {
+  const command = pingCheckCommand(ca)
   return md_tools.executeNoLoginShellCommand(command)
 }
 
