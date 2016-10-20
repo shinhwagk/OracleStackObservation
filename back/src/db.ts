@@ -1,4 +1,6 @@
 import * as oracledb from 'oracledb';
+import { readOracleAlertCode } from './conf'
+import { DatabaseAlert } from './alert';
 
 export interface DatabaseConnectInfo {
   ip: string
@@ -11,6 +13,7 @@ export interface DatabaseConnectInfo {
 function genConnecString(dci: DatabaseConnectInfo): string {
   return `${dci.ip}:${dci.port}/${dci.service}`
 }
+
 export async function genConnection(dci: DatabaseConnectInfo): Promise<oracledb.IConnection> {
   return oracledb.getConnection(
     {
@@ -29,3 +32,8 @@ export async function fff(dci: DatabaseConnectInfo, sql: string): Promise<Array<
   return [colname].concat(rows)
 }
 
+export async function xx(alert: DatabaseAlert): Promise<boolean> {
+  const sql: string = await readOracleAlertCode(alert.name)
+  const rows = await fff(alert.databaseConnectInfo, sql)
+  return rows[1][0] >= 1 ? true : false
+}

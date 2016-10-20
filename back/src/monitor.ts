@@ -173,11 +173,11 @@ export async function alertStart(): Promise<void> {
 
 function executeCheck() {
   setInterval(() => {
-    databasePortCheck()
-    nodePingCheck()
-    monitorStart()
+    // databasePortCheck()
+    // nodePingCheck()
+    // monitorStart()
 
-    // console.info(PingDB)
+    console.info(111)
   }, 1000)
 }
 

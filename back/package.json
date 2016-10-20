@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/cron": "1.0.30",
+    "@types/jquery": "^2.0.33",
     "@types/koa": "2.0.33",
     "@types/koa-router": "7.0.21",
     "@types/nconf": "0.0.32",
@@ -27,7 +28,6 @@
     "koa-router": "^7.0.0",
     "koa-websocket": "^3.0.1",
     "nconf": "0.8.4",
-    "ng2-bootstrap": "^1.1.14",
     "oracledb": "^1.11.0",
     "rxjs": "5.0.0-rc.1",
     "ssh2": "^0.5.2",
@@ -35,7 +35,6 @@
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.32",
     "concurrently": "^2.2.0",
     "gulp": "3.9.1",
     "gulp-cli": "1.2.2",

@@ -22,11 +22,15 @@ export function readAlertCode(monitor: Monitor): Promise<string> {
   }
 }
 
+export function readOracleAlertCode(name: string): Promise<string> {
+  return readFile(`./conf/alerts/oracle/${name}.sql`)
+}
+
 export interface Monitor {
   name: string
   category: string
-  alert?: string
-  title: string[]
+  alert?: { name?: string, include?: string[][], exclude?: string[][] }
+  title?: string[]
 }
 
 export async function getMonitorConf(): Promise<Monitor[]> {

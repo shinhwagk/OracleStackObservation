@@ -23,7 +23,17 @@ let NcDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
 let NodeDB: Map<string, number> = new Map<string, number>()
 
+export let AlertOracleDB = []
 
+let AlertOSDB: Map<string, string> = new Map<string, string>()
+
+export function replaceData(a: any[], b: any[]) {
+    // for (let i = 1; a.length >= i; i += 1);
+    while(a.length >=1){
+        a.pop()
+    }
+    b.forEach(x => a.push(x))
+}
 
 export const MonitorDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
 

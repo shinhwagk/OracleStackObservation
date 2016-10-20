@@ -5,19 +5,24 @@
     "title": [
       "rac"
     ],
-    "alert": "",
+    "alert":{
+      "name":"tablespace_space",
+      "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]]
+    },
     "version": ""
   },
   {
     "name": "invalid_object",
     "category": "oracle",
-    "alert": "",
     "version": ""
   },
-    {
+  {
     "name": "disk_space",
     "category": "shell",
-    "alert": "",
+    "alert": {
+      "name": "disk_space",
+      "include": [["10.65.193.13","10.65.193.11"]]
+    },
     "version": ""
   }
 ]
