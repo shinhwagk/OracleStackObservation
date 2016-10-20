@@ -43,6 +43,8 @@ export interface Node {
   port: number
   title: string
   status: boolean
+  username?: string
+  password?: string
   databases: Database[]
 }
 

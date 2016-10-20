@@ -2,8 +2,9 @@ import * as md_cp from 'child_process';
 import * as md_ssh2 from 'ssh2'
 import * as fs from 'fs';
 import { logger } from './logger'
-import { Monitor } from './conf'
+import { Monitor, readAlertCode } from './conf'
 import { CheckInfo, CheckStatus } from './store'
+import { ShellAlert } from './alert'
 
 export function readFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -57,7 +58,12 @@ function verifyCheckInfo(currStatus: boolean, cci: CheckInfo): CheckInfo {
   }
 }
 
-function execRemoteShellCommand(node: { ip: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
+export async function execAlertRemoteShellCommand(sa: ShellAlert) {
+  const code = await readAlertCode({ category: 'shell', name: sa.name })
+  return execRemoteShellCommand(sa.osConnectionInfo, code)
+}
+
+function execRemoteShellCommand(node: { host: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {
     var conn = new md_ssh2.Client();
     conn.on('ready', () => {
@@ -71,12 +77,19 @@ function execRemoteShellCommand(node: { ip: string, port: number, username: stri
           .stderr.on('data', (data) => reject(data.toString()));
       });
     }).connect({
-      host: node.ip,
+      host: node.host,
       port: node.port,
       username: node.username,
       password: node.password
     });
   })
+}
+
+export interface OSConnectionInfo {
+  host: string
+  port: number
+  username: string
+  password: string
 }
 
 export { execRemoteShellCommand, verifyCheckInfo }
