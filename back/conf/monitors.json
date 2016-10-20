@@ -14,7 +14,10 @@
   {
     "name": "invalid_object",
     "category": "oracle",
-    "version": ""
+    "version": "",
+    "alert":{
+      "name":"invalid_object"
+    }
   },
   {
     "name": "disk_space",

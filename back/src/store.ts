@@ -27,12 +27,17 @@ export let AlertOracleDB = []
 
 let AlertOSDB: Map<string, string> = new Map<string, string>()
 
-export function replaceData(a: any[], b: any[]) {
-    // for (let i = 1; a.length >= i; i += 1);
-    while(a.length >=1){
-        a.pop()
-    }
-    b.forEach(x => a.push(x))
+export function replaceData(ar: any[], br: any[]) {
+    // console.info(a.length)
+    // for (let i = a.length; i >= 1; i -= 1, b.push(a.pop()));
+
+    for (let i = ar.length; i >= 1; i -= 1, ar.pop());
+    br.forEach(c=>AlertOracleDB.push(c))
+
+    // while (a.length >= 1) {
+    //     a.pop()
+    // }
+    // b.forEach(x => a.push(x))
 }
 
 export const MonitorDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()

@@ -30,12 +30,9 @@ export interface DatabaseAlert {
   databaseConnectInfo: DatabaseConnectInfo
 }
 
-function execOracleAlert() {
-  return getOracleAlertQueue().then(oaqs => ccc(oaqs, []))
+export function execOracleAlert(): void {
+  getOracleAlertQueue().then(oaqs => ccc(oaqs, []))
 }
-
-execOracleAlert().then(console.info).catch(console.info)
-// setInterval(() => console.info(AlertOracleDB,111), 1000)
 
 function ccc(databaseAlers: DatabaseAlert[], array) {
   if (databaseAlers.length >= 1) {

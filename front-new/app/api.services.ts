@@ -22,4 +22,8 @@ export class ApiServices {
   getNodes() {
     return this._http.get("/api/nodes").map((res: Response) => res.json())
   }
+  
+  getDBAlert(){
+    return this._http.get("/api/node/oracle/alerts").map((res: Response) => res.json())
+  }
 }

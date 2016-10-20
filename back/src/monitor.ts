@@ -4,6 +4,7 @@ import * as md_tools from './tools'
 import { CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus, MonitorDB } from './store'
 import { DatabaseConnectInfo, fff } from './db'
 import { flatten } from './common'
+import { execOracleAlert } from './alert'
 
 function nodePingCheck() {
   getNodeConf().then((ncs: Node[]) => {
@@ -145,8 +146,10 @@ function aaa(dss: [DatabaseConnectInfo, string, string][], rs): void {
   }
 }
 
-oracleMonitorQueue().then(dss => aaa(dss, []))
-
+// oracleMonitorQueue().then(dss => {
+//   // console.info(dss)
+//   aaa(dss, [])
+// })
 
 
 export const alertDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
@@ -170,14 +173,13 @@ export async function alertStart(): Promise<void> {
   })
 }
 
-
 function executeCheck() {
   setInterval(() => {
-    // databasePortCheck()
-    // nodePingCheck()
+    databasePortCheck()
+    nodePingCheck()
+    execOracleAlert()
     // monitorStart()
 
-    console.info(111)
   }, 1000)
 }
 
