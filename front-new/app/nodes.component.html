@@ -1,53 +1,54 @@
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-lg-3 col-sm-12" *ngFor="let env of _node_envs">
-			<div class=".column-header">{{env}}</div>
-			<div class=".column-list">
-				<div class="card" *ngFor="let n of _env_filter(env); trackBy:trackByHeroes">
-					<div class="card-header">
-						<a href="" > <code>ip:</code>{{ n.ip }}<code>sshPort:</code>{{ n.ping.port }}<code>delay:</code>{{ n.ping.timestamp }} </a>
-						<!--<table style="width:100%">
-							<tr>
-								<td><i class="fa fa-circle" aria-hidden="true" [ngStyle]="setStyles(n.ping.status)"></i><code>ip:</code>{{ n.ip }}</td>
-								<td><span><code>sshPort:</code>{{ n.ping.port }}</span></td>
-								<td><span><code>delay:</code>{{ n.ping.timestamp }}</span></td>
-							</tr>
-						</table>-->
-					</div>
-					<div class="card-block">
-						<div class="card" *ngFor="let d of n.ds">
-							<div class="card-header" [class.list-group-item-success]="getAlertsByDB(n.ip,d.service).length >=1">
-								<a href="">service:{{d.service}} port:{{d.port}} <span>delay:{{ d.timestamp }}</span></a>
-							</div>
-							<div class="card-block">
-								<div class="list-group">
-									<a href="" class="list-group-item list-group-item-success" *ngFor="let a of getAlertsByDB(n.ip,d.service)" [class.list-group-item-danger]="getAlertsByDB(n.ip,d.service).length >=1">
-										{{a | json}}						
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-lg-3 col-sm-12" *ngFor="let env of _node_envs">
+      <div class=".column-header">{{env}}</div>
+      <div class=".column-list">
+        <div class="card" *ngFor="let n of _env_filter(env); trackBy:trackByHeroes">
+          <div class="card-header">
+            <a href=""> <code>ip:</code>{{ n.ip }}<code>sshPort:</code>{{ n.ping.port }}<code>delay:</code>{{
+              n.ping.timestamp }} </a>
+            <!--<table style="width:100%">
+              <tr>
+                <td><i class="fa fa-circle" aria-hidden="true" [ngStyle]="setStyles(n.ping.status)"></i><code>ip:</code>{{ n.ip }}</td>
+                <td><span><code>sshPort:</code>{{ n.ping.port }}</span></td>
+                <td><span><code>delay:</code>{{ n.ping.timestamp }}</span></td>
+              </tr>
+            </table>-->
+          </div>
+          <div class="card-block">
+            <div class="card" *ngFor="let d of n.ds">
+              <div class="card-header" [class.list-group-item-success]="getAlertsByDB(n.ip,d.service).length >=1">
+                <a href="">service:{{d.service}} port:{{d.port}} <span>delay:{{ d.timestamp }}</span></a>
+              </div>
+              <div class="card-block">
+                <div class="list-group">
+                  <a href="" class="list-group-item list-group-item-success"
+                     *ngFor="let a of getAlertsByDB(n.ip,d.service)"
+                     [class.list-group-item-danger]="getAlertsByDB(n.ip,d.service).length >=1">
+                    {{a | json}}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ul class="list-group">
-
-	<li class="list-group-item list-group-item-warning">
-		<div class="list-group">
-			<a href="http://g.cn" class="list-group-item list-group-item-warning">
-				222
-				<div>
-					<a href="http://baidu.com" class="list-group-item list-group-item-success">xxx</a>
-				</div>
-				</a>
-			<a href="#" class="list-group-item list-group-item-info">Cras sit amet nibh libero</a>
-			<a href="#" class="list-group-item list-group-item-warning">Porta ac consectetur ac</a>
-			<a href="#" class="list-group-item list-group-item-danger">Vestibulum at eros</a>
-		</div>
-	</li>
+  <li class="list-group-item list-group-item-warning">
+    <div class="list-group">
+      <a href="http://g.cn" class="list-group-item list-group-item-warning">
+        222
+        <div>
+          <a href="http://baidu.com" class="list-group-item list-group-item-success">xxx</a>
+        </div>
+      </a>
+      <a href="#" class="list-group-item list-group-item-info">Cras sit amet nibh libero</a>
+      <a href="#" class="list-group-item list-group-item-warning">Porta ac consectetur ac</a>
+      <a href="#" class="list-group-item list-group-item-danger">Vestibulum at eros</a>
+    </div>
+  </li>
 </ul>
-

@@ -1,8 +1,8 @@
-import { getMonitorConf, Monitor, getDatabaseConf, Database, getNodeConf, Node } from './conf'
-import { DatabaseConnectInfo, xx } from './db'
-import { flatten } from './common'
-import { AlertOracleDB, replaceData } from './store'
-import { OSConnectionInfo, execRemoteShellCommand, execAlertRemoteShellCommand } from './tools'
+import {getMonitorConf, Monitor, getDatabaseConf, Database, getNodeConf, Node} from './conf'
+import {DatabaseConnectInfo, xx} from './db'
+import {flatten} from './common'
+import {AlertOracleDB, replaceData} from './store'
+import {OSConnectionInfo, execRemoteShellCommand, execAlertRemoteShellCommand} from './tools'
 
 async function getLinuxAlertQueue() {
   const monitorConf: Monitor[] = await getMonitorConf()
@@ -42,6 +42,11 @@ async function getOracleAlertQueue(): Promise<DatabaseAlert[]> {
       return genDatabaseAlerts(databases, m)
     }
   }))
+}
+
+export async function getOracleReportQueue(ip: string, service: string): Promise<string[]> {
+  const monitorConf: Monitor[] = await getMonitorConf()
+  return monitorConf.filter((m: Monitor) => m.category === 'oracle').map(m=>m.name)
 }
 
 export interface DatabaseAlert {
@@ -125,14 +130,14 @@ function filterShellInclude(nodes: Node[], exclude: string[][]): Node[] {
 
 function genDatabaseAlerts(dss: Database[], m: Monitor): DatabaseAlert[] {
   return dss.map((d: Database) => {
-    const dci: DatabaseConnectInfo = { ip: d.ip, port: d.port, service: d.service, user: d.user, password: d.password }
-    return { name: m.alert.name, ip: d.ip, service: d.service, databaseConnectInfo: dci }
+    const dci: DatabaseConnectInfo = {ip: d.ip, port: d.port, service: d.service, user: d.user, password: d.password}
+    return {name: m.alert.name, ip: d.ip, service: d.service, databaseConnectInfo: dci}
   })
 }
 
 function genShellAlerts(nodes: Node[], m: Monitor): ShellAlert[] {
   return nodes.map((node: Node) => {
-    const sa: OSConnectionInfo = { host: node.ip, port: node.port, username: node.username, password: node.password }
-    return { name: m.alert.name, ip: node.ip, osConnectionInfo: sa }
+    const sa: OSConnectionInfo = {host: node.ip, port: node.port, username: node.username, password: node.password}
+    return {name: m.alert.name, ip: node.ip, osConnectionInfo: sa}
   })
 }

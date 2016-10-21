@@ -5,6 +5,7 @@
     "title": [
       "rac"
     ],
+    "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]],
     "alert":{
       "name":"tablespace_space",
       "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]]

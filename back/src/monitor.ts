@@ -1,32 +1,39 @@
 import * as os from 'os'
-import { Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor } from './conf'
+import {Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor} from './conf'
 import * as md_tools from './tools'
-import { CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus, MonitorDB } from './store'
-import { DatabaseConnectInfo, fff } from './db'
-import { flatten } from './common'
-import { execOracleAlert } from './alert'
+import {CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus, MonitorDB} from './store'
+import {DatabaseConnectInfo, fff} from './db'
+import {flatten} from './common'
+import {execOracleAlert} from './alert'
+
+function initDB(arr, status, key) {
+  if (!arr.has(key)) {
+    if (status) {
+      arr.set(key, {status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0})
+    } else {
+      arr.set(key, {status: CheckStatus.STOP, timestamp: new Date().getTime()})
+    }
+  }
+}
+
+function aaax(args: CommandArguments, f: (commandArguments) => string, key, arr): void {
+  executeCheckCommand(args, f).then(bool => {
+    const ci: CheckInfo = arr.get(key)
+    const status: CheckStatus = ci.status
+    const timestamp: number = ci.timestamp + 1000 * 5
+    const currTimestamp: number = new Date().getTime()
+    if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp))
+      arr.set(key, md_tools.verifyCheckInfo(bool, ci))
+  }).catch(console.info)
+}
 
 function nodePingCheck() {
   getNodeConf().then((ncs: Node[]) => {
     ncs.forEach((nc: Node) => {
-      const ip = nc.ip
-
-      if (!PingDB.has(ip)) {
-        if (nc.status) {
-          PingDB.set(ip, { status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0 })
-        } else {
-          PingDB.set(ip, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
-        }
-      }
-
-      executeCheckCommand({ args: [ip] }, pingCheckCommand).then(bool => {
-        const ci: CheckInfo = PingDB.get(ip)
-        const status: CheckStatus = ci.status
-        const timestamp: number = ci.timestamp + 1000 * 5
-        const currTimestamp: number = new Date().getTime()
-        if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp))
-          PingDB.set(ip, md_tools.verifyCheckInfo(bool, ci))
-      }).catch(console.info)
+      const key = nc.ip
+      initDB(PingDB, nc.status, key)
+      const args: CommandArguments = {args: [key]}
+      aaax(args, pingCheckCommand, key, PingDB)
     })
   })
 }
@@ -37,48 +44,55 @@ function databasePortCheck() {
       const ip = dc.ip
       const port = dc.port
       const key = `${ip}_${port}`
-
-      if (!NcDB.has(key)) {
-        if (dc.status) {
-          NcDB.set(key, { status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0 })
-        } else {
-          NcDB.set(key, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
-        }
-      }
-
-      executeCheckCommand({ args: [ip, port] }, ncCheckCommand).then(bool => {
-        const ci: CheckInfo = NcDB.get(key)
-        const status: CheckStatus = ci.status
-        const timestamp: number = ci.timestamp + 1000 * 5
-        const currTimestamp: number = new Date().getTime()
-        if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp))
-          NcDB.set(`${ip}_${port}`, md_tools.verifyCheckInfo(bool, ci))
-      }).catch(console.info)
+      initDB(NcDB, dc.status, key)
+      const args: CommandArguments = {args: [ip, port]}
+      aaax(args, ncCheckCommand, key, NcDB)
     })
   })
 }
 
 function platformCheckCommand(win32Fun: (CommandArguments) => string, linuxFun: (CommandArguments) => string, macFun: (CommandArguments) => string) {
   const platform = os.platform()
-  if (platform === 'win32') { return win32Fun }
-  else if (platform === 'linux') { return linuxFun }
-  else if (platform === 'darwin') { return macFun }
-  else { throw new Error("no set this platform for nc command: " + platform); }
+  if (platform === 'win32') {
+    return win32Fun
+  }
+  else if (platform === 'linux') {
+    return linuxFun
+  }
+  else if (platform === 'darwin') {
+    return macFun
+  }
+  else {
+    throw new Error("no set this platform for nc command: " + platform);
+  }
 }
 
-interface CommandArguments { args: Array<number | string> } //0:ip,1:port
+interface CommandArguments { args: Array<number | string>
+} //0:ip,1:port
 
-function pingWin32Command(ca: CommandArguments) { return `ping -n 2 -w 2 ${ca.args[0]}` }
+function pingWin32Command(ca: CommandArguments) {
+  return `ping -n 2 -w 2 ${ca.args[0]}`
+}
 
-function pingLinuxCommand(ca: CommandArguments) { return `ping -n 2 -w 2 ${ca.args[0]}` }
+function pingLinuxCommand(ca: CommandArguments) {
+  return `ping -n 2 -w 2 ${ca.args[0]}`
+}
 
-function pingMacCommand(ca: CommandArguments) { return `ping -c 2 -t 2 ${ca.args[0]}` }
+function pingMacCommand(ca: CommandArguments) {
+  return `ping -c 2 -t 2 ${ca.args[0]}`
+}
 
-function ncWin32Command(ca: CommandArguments) { return `nc64.exe -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
+function ncWin32Command(ca: CommandArguments) {
+  return `nc64.exe -v -w 4 ${ca.args[0]} -z ${ca.args[1]}`
+}
 
-function ncLinuxCommand(ca: CommandArguments) { return `nc -v -w 4 ${ca.args[0]} -z ${ca.args[1]}` }
+function ncLinuxCommand(ca: CommandArguments) {
+  return `nc -v -w 4 ${ca.args[0]} -z ${ca.args[1]}`
+}
 
-function ncMacCommand(ca: CommandArguments) { return `nc -v -z ${ca.args[0]} ${ca.args[1]}` }
+function ncMacCommand(ca: CommandArguments) {
+  return `nc -v -z ${ca.args[0]} ${ca.args[1]}`
+}
 
 export const pingCheckCommand: (commandArguments) => string = platformCheckCommand(pingWin32Command, pingLinuxCommand, pingMacCommand)
 
@@ -98,7 +112,7 @@ export async function oracleMonitorQueue(): Promise<[DatabaseConnectInfo, string
   let monitorCode: string[][] = await Promise.all(monitorConf.map((m: Monitor) => readMonitorCode(m).then(code => [m.name, code])))
 
   return flatten(databaseConf.filter((db: Database) => db.status).map((db: Database) => oracleMonitorConf.map((m: Monitor) => {
-    let dci: DatabaseConnectInfo = { ip: db.ip, port: db.port, service: db.service, user: db.user, password: db.password }
+    let dci: DatabaseConnectInfo = {ip: db.ip, port: db.port, service: db.service, user: db.user, password: db.password}
     const code: string = monitorCode.filter(c => c[0] === m.name)[0][1]
     return [dci, m.name, code]
   })))
@@ -191,4 +205,6 @@ export async function abc(ctx) {
   ctx.body = JSON.stringify(md_tools.threeMapToArray(MonitorDB))
 }
 
-export function start() { executeCheck() }
+export function start() {
+  executeCheck()
+}

@@ -48,9 +48,9 @@ async function getNodeInfo(ctx) {
     let test = []
     const currTIme = new Date().getTime()
     ncs.forEach((nc: Node) => {
-        let pcci = PingDB.get(nc.ip)
+        let pcci: CheckInfo = PingDB.get(nc.ip)
         let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
-            let ncci = NcDB.get(`${dc.ip}_${dc.port}`)
+            let ncci: CheckInfo = NcDB.get(`${dc.ip}_${dc.port}`)
             return { service: dc.service, timestamp: (currTIme - ncci.timestamp), status: ncci.status, port: dc.port, alert: [] }
         })
         test.push({ ip: nc.ip, title: nc.title, ping: { timestamp: (currTIme - pcci.timestamp), status: pcci.status, alert: [], port: nc.port }, ds: dc })

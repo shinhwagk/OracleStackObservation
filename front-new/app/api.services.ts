@@ -1,8 +1,8 @@
 /**
  * Created by zhangxu on 2016/8/3.
  */
-import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import {Injectable} from "@angular/core";
+import {Http, Response} from "@angular/http";
 
 @Injectable()
 export class ApiServices {
@@ -22,8 +22,16 @@ export class ApiServices {
   getNodes() {
     return this._http.get("/api/nodes").map((res: Response) => res.json())
   }
-  
-  getDBAlert(){
-    return this._http.get("/api/node/oracle/alerts").map((res: Response) => res.json())
+
+  getDBAlert() {
+    return this._http.get("/api/nodes").map((res: Response) => res.json())
+  }
+
+  getDBReportNames(ip: string, service: string) {
+    return this._http.get(`/api/report/oracle/names/${ip}/${service}`).map((res: Response) => res.json())
+  }
+
+  getDBReportByName(ip: string, service: string, name: string) {
+    return this._http.get(`/api/report/oracle/${name}/${ip}/${service}`).map((res: Response) => res.json())
   }
 }
