@@ -1,15 +1,19 @@
 import * as md_cp from 'child_process';
 import * as md_ssh2 from 'ssh2'
 import * as fs from 'fs';
-import { logger } from './logger'
-import { Monitor, readAlertCode } from './conf'
-import { CheckInfo, CheckStatus } from './store'
-import { ShellAlert } from './alert'
+import {logger} from './logger'
+import {Monitor, readAlertCode} from './conf'
+import {CheckInfo, CheckStatus} from './store'
+import {ShellAlert} from './alert'
 
 export function readFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
-      if (err) { reject(err); } else { resolve(data); }
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
     })
   })
 }
@@ -48,18 +52,18 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
 
 function verifyCheckInfo(currStatus: boolean, cci: CheckInfo): CheckInfo {
   if (currStatus) {
-    return { timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0 }
+    return {timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0}
   } else {
     if (cci.retry >= 5) {
-      return { timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0 }
+      return {timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0}
     } else {
-      return { timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1 }
+      return {timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1}
     }
   }
 }
 
 export async function execAlertRemoteShellCommand(sa: ShellAlert) {
-  const code = await readAlertCode({ category: 'shell', name: sa.name })
+  const code = await readAlertCode({category: 'shell', name: sa.name})
   return execRemoteShellCommand(sa.osConnectionInfo, code)
 }
 
@@ -85,6 +89,38 @@ function execRemoteShellCommand(node: { host: string, port: number, username: st
   })
 }
 
+//
+// function xxx() {
+//   var conn = new md_ssh2.Client();
+//   conn.on('ready', function () {
+//     conn.sftp(function (err, sftp) {
+//       if (err) throw err;
+//       sftp.fastPut()
+//       sftp.fastPut()
+//       var readStream = fs.createReadStream("./conf/monitors/os/disk_space.sh");
+//       var writeStream = sftp.createWriteStream("/tmp/meminfo.txt");
+//
+//       writeStream.on('close', function () {
+//           console.log("- file transferred");
+//           sftp.end();
+//           process.exit(0);
+//         }
+//       );
+//
+//       // initiate transfer of file
+//       readStream.pipe(writeStream);
+//     });
+//   }).connect({
+//     host: '10.65.193.29',
+//     port: 22,
+//     username: 'root',
+//     password: "oracle"
+//   });
+// }
+//
+// xxx()
+
+
 export interface OSConnectionInfo {
   host: string
   port: number
@@ -92,4 +128,4 @@ export interface OSConnectionInfo {
   password: string
 }
 
-export { execRemoteShellCommand, verifyCheckInfo }
+export {execRemoteShellCommand, verifyCheckInfo}

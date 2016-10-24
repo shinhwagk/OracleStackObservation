@@ -1,1 +1,2 @@
-dffff
+#!/bin/bash
+echo a

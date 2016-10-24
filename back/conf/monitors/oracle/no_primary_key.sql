@@ -1,0 +1,1 @@
+select a.owner,a.table_name from dba_tables a where a.owner not in ('APEX_030200','SYSTEM','SYS','SYSMAN','APEX_050000','OLAPSYS','MDSYS','OLAPSYS','XDB','CTXSYS','EXFSYS','WMSYS') AND not exists (select * from dba_constraints b where a.table_name = b.table_name and a.owner = b.owner and b.constraint_type='P')

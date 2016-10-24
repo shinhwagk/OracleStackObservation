@@ -1,9 +1,8 @@
 /**
  * Created by zhangxu on 2016/8/3.
  */
-import { Component, OnInit } from "@angular/core";
-import { node } from "./node";
-import { ApiServices } from "./api.services"
+import {Component, OnInit} from "@angular/core";
+import {ApiServices} from "./api.services";
 
 @Component({
   selector: 'monitor-nodes',
@@ -17,6 +16,21 @@ export class NodesComponent implements OnInit {
     this._api.getNodes().toPromise().then(nodes => this._nodes = nodes)
     this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts)
   }
+
+  reportDatabase(ip, service) {
+    this.ip = ip
+    this.service = service
+    if (this.ff) {
+      this.ff = false
+    } else {
+      this.ff = true
+    }
+  }
+
+  ff = false
+  ip: string
+  service: string
+
   _nodes = []
   // _nodes: node[] = []
   _node_envs: string[] = ["test", "dev", "yali", "lt"]
@@ -41,6 +55,7 @@ export class NodesComponent implements OnInit {
     console.info(this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2]))
     return this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2])
   }
+
   _stream_data() {
 
     setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 50000)
@@ -73,7 +88,6 @@ export class NodesComponent implements OnInit {
   }
 
 
-
   // getAlert(hostname) {
   //   console.info(this.alert.filter(a => a.hostname == hostname)[0].alert)
   //   return this.alert.filter(a => a.hostname == hostname)[0].alert
@@ -92,13 +106,13 @@ export class NodesComponent implements OnInit {
 
   setStyles(status: CheckStatus) {
     if (status === CheckStatus.NORMAL) {
-      return { 'color': '#00AA00' }
+      return {'color': '#00AA00'}
     } else if (status === CheckStatus.DOUBT) {
-      return { 'color': 'yellow' }
+      return {'color': 'yellow'}
     } else if (status === CheckStatus.STOP) {
-      return { 'color': 'Silver' }
+      return {'color': 'Silver'}
     } else {
-      return { 'color': 'red' }
+      return {'color': 'red'}
     }
   }
 }

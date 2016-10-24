@@ -1,5 +1,5 @@
 import * as oracledb from 'oracledb';
-import {readOracleAlertCode} from './conf'
+import {readOracleMonitorCode} from './conf'
 import {DatabaseAlert} from './alert';
 import {IPromise, IConnection} from "oracledb";
 
@@ -29,7 +29,7 @@ export async function fff(dci: DatabaseConnectInfo, sql: string): Promise<Array<
 }
 
 export async function xx(alert: DatabaseAlert): Promise<boolean> {
-  const sql: string = await readOracleAlertCode(alert.name)
+  const sql: string = await readOracleMonitorCode(alert.name)
   const rows = await fff(alert.databaseConnectInfo, sql)
   return rows[1][0] >= 1 ? true : false
 }

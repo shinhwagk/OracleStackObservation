@@ -32,6 +32,6 @@ export class ApiServices {
   }
 
   getDBReportByName(ip: string, service: string, name: string) {
-    return this._http.get(`/api/report/oracle/${name}/${ip}/${service}`).map((res: Response) => res.json())
+    return this._http.get(`/api/report/oracle/${ip}/${service}/${name}`).map((res: Response) => res.json())
   }
 }

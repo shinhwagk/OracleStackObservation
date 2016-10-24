@@ -1,0 +1,42 @@
+th.awrbg {
+    font: bold 8pt Arial, Helvetica, Geneva, sans-serif;
+    color: White;
+    background: #0066CC;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 2px
+}
+
+td {
+    font: 8pt Arial, Helvetica, Geneva, sans-serif;
+    color: black;
+    vertical-align: top;
+}
+
+td.awrcgk {
+    font: 8pt Arial, Helvetica, Geneva, sans-serif;
+    color: black;
+    background: #FFFFCC;
+    vertical-align: top;
+}
+
+.body {
+    font: bold 10pt Arial, Helvetica, Geneva, sans-serif;
+    color: black;
+    background: White;
+    padding: 5px 5px 5px;
+}
+
+table {
+    border-collapse: separate;
+}
+
+.awr {
+    font: bold 19pt Arial, Helvetica, Geneva, sans-serif;
+    color: #336699;
+    background-color: White;
+    border-bottom: 1px solid #cccc99;
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+    padding: 0px 0px 0px 0px;
+}

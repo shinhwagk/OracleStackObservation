@@ -1,3 +1,30 @@
-<div *ngFor="let name of names">
+<div class="body">
+  <h3 class="awr">check list: ip: {{ip}}, service: {{service}}; report date: {{ date | date }}</h3>
 
+  <p></p>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2" *ngFor="let name of report">
+        <a href="#{{name[0]}}">{{name[0]}}</a>
+      </div>
+    </div>
+  </div>
+  <p></p>
+
+  <br>
+  <div *ngFor="let name of report">
+    <p id="{{name[0]}}">{{name[0]}}</p>
+    <table border="1" *ngIf="name[1].length > 0">
+      <tr>
+        <th class="awrbg" *ngFor="let col of name[1][0]"> {{col}}</th>
+      </tr>
+      <tr *ngFor="let cols of name[1]; let i=index">
+        <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
+          <span *ngIf="i >=1">{{col}}</span>
+        </td>
+      </tr>
+    </table>
+    <br>
+  </div>
 </div>
+

@@ -1,5 +1,5 @@
 import * as os from 'os'
-import {Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor} from './conf'
+import {Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor, readOracleMonitorCode, getDatabase} from './conf'
 import * as md_tools from './tools'
 import {CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus, MonitorDB} from './store'
 import {DatabaseConnectInfo, fff} from './db'
@@ -204,6 +204,21 @@ export async function abc(ctx) {
   console.info(ctx.params.service)
   ctx.body = JSON.stringify(md_tools.threeMapToArray(MonitorDB))
 }
+
+export async function reportMonitorByname(ctx) {
+  const sql: string = await readOracleMonitorCode(ctx.params.name)
+  console.info(sql)
+  const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
+  ctx.type = 'application/json';
+  ctx.body = JSON.stringify(await fff({
+    ip: dbconf.ip,
+    port: dbconf.port,
+    service: dbconf.service,
+    user: dbconf.user,
+    password: dbconf.password
+  }, sql))
+}
+
 
 export function start() {
   executeCheck()

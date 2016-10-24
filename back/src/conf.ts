@@ -1,10 +1,14 @@
-import { flatten } from './common'
-import { readFile } from './tools'
-import { CheckStatus } from './store'
+import {flatten} from './common'
+import {readFile} from './tools'
+import {CheckStatus} from './store'
 
-function readNodeConf(): Promise<string> { return readFile('./conf/nodes.json') }
+function readNodeConf(): Promise<string> {
+  return readFile('./conf/nodes.json')
+}
 
-function readMonitorConf(): Promise<string> { return readFile('./conf/monitors.json') }
+function readMonitorConf(): Promise<string> {
+  return readFile('./conf/monitors.json')
+}
 
 export function readMonitorCode(monitor: Monitor): Promise<string> {
   if (monitor.category === 'oracle') {
@@ -24,6 +28,10 @@ export function readAlertCode(monitor: Monitor): Promise<string> {
 
 export function readOracleAlertCode(name: string): Promise<string> {
   return readFile(`./conf/alerts/oracle/${name}.sql`)
+}
+
+export function readOracleMonitorCode(name: string): Promise<string> {
+  return readFile(`./conf/monitors/oracle/${name}.sql`)
 }
 
 export interface Monitor {
@@ -67,10 +75,15 @@ export async function getDatabaseConf(): Promise<Database[]> {
   const nodeConfs: Node[] = await getNodeConf()
   const genDatabaseConf = function (node, db) {
     if (node.status) {
-      return { ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password }
+      return {ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password}
     } else {
-      return { ip: node.ip, port: db.port, service: db.service, status: false, user: db.user, password: db.password }
+      return {ip: node.ip, port: db.port, service: db.service, status: false, user: db.user, password: db.password}
     }
   }
   return flatten(nodeConfs.map(node => node.databases.map(db => genDatabaseConf(node, db))))
+}
+
+export async function getDatabase(ip: string, service: string): Promise<Database> {
+  const dc = await getDatabaseConf()
+  return dc.filter(d=>d.ip === ip && d.service === service)[0]
 }

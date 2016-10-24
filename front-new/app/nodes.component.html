@@ -7,6 +7,8 @@
           <div class="card-header">
             <a href=""> <code>ip:</code>{{ n.ip }}<code>sshPort:</code>{{ n.ping.port }}<code>delay:</code>{{
               n.ping.timestamp }} </a>
+
+
             <!--<table style="width:100%">
               <tr>
                 <td><i class="fa fa-circle" aria-hidden="true" [ngStyle]="setStyles(n.ping.status)"></i><code>ip:</code>{{ n.ip }}</td>
@@ -18,7 +20,11 @@
           <div class="card-block">
             <div class="card" *ngFor="let d of n.ds">
               <div class="card-header" [class.list-group-item-success]="getAlertsByDB(n.ip,d.service).length >=1">
-                <a href="">service:{{d.service}} port:{{d.port}} <span>delay:{{ d.timestamp }}</span></a>
+                <!--<a href="">service:{{d.service}} port:{{d.port}} <span>delay:{{ d.timestamp }}</span></a>-->
+                <button class="btn btn-link btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg"
+                        (click)="reportDatabase(n.ip,d.service)">
+                  service:{{d.service}} port:{{d.port}} <span>delay:{{ d.timestamp }}</span>
+                </button>
               </div>
               <div class="card-block">
                 <div class="list-group">
@@ -52,3 +58,15 @@
     </div>
   </li>
 </ul>
+
+<div *ngIf="ff" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <report-database [ip]="ip" [service]="service"></report-database>
+    </div>
+  </div>
+</div>
+
+
