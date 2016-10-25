@@ -33,7 +33,6 @@ export function replaceData(ar: any[], br: any[]) {
 
     for (let i = ar.length; i >= 1; i -= 1, ar.pop());
     br.forEach(c=>AlertOracleDB.push(c))
-
     // while (a.length >= 1) {
     //     a.pop()
     // }
@@ -51,7 +50,7 @@ async function getNodeInfo(ctx) {
         let pcci: CheckInfo = PingDB.get(nc.ip)
         let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
             let ncci: CheckInfo = NcDB.get(`${dc.ip}_${dc.port}`)
-            return { service: dc.service, timestamp: (currTIme - ncci.timestamp), status: ncci.status, port: dc.port, alert: [] }
+            return { service: dc.service, timestamp: (currTIme - ncci.timestamp), status: ncci.status, port: dc.port, alert: AlertOracleDB.filter(aodb=>aodb[0] === nc.ip && aodb[1]===dc.service) }
         })
         test.push({ ip: nc.ip, title: nc.title, ping: { timestamp: (currTIme - pcci.timestamp), status: pcci.status, alert: [], port: nc.port }, ds: dc })
     })

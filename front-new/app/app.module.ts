@@ -10,6 +10,7 @@ import {AppComponent} from './app.component'
 import {NodesComponent} from "./nodes.component";
 import {FFFComponent} from './fff.component'
 import {ReportDatabaseComponent} from "./report.database.component";
+import {ReportOsComponent} from "./report.os.component";
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import {ReportDatabaseComponent} from "./report.database.component";
     AppComponent,
     NodesComponent,
     FFFComponent,
-    ReportDatabaseComponent
+    ReportDatabaseComponent,
+    ReportOsComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -7,18 +7,14 @@
     ],
     "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]],
     "alert":{
-      "name":"tablespace_space",
-      "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]]
+      "name":"tablespace_space"
     },
     "version": ""
   },
   {
     "name": "invalid_object",
     "category": "oracle",
-    "version": "",
-    "alert":{
-      "name":"invalid_object"
-    }
+    "version": ""
   },
   {
     "name": "disk_space",

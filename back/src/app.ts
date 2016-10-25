@@ -1,8 +1,6 @@
 import * as md_store from "./store";
 import * as md_monitor from "./monitor";
-import {getOracleReportQueue} from "./alert";
-import {readOracleMonitorCode} from './conf'
-import {fff} from "./db"
+import {getOracleReportQueue, getOSReportQueue} from "./alert";
 
 md_monitor.start()
 
@@ -39,7 +37,13 @@ api.get("/bb", (ctx) => {
     const b = await getOracleReportQueue(ip, service)
     ctx.body = JSON.stringify(b)
   })
-  .get("/api/report/oracle/:ip/:service/:name", md_monitor.reportMonitorByname)
+  .get("/api/report/os/names/:ip", async(ctx)=>{
+    const ip = ctx.params.ip
+    const b = await getOSReportQueue(ip)
+    ctx.body = JSON.stringify(b)
+  })
+  .get("/api/report/oracle/:ip/:service/:name", md_monitor.reportOracleMonitorByName)
+  .get("/api/report/os/:ip/:name",md_monitor.reportOSMonitorByName)
 
 app.use(api.routes()).use(api.allowedMethods());
 app.ws.use(apiSocket.routes()).use(apiSocket.allowedMethods());

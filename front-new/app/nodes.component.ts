@@ -27,7 +27,17 @@ export class NodesComponent implements OnInit {
     }
   }
 
+  reportOS(ip) {
+    this.ip = ip
+    if (this.gg) {
+      this.gg = false
+    } else {
+      this.gg = true
+    }
+  }
+
   ff = false
+  gg = false
   ip: string
   service: string
 
@@ -57,9 +67,8 @@ export class NodesComponent implements OnInit {
   }
 
   _stream_data() {
-
-    setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 50000)
-    setInterval(() => this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts), 10000)
+    setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 5000)
+    setInterval(() => this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts), 5000)
     // this.ws.send("a")
     // this.ws.onmessage = (ev: MessageEvent) => {
     //   this._nodes = JSON.parse(ev.data)

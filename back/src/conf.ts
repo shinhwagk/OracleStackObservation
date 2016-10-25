@@ -87,3 +87,7 @@ export async function getDatabase(ip: string, service: string): Promise<Database
   const dc = await getDatabaseConf()
   return dc.filter(d=>d.ip === ip && d.service === service)[0]
 }
+
+export async function getNodeByIp(ip: string): Promise<Node> {
+  return (await getNodeConf()).filter(d=>d.ip === ip)[0]
+}

@@ -4,15 +4,15 @@ import {ApiServices} from "./api.services"
 import {isUndefined} from "util";
 
 @Component({
-  selector: 'report-database',
-  templateUrl: 'app/report.database.component.html',
-  styleUrls: ['app/report.database.component.css'],
+  selector: 'report-os',
+  templateUrl: 'app/report.os.component.html',
+  styleUrls: ['app/report.os.component.css'],
   providers: [ApiServices]
 })
 
-export class ReportDatabaseComponent implements OnInit {
+export class ReportOsComponent implements OnInit {
   ngOnInit(): void {
-    this._api.getDBReportNames(this.ip, this.service).toPromise().then((names: string[])=> {
+    this._api.getOSReportNames(this.ip).toPromise().then((names: string[])=> {
       this.names = names
       this.names.forEach(name=>this.report_a.set(name, []))
 
@@ -27,7 +27,6 @@ export class ReportDatabaseComponent implements OnInit {
   }
 
   @Input() ip: string
-  @Input() service: string
 
   date = new Date()
   names: string[]
@@ -36,9 +35,9 @@ export class ReportDatabaseComponent implements OnInit {
   report = []
 
   getReportByName(name: string): void {
-    this._api.getDBReportByName(this.ip, this.service, name).toPromise().then(str=> {
+    this._api.getOSReportByName(this.ip, name).toPromise().then(str=> {
       this.report_a.set(name, str)
-      this.report =  Array.from(this.report_a).slice()
+      this.report = Array.from(this.report_a).slice()
     })
   }
 }

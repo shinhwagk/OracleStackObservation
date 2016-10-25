@@ -1,10 +1,11 @@
 import * as os from 'os'
-import {Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor, readOracleMonitorCode, getDatabase} from './conf'
+import {Node, getNodeConf, getDatabaseConf, Database, readMonitorCode, getMonitorConf, Monitor, readOracleMonitorCode, getDatabase, getNodeByIp} from './conf'
 import * as md_tools from './tools'
 import {CheckInfo, PingDB, CheckQueue, NcDB, NodeDB, PingCheckQueue, NcCheckQueue, CheckStatus, MonitorDB} from './store'
 import {DatabaseConnectInfo, fff} from './db'
 import {flatten} from './common'
 import {execOracleAlert} from './alert'
+import {getOSInfoByName} from "./tools";
 
 function initDB(arr, status, key) {
   if (!arr.has(key)) {
@@ -193,8 +194,7 @@ function executeCheck() {
     nodePingCheck()
     execOracleAlert()
     // monitorStart()
-
-  }, 1000)
+  }, 5000)
 }
 
 export async function abc(ctx) {
@@ -205,7 +205,7 @@ export async function abc(ctx) {
   ctx.body = JSON.stringify(md_tools.threeMapToArray(MonitorDB))
 }
 
-export async function reportMonitorByname(ctx) {
+export async function reportOracleMonitorByName(ctx) {
   const sql: string = await readOracleMonitorCode(ctx.params.name)
   console.info(sql)
   const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
@@ -217,6 +217,19 @@ export async function reportMonitorByname(ctx) {
     user: dbconf.user,
     password: dbconf.password
   }, sql))
+}
+
+export async function reportOSMonitorByName(ctx) {
+  console.info(ctx.params.name)
+  const node = await getNodeByIp(ctx.params.ip)
+  console.info(node)
+  ctx.type = 'application/json';
+  ctx.body = await getOSInfoByName({
+    host: node.ip,
+    port: node.port,
+    username: node.username,
+    password: node.password
+  }, ctx.params.name + ".sh")
 }
 
 

@@ -12,4 +12,4 @@ select count(*) from (select tablespace_name,
          where df.file_id = fs.file_id(+))
  group by tablespace_name
  order by round(sum(bytes) / sum(maxbytes) * 100) desc)
- where userate > 80
+ where userate > 60

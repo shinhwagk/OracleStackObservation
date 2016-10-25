@@ -31,7 +31,15 @@ export class ApiServices {
     return this._http.get(`/api/report/oracle/names/${ip}/${service}`).map((res: Response) => res.json())
   }
 
+  getOSReportNames(ip: string) {
+    return this._http.get(`/api/report/os/names/${ip}`).map((res: Response) => res.json())
+  }
+
   getDBReportByName(ip: string, service: string, name: string) {
     return this._http.get(`/api/report/oracle/${ip}/${service}/${name}`).map((res: Response) => res.json())
+  }
+
+  getOSReportByName(ip: string, name: string) {
+    return this._http.get(`/api/report/os/${ip}/${name}`).map((res: Response) => res.json())
   }
 }

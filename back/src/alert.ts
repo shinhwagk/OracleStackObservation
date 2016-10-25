@@ -49,6 +49,11 @@ export async function getOracleReportQueue(ip: string, service: string): Promise
   return monitorConf.filter((m: Monitor) => m.category === 'oracle').map(m=>m.name)
 }
 
+export async function getOSReportQueue(ip: string) {
+  const monitorConf: Monitor[] = await getMonitorConf()
+  return monitorConf.filter((m: Monitor) => m.category === 'shell').map(m=>m.name)
+}
+
 export interface DatabaseAlert {
   name: string
   ip: string
