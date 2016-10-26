@@ -42,4 +42,16 @@ export class ApiServices {
   getOSReportByName(ip: string, name: string) {
     return this._http.get(`/api/report/os/${ip}/${name}`).map((res: Response) => res.json())
   }
+
+  getNodePingStatus(ip: string) {
+    return this._http.get(`/api/monitor/ping/${ip}`).map((res: Response) => res.json())
+  }
+
+  getDatabaseNetCateStatus(ip: string, port: number) {
+    return this._http.get(`/api/monitor/nc/${ip}/${port}`).map((res: Response) => res.json())
+  }
+
+  getxxx(){
+    return this._http.get(`/api/monitxxxor/nc`).map((res: Response) => res.json())
+  }
 }

@@ -1,15 +1,15 @@
-import {getMonitorConf, Monitor, getDatabaseConf, Database, getNodeConf, Node} from './conf'
-import {DatabaseConnectInfo, xx} from './db'
-import {flatten} from './common'
-import {AlertOracleDB, replaceData} from './store'
-import {OSConnectionInfo, execRemoteShellCommand, execAlertRemoteShellCommand} from './tools'
+import {Report, getDatabaseConf, Database, getNodeConf, Node, getReportConf} from "./conf";
+import {DatabaseConnectInfo, xx} from "./db";
+import {flatten} from "./common";
+import {AlertOracleDB, replaceData} from "./store";
+import {OSConnectionInfo} from "./tools";
 
 async function getLinuxAlertQueue() {
-  const monitorConf: Monitor[] = await getMonitorConf()
-  const monitorConfFilterAlert: Monitor[] = monitorConf.filter((m: Monitor) => m.alert !== undefined && m.category === 'shell')
+  const monitorConf: Report[] = await getReportConf()
+  const monitorConfFilterAlert: Report[] = monitorConf.filter((m: Report) => m.alert !== undefined && m.category === 'shell')
   const nodes: Node[] = await getNodeConf()
 
-  return flatten(monitorConfFilterAlert.map((m: Monitor) => {
+  return flatten(monitorConfFilterAlert.map((m: Report) => {
     if (m.alert.include) {
       const i = m.alert.include
       const ns: Node[] = filterShellInclude(nodes, i)
@@ -25,11 +25,11 @@ async function getLinuxAlertQueue() {
 }
 
 async function getOracleAlertQueue(): Promise<DatabaseAlert[]> {
-  const monitorConf: Monitor[] = await getMonitorConf()
-  const monitorConfFilterAlert: Monitor[] = monitorConf.filter((m: Monitor) => m.alert !== undefined && m.category === 'oracle')
+  const monitorConf: Report[] = await getReportConf()
+  const monitorConfFilterAlert: Report[] = monitorConf.filter((m: Report) => m.alert !== undefined && m.category === 'oracle')
   const databases: Database[] = await getDatabaseConf()
 
-  return flatten(monitorConfFilterAlert.map((m: Monitor) => {
+  return flatten(monitorConfFilterAlert.map((m: Report) => {
     if (m.alert.include) {
       const i = m.alert.include
       const dss: Database[] = filterOracleInclude(databases, i)
@@ -45,13 +45,13 @@ async function getOracleAlertQueue(): Promise<DatabaseAlert[]> {
 }
 
 export async function getOracleReportQueue(ip: string, service: string): Promise<string[]> {
-  const monitorConf: Monitor[] = await getMonitorConf()
-  return monitorConf.filter((m: Monitor) => m.category === 'oracle').map(m=>m.name)
+  const monitorConf: Report[] = await getReportConf()
+  return monitorConf.filter((m: Report) => m.category === 'oracle').map(m=>m.name)
 }
 
 export async function getOSReportQueue(ip: string) {
-  const monitorConf: Monitor[] = await getMonitorConf()
-  return monitorConf.filter((m: Monitor) => m.category === 'shell').map(m=>m.name)
+  const monitorConf: Report[] = await getReportConf()
+  return monitorConf.filter((m: Report) => m.category === 'shell').map(m=>m.name)
 }
 
 export interface DatabaseAlert {
@@ -133,14 +133,14 @@ function filterShellInclude(nodes: Node[], exclude: string[][]): Node[] {
   )
 }
 
-function genDatabaseAlerts(dss: Database[], m: Monitor): DatabaseAlert[] {
+function genDatabaseAlerts(dss: Database[], m: Report): DatabaseAlert[] {
   return dss.map((d: Database) => {
     const dci: DatabaseConnectInfo = {ip: d.ip, port: d.port, service: d.service, user: d.user, password: d.password}
     return {name: m.alert.name, ip: d.ip, service: d.service, databaseConnectInfo: dci}
   })
 }
 
-function genShellAlerts(nodes: Node[], m: Monitor): ShellAlert[] {
+function genShellAlerts(nodes: Node[], m: Report): ShellAlert[] {
   return nodes.map((node: Node) => {
     const sa: OSConnectionInfo = {host: node.ip, port: node.port, username: node.username, password: node.password}
     return {name: m.alert.name, ip: node.ip, osConnectionInfo: sa}

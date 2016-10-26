@@ -6,9 +6,6 @@
       "rac"
     ],
     "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]],
-    "alert":{
-      "name":"tablespace_space"
-    },
     "version": ""
   },
   {
@@ -18,7 +15,7 @@
   },
   {
     "name": "disk_space",
-    "category": "shell",
+    "category": "os",
     "alert": {
       "name": "disk_space",
       "include": [["10.65.193.13","10.65.193.11"]]

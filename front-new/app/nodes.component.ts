@@ -3,6 +3,7 @@
  */
 import {Component, OnInit} from "@angular/core";
 import {ApiServices} from "./api.services";
+import {Node} from './node.class'
 
 @Component({
   selector: 'monitor-nodes',
@@ -14,7 +15,7 @@ import {ApiServices} from "./api.services";
 export class NodesComponent implements OnInit {
   ngOnInit() {
     this._api.getNodes().toPromise().then(nodes => this._nodes = nodes)
-    this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts)
+    setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 5000)
   }
 
   reportDatabase(ip, service) {
@@ -41,11 +42,14 @@ export class NodesComponent implements OnInit {
   ip: string
   service: string
 
-  _nodes = []
+  _nodes: Node[] = []
   // _nodes: node[] = []
   _node_envs: string[] = ["test", "dev", "yali", "lt"]
   // ws: WebSocket = new WebSocket("ws://10.65.103.15:9000/api/nodes");
 
+  fff(){
+    return this._api.getxxx()
+  }
   // _status_order(s: string): number {
   //   switch (s) {
   //     case "doubt":
@@ -66,51 +70,16 @@ export class NodesComponent implements OnInit {
     return this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2])
   }
 
-  _stream_data() {
-    setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 5000)
-    setInterval(() => this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts), 5000)
-    // this.ws.send("a")
-    // this.ws.onmessage = (ev: MessageEvent) => {
-    //   this._nodes = JSON.parse(ev.data)
-    //   console.info(this._nodes)
-    //   this._nodes = this._nodes.sort((a, b) => {
-    //     let na: number = this._status_order(a.status)
-    //     let nb: number = this._status_order(b.status)
-
-    //     if (na > nb) {
-    //       return 1;
-    //     }
-    //     if (na < nb) {
-    //       return -1;
-    //     }
-    //     return 0;
-    //   })
-    //   this._nodes.forEach(p => this._make_evn_group(p))
-    // }
-  }
-
-  // alert: { hostname: string, alert: string[] }[] = []
+  // _stream_data() {
+  //
+  //   // setInterval(() => this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts), 5000)
+  // }
 
   constructor(private _api: ApiServices) {
-    this._stream_data()
-    // this._api.getAlert().toPromise().then(alert => this.alert = alert)
   }
 
-
-  // getAlert(hostname) {
-  //   console.info(this.alert.filter(a => a.hostname == hostname)[0].alert)
-  //   return this.alert.filter(a => a.hostname == hostname)[0].alert
-  // }
-
-  // _make_evn_group(n: node) {
-  //   let env = n.environment
-  //   if (this._node_envs.indexOf(env, 0) < 0) {
-  //     this._node_envs.push(env)
-  //   }
-  // }
-
   _env_filter(env) {
-    return this._nodes.filter(p => p.title == env)
+    return this._nodes.filter(node => node.title == env)
   }
 
   setStyles(status: CheckStatus) {

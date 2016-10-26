@@ -1,8 +1,10 @@
 import * as md_store from "./store";
-import * as md_monitor from "./monitor";
+import {getAllNodeBaseInfo} from "./store";
+import * as md_monitor from "./report";
 import {getOracleReportQueue, getOSReportQueue} from "./alert";
+import {getAllNodeInfo} from "./store";
 
-md_monitor.start()
+md_monitor.startCheck()
 
 const koa = require('koa');
 const websockify = require('koa-websocket');
@@ -19,10 +21,9 @@ apiSocket.get('/api/', (ctx) => {
   ctx.websocket.on('message', (message) => console.log(message));
 })
 
-api.get("/bb", (ctx) => {
-  ctx.type = 'application/json';
-  ctx.body = JSON.stringify(md_store.getNodeInfo)
-}).get("/api/nodes", md_store.getNodeInfo)
+api
+  .get("/api/nodes", getAllNodeInfo)
+  // .get("/api/nodes", getAllNodeBaseInfo)
   .get("/api/node/:ip", md_monitor.abc)
   .get("/api/node/:ip/:service", md_monitor.abc)
   .get("/api/node/:ip/:service/:name", (ctx) => ctx.body = "!1")
@@ -37,15 +38,16 @@ api.get("/bb", (ctx) => {
     const b = await getOracleReportQueue(ip, service)
     ctx.body = JSON.stringify(b)
   })
-  .get("/api/report/os/names/:ip", async(ctx)=>{
+  .get("/api/report/os/names/:ip", async(ctx)=> {
     const ip = ctx.params.ip
     const b = await getOSReportQueue(ip)
     ctx.body = JSON.stringify(b)
   })
   .get("/api/report/oracle/:ip/:service/:name", md_monitor.reportOracleMonitorByName)
-  .get("/api/report/os/:ip/:name",md_monitor.reportOSMonitorByName)
+  .get("/api/report/os/:ip/:name", md_monitor.reportOSMonitorByName)
 
 app.use(api.routes()).use(api.allowedMethods());
 app.ws.use(apiSocket.routes()).use(apiSocket.allowedMethods());
 
 app.listen(3000);
+

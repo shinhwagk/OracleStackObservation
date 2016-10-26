@@ -1,28 +1,27 @@
-import {flatten} from './common'
-import {readFile} from './tools'
-import {CheckStatus} from './store'
+import {flatten} from "./common";
+import {readFile} from "./tools";
 
-function readNodeConf(): Promise<string> {
-  return readFile('./conf/nodes.json')
+export function getNodeConf(): Promise<Node[]> {
+  return readFile('./conf/nodes.json').then(JSON.parse)
 }
 
-function readMonitorConf(): Promise<string> {
-  return readFile('./conf/monitors.json')
+export function getReportConf(): Promise<Report[]> {
+  return readFile('./conf/reports.json').then(JSON.parse)
 }
 
-export function readMonitorCode(monitor: Monitor): Promise<string> {
-  if (monitor.category === 'oracle') {
-    return readFile(`./conf/monitors/oracle/${monitor.name}.sql`)
-  } else if (monitor.category === 'shell') {
-    return readFile(`./conf/monitors/os/${monitor.name}.sh`)
+export function getCodeByReport(report: Report): Promise<string> {
+  if (report.category === 'oracle') {
+    return readFile(`./conf/reports/oracle/${report.name}.sql`)
+  } else if (report.category === 'os') {
+    return readFile(`./conf/reports/os/${report.name}.sh`)
   }
 }
 
-export function readAlertCode(monitor: Monitor): Promise<string> {
-  if (monitor.category === 'oracle') {
-    return readFile(`./conf/alerts/oracle/${monitor.name}.sql`)
-  } else if (monitor.category === 'shell') {
-    return readFile(`./conf/alerts/os/${monitor.name}.sh`)
+export function getCodeByAlert(alert: Alert): Promise<string> {
+  if (alert.category === 'oracle') {
+    return readFile(`./conf/alerts/oracle/${alert.name}.sql`)
+  } else if (alert.category === 'os') {
+    return readFile(`./conf/alerts/os/${alert.name}.sh`)
   }
 }
 
@@ -34,16 +33,16 @@ export function readOracleMonitorCode(name: string): Promise<string> {
   return readFile(`./conf/monitors/oracle/${name}.sql`)
 }
 
-export interface Monitor {
+export interface Report {
   name: string
   category: string
   alert?: { name?: string, include?: string[][], exclude?: string[][] }
   title?: string[]
 }
 
-export async function getMonitorConf(): Promise<Monitor[]> {
-  const gmc = await readMonitorConf()
-  return JSON.parse(gmc)
+export interface Alert {
+  name: string
+  category: string
 }
 
 export interface Node {
@@ -66,21 +65,16 @@ export interface Database {
   service: string
 }
 
-export async function getNodeConf(): Promise<Node[]> {
-  let nodeConfStr: string = await readNodeConf()
-  return JSON.parse(nodeConfStr)
+enum ReportCategory {
+  OS,
+  ORACLE
 }
 
 export async function getDatabaseConf(): Promise<Database[]> {
-  const nodeConfs: Node[] = await getNodeConf()
-  const genDatabaseConf = function (node, db) {
-    if (node.status) {
-      return {ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password}
-    } else {
-      return {ip: node.ip, port: db.port, service: db.service, status: false, user: db.user, password: db.password}
-    }
+  const genDatabaseConf = function (node, db): Database {
+    return {ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password}
   }
-  return flatten(nodeConfs.map(node => node.databases.map(db => genDatabaseConf(node, db))))
+  return flatten((await getNodeConf()).map(node => node.databases.map(db=>genDatabaseConf(node, db))))
 }
 
 export async function getDatabase(ip: string, service: string): Promise<Database> {

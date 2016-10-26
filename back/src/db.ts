@@ -1,7 +1,7 @@
-import * as oracledb from 'oracledb';
-import {readOracleMonitorCode, readOracleAlertCode} from './conf'
-import {DatabaseAlert} from './alert';
+import * as oracledb from "oracledb";
 import {IPromise, IConnection} from "oracledb";
+import {getCodeByAlert} from "./conf";
+import {DatabaseAlert} from "./alert";
 
 export interface DatabaseConnectInfo {
   ip: string
@@ -29,7 +29,7 @@ export async function fff(dci: DatabaseConnectInfo, sql: string): Promise<Array<
 }
 
 export async function xx(alert: DatabaseAlert): Promise<boolean> {
-  const sql: string = await readOracleAlertCode(alert.name)
+  const sql: string = await getCodeByAlert({name: alert.name, category: "oracle"})
   const rows = await fff(alert.databaseConnectInfo, sql)
   return rows[1][0] >= 1 ? true : false
 }

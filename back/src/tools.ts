@@ -2,8 +2,7 @@ import * as md_cp from "child_process";
 import * as md_ssh2 from "ssh2";
 import * as fs from "fs";
 import {logger} from "./logger";
-import {readAlertCode} from "./conf";
-import {CheckInfo, CheckStatus} from "./store";
+import {getCodeByAlert} from "./conf";
 import {ShellAlert} from "./alert";
 import {OSConnect} from "./ssh";
 
@@ -22,7 +21,7 @@ export function readFile(path: string): Promise<string> {
 export function threeMapToArray(map: Map<string, Map<string, Map<string, string>>>) {
   return Array.from(map).map(([l, v]) => [l, Array.from(v).map(([kk, vv]) => [kk, Array.from(vv)])])
 }
-// export function readMonitorFile(monitor: Monitor): Promise<string> {
+// export function readMonitorFile(monitor: Report): Promise<string> {
 //   let path: string
 //   if (monitor.category === 'oracle') {
 //     path = `conf/monitors/oracle/${monitor.name}.sql`
@@ -51,24 +50,14 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   })
 }
 
-function verifyCheckInfo(currStatus: boolean, cci: CheckInfo): CheckInfo {
-  if (currStatus) {
-    return {timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0}
-  } else {
-    if (cci.retry >= 5) {
-      return {timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0}
-    } else {
-      return {timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1}
-    }
-  }
-}
+
 
 export async function execAlertRemoteShellCommand(sa: ShellAlert) {
-  const code = await readAlertCode({category: 'shell', name: sa.name})
+  const code = await getCodeByAlert({category: 'shell', name: sa.name})
   return execRemoteShellCommand(sa.osConnectionInfo, code)
 }
 
-function execRemoteShellCommand(node: { host: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
+export function execRemoteShellCommand(node: { host: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {
     var conn = new md_ssh2.Client();
     conn.on('ready', () => {
@@ -182,4 +171,9 @@ export interface OSConnectionInfo {
   password: string
 }
 
-export {execRemoteShellCommand, verifyCheckInfo}
+export interface OSConnectionInfoForPublicKey {
+  host: string
+  port: number
+  username: string
+  privateKey: Buffer
+}

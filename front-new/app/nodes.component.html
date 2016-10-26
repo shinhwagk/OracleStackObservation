@@ -3,35 +3,29 @@
     <div class="col-lg-3 col-sm-12" *ngFor="let env of _node_envs">
       <div class=".column-header">{{env}}</div>
       <div class=".column-list">
-        <ul class="list-group" *ngFor="let n of _env_filter(env); trackBy:trackByHeroes">
-          <li class="list-group-item list-group-item-warning">
+        <div class="list-group" *ngFor="let n of _env_filter(env); trackBy:trackByHeroes">
+          <div class="list-group-item list-group-item-warning">
             <div class="list-group">
               <div class="list-group-item list-group-item-info">
-                <a href="#" data-toggle="modal" data-target="#reportOS"
-                   (click)="reportOS(n.ip)" [ngStyle]="setStyles(n.ping.status)">
-                  ip: {{ n.ip }} sshPort: {{ n.ping.port }} delay:{{n.ping.timestamp }}
+                <a href="#" data-toggle="modal" data-target="#reportOS" (click)="reportOS(n.ip)">
+                  ip: {{ n.ip }} sshPort: {{ n.port }} delay:{{ n.timestamp }}
                 </a>
-                <div *ngFor="let d of n.ds">
-                  <a href="#" class="list-group-item list-group-item-success" data-toggle="modal"
-                     data-target="#reportOracle" (click)="reportDatabase(n.ip,d.service)"
-                     [class.list-group-item-danger]="d.alert.length >=1">
-                    service: {{d.service}} port: {{d.port}} <span>delay:{{ d.timestamp }}</span>
-                    <div *ngFor="let alert of d.alert" class="list-group-item-danger">
-                      {{alert[2]}}
-                    </div>
+                <div *ngFor="let d of n.databases">
+                  <a href="#" class="list-group-item list-group-item-success" data-toggle="modal" data-target="#reportOracle" (click)="reportDatabase(n.ip,d.service)">
+                    service: {{d.service}} port: {{d.port}} delay:{{ d.timestamp }}
+                    <div *ngFor="let alert of d.alert" class="list-group-item-danger"> {{alert[2]}}</div>
                   </a>
                 </div>
               </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="ff" class="modal fade" id="reportOracle" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-     aria-hidden="true">
+<div *ngIf="ff" class="modal fade" id="reportOracle" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <report-database [ip]="ip" [service]="service"></report-database>
@@ -39,11 +33,12 @@
   </div>
 </div>
 
-<div *ngIf="gg" class="modal fade" id="reportOS" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-     aria-hidden="true">
+<div *ngIf="gg" class="modal fade" id="reportOS" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <report-os [ip]="ip"></report-os>
     </div>
   </div>
 </div>
+
+{{ fff() | async}}

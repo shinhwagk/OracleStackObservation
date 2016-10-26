@@ -1,64 +1,76 @@
-import { Node, getNodeConf, getDatabaseConf, Database } from './conf'
+import {Node, getNodeConf, getDatabaseConf, Database} from './conf'
+import {makeKey, CheckType} from "./report";
 
-enum CheckStatus {
-    DIE = 1,
-    STOP = 2,
-    NORMAL = 3,
-    DOUBT = 4
+export enum CheckStatus {
+  DIE = 1,
+  STOP = 2,
+  NORMAL = 3,
+  DOUBT = 4
 }
 
-interface CheckInfo {
-    timestamp?: number
-    status?: CheckStatus
-    retry?: number
+export interface CheckInfo {
+  timestamp?: number
+  status?: CheckStatus
+  retry?: number
 }
 
-let PingDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
+export let PingCheckDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
-export let PingCheckQueue: string[] = []
-
-export let NcCheckQueue: [string, number][] = []
-
-let NcDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
-
-let NodeDB: Map<string, number> = new Map<string, number>()
+export let NetCatCheckDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
 export let AlertOracleDB = []
 
-let AlertOSDB: Map<string, string> = new Map<string, string>()
-
 export function replaceData(ar: any[], br: any[]) {
-    // console.info(a.length)
-    // for (let i = a.length; i >= 1; i -= 1, b.push(a.pop()));
-
-    for (let i = ar.length; i >= 1; i -= 1, ar.pop());
-    br.forEach(c=>AlertOracleDB.push(c))
-    // while (a.length >= 1) {
-    //     a.pop()
-    // }
-    // b.forEach(x => a.push(x))
+  for (let i = ar.length; i >= 1; i -= 1, ar.pop());
+  br.forEach(c=>AlertOracleDB.push(c))
 }
 
 export const MonitorDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
 
-async function getNodeInfo(ctx) {
-    const ncs: Node[] = await getNodeConf()
-    const dcs: Database[] = await getDatabaseConf()
-    let test = []
-    const currTIme = new Date().getTime()
-    ncs.forEach((nc: Node) => {
-        let pcci: CheckInfo = PingDB.get(nc.ip)
-        let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
-            let ncci: CheckInfo = NcDB.get(`${dc.ip}_${dc.port}`)
-            return { service: dc.service, timestamp: (currTIme - ncci.timestamp), status: ncci.status, port: dc.port, alert: AlertOracleDB.filter(aodb=>aodb[0] === nc.ip && aodb[1]===dc.service) }
-        })
-        test.push({ ip: nc.ip, title: nc.title, ping: { timestamp: (currTIme - pcci.timestamp), status: pcci.status, alert: [], port: nc.port }, ds: dc })
+export async function getAllNodeInfo(ctx) {
+  const ncs: Node[] = await getNodeConf()
+  const dcs: Database[] = await getDatabaseConf()
+  let temp = []
+  const currTIme = new Date().getTime()
+  ncs.forEach((nc: Node) => {
+    const pingKey = makeKey({type: CheckType.PING, args: {args: [nc.ip]}})
+    let pci: CheckInfo = PingCheckDB.get(pingKey)
+    let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
+      const ncKey = makeKey({type: CheckType.NETCAT, args: {args: [dc.ip, dc.port]}})
+      let nci: CheckInfo = NetCatCheckDB.get(ncKey)
+      return {
+        service: dc.service,
+        timestamp: (currTIme - nci.timestamp),
+        status: nci.status,
+        port: dc.port,
+        alert: AlertOracleDB.filter(aodb=>aodb[0] === nc.ip && aodb[1] === dc.service)
+      }
     })
-    ctx.type = 'application/json';
-    ctx.body = JSON.stringify(test)
+    temp.push({
+      ip: nc.ip,
+      title: nc.title,
+      timestamp: (currTIme - pci.timestamp), status: pci.status, alert: [], port: nc.port,
+      databases: dc
+    })
+  })
+  ctx.type = 'application/json';
+  ctx.body = JSON.stringify(temp)
 }
 
-let CheckQueue: [string, number][] = []
-
-export { CheckQueue, NcDB, PingDB, CheckInfo, CheckStatus, getNodeInfo, NodeDB }
-
+export async function getAllNodeBaseInfo(ctx) {
+  const ncs: Node[] = await getNodeConf()
+  const dcs: Database[] = await getDatabaseConf()
+  const rep = ncs.map((nc: Node)=> {
+    return {
+      ip: nc.ip,
+      title: nc.title,
+      port: nc.port,
+      status: nc.status,
+      databases: dcs.filter((dc: Database)=>dc.ip === nc.ip).map((dc: Database)=> {
+        return {service: dc.service, port: dc.port, status: dc.status}
+      })
+    }
+  })
+  ctx.type = 'application/json';
+  ctx.body = JSON.stringify(rep)
+}
