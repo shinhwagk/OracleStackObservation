@@ -52,6 +52,10 @@ export class ApiServices {
   }
 
   getxxx(){
-    return this._http.get(`/api/monitxxxor/nc`).map((res: Response) => res.json())
+    return this._http.get(`/api/nodestest`).map((res: Response) => res.json())
+  }
+  
+  getNodeCheck(ip:string){
+    return this._http.get(`/api/check/node/${ip}`).map((res: Response) => res.json())
   }
 }

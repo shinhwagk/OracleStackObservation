@@ -2,10 +2,10 @@ import {Node, getNodeConf, getDatabaseConf, Database} from './conf'
 import {makeKey, CheckType} from "./report";
 
 export enum CheckStatus {
-  DIE = 1,
-  STOP = 2,
-  NORMAL = 3,
-  DOUBT = 4
+  DIE,
+  STOP,
+  NORMAL,
+  DOUBT
 }
 
 export interface CheckInfo {
@@ -14,9 +14,9 @@ export interface CheckInfo {
   retry?: number
 }
 
-export let PingCheckDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
+export let NodeCheckDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
-export let NetCatCheckDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
+export let PortCheckDB: Map<string, CheckInfo> = new Map<string, CheckInfo>()
 
 export let AlertOracleDB = []
 
@@ -34,10 +34,12 @@ export async function getAllNodeInfo(ctx) {
   const currTIme = new Date().getTime()
   ncs.forEach((nc: Node) => {
     const pingKey = makeKey({type: CheckType.PING, args: {args: [nc.ip]}})
-    let pci: CheckInfo = PingCheckDB.get(pingKey)
+    let pci: CheckInfo = NodeCheckDB.get(pingKey)
+    console.info(pci,"pci")
     let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
-      const ncKey = makeKey({type: CheckType.NETCAT, args: {args: [dc.ip, dc.port]}})
-      let nci: CheckInfo = NetCatCheckDB.get(ncKey)
+      const ncKey = makeKey({type: CheckType.PORT, args: {args: [dc.ip, dc.port]}})
+      let nci: CheckInfo = PortCheckDB.get(ncKey)
+      console.info(PortCheckDB,ncKey,"nci")
       return {
         service: dc.service,
         timestamp: (currTIme - nci.timestamp),

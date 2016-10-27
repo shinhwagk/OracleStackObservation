@@ -2,92 +2,98 @@ import * as os from "os";
 import {getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf} from "./conf";
 import * as md_tools from "./tools";
 import {getOSInfoByName} from "./tools";
-import {MonitorDB, CheckStatus, CheckInfo, PingCheckDB, NetCatCheckDB} from "./store";
+import {MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB} from "./store";
 import {DatabaseConnectInfo, fff} from "./db";
 import {flatten} from "./common";
 
 export enum CheckType{
   PING,
-  NETCAT
+  PORT
 }
 
-function initDB(key, db) {
+function appendDB(key, db) {
   if (!db.has(key)) {
     db.set(key, {status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0})
   }
 }
 
+function deleteDB(key, db) {
+
+}
+
+
 export function makeKey(l: {type: CheckType,args: CommandArguments}): string {
   if (l.type === CheckType.PING) {
     return `${CheckType.PING}_${l.args.args[0]}`
   } else {
-    return `${CheckType.NETCAT}_${l.args.args[0]}_${l.args.args[1]}`
+    return `${CheckType.PORT}_${l.args.args[0]}_${l.args.args[1]}`
   }
 }
 
-export function executeCheck(arr, f, f2, db) {
-  arr.then(f).then((list: {type: CheckType,status: boolean,args: CommandArguments}[])=> {
-    list.forEach(l=> {
-      const key = makeKey(l)
-      initDB(key, db)
-      if (l.status) {
-        executeCheckCommand(l.args, f2).then(bool=> checkItemStatusVerify(bool, key,db)).catch(console.info)
+export function executeCheck(checkList: any[], makeCheckCommand, checkDB, self) {
+  if (checkList.length >= 1) {
+    const l: {type: CheckType,status: boolean,args: CommandArguments} = checkList.pop()
+    console.info(l)
+    const key = makeKey(l)
+
+    appendDB(key, checkDB)
+
+    if (l.status) {
+      const ci: CheckInfo = checkDB.get(key)
+      const status: CheckStatus = ci.status
+      const timestamp: number = ci.timestamp + 1000 * 10
+      const currTimestamp: number = new Date().getTime()
+      if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp)) {
+        executeCheckCommand(l.args, makeCheckCommand).then(bool=> {
+          checkDB.set(key, verifyCheckStatus(bool, checkDB.get(key)))
+          executeCheck(checkList, makeCheckCommand, checkDB, self)
+        })
       } else {
-        db.set(key, {status: CheckStatus.STOP, timestamp: new Date().getTime()})
+        executeCheck(checkList, makeCheckCommand, checkDB, self)
       }
-    })
-  })
-}
-
-function executePingCheck() {
-  executeCheck(getNodeConf(), (ns) => {
-    return ns.map(n=> {
-      return {type: CheckType.PING, status: n.status, args: {args: [n.ip]}}
-    })
-  }, pingCheckCommand, PingCheckDB)
-}
-
-function executeNcCheck() {
-  executeCheck(getDatabaseConf(), (ns) => {
-    return ns.map(n=> {
-      return {type: CheckType.NETCAT, status: n.status, args: {args: [n.ip, n.port]}}
-    })
-  }, ncCheckCommand, NetCatCheckDB)
-}
-
-export function executeAllCheck() {
-  executePingCheck()
-  executeNcCheck()
-}
-
-
-// export function executeCheck(): void {
-//   getCheckList().then((list: {type: CheckType,status: boolean,args: CommandArguments}[])=> {
-//     list.forEach(l=> {
-//       const key = makeKey(l.type, l.args)
-//       initDB(key)
-//       if (l.status) {
-//         if (l.type === CheckType.PING) {
-//           executeCheckCommand(l.args, pingCheckCommand).then(bool=> checkItemStatusVerify(bool, key)).catch(console.info)
-//         } else if (l.type === CheckType.NETCAT) {
-//           executeCheckCommand(l.args, ncCheckCommand).then(bool=>checkItemStatusVerify(bool, key))
-//         }
-//       } else {
-//         CheckDB.set(key, {status: CheckStatus.STOP, timestamp: new Date().getTime()})
-//       }
-//     })
-//   }).catch(console.info)
-// }
-
-function checkItemStatusVerify(bool: boolean, key: string,db) {
-  console.info(db,1111111)
-  const ci: CheckInfo = db.get(key)
-  const status: CheckStatus = ci.status
-  const timestamp: number = ci.timestamp + 1000 * 5
-  const currTimestamp: number = new Date().getTime()
-  if (status === CheckStatus.DOUBT || status === CheckStatus.NORMAL || (status === CheckStatus.DIE && timestamp < currTimestamp)) {
-    db.set(key, verifyCheckStatus(bool, ci))
+    } else {
+      checkDB.set(key, {status: CheckStatus.STOP, timestamp: new Date().getTime()})
+      executeCheck(checkList, makeCheckCommand, checkDB, self)
+    }
+  } else {
+    self()
   }
+}
+
+async function removeDBByCheckConf(checkDB, checkConf) {
+  let checkList = (await getNodeConf()).map((n) => {
+    return {type: CheckType.PING, status: n.status, args: {args: [n.ip]}}
+  })
+
+  const b = []
+  for (let cc of checkConf) {
+    for (let [k,v] of checkDB) {
+      cc.ip !== k
+      b .push(k)
+    }
+  }
+  b.forEach(key=>checkDB.delete(key))
+}
+
+export async function executeNodeCheck(): Promise<void> {
+  let checkList = (await getNodeConf()).map((n) => {
+    return {type: CheckType.PING, status: n.status, args: {args: [n.ip]}}
+  })
+
+  removeDBByCheckConf(NodeCheckDB, getNodeConf())
+  executeCheck(checkList, pingCheckCommand, NodeCheckDB, executeNodeCheck)
+}
+
+async function executePortCheck(): Promise<void> {
+  const checkList = (await getDatabaseConf()).map((d) => {
+    return {type: CheckType.PORT, status: d.status, args: {args: [d.ip, d.port]}}
+  })
+
+  executeCheck(checkList, ncCheckCommand, PortCheckDB, executePortCheck)
+}
+
+function checkItemStatusVerify(bool: boolean, key: string, DB) {
+  DB.set(key, verifyCheckStatus(bool, DB.get(key)))
 }
 
 function verifyCheckStatus(currStatus: boolean, cci: CheckInfo): CheckInfo {
@@ -100,19 +106,6 @@ function verifyCheckStatus(currStatus: boolean, cci: CheckInfo): CheckInfo {
       return {timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1}
     }
   }
-}
-
-async function getCheckList(): Promise<{type: CheckType,status: boolean,args: CommandArguments}[]> {
-  const monitors: {type: CheckType,status: boolean,args: CommandArguments}[] = []
-  const nodesConf = await getNodeConf()
-  const databasesConf = await getDatabaseConf()
-  nodesConf.forEach(nc => monitors.push({type: CheckType.PING, status: nc.status, args: {args: [nc.ip]}}))
-  databasesConf.forEach(dc => monitors.push({
-    type: CheckType.NETCAT,
-    status: dc.status,
-    args: {args: [dc.ip, dc.port]}
-  }))
-  return monitors
 }
 
 function platformCheckCommand(win32Fun: (CommandArguments) => string, linuxFun: (CommandArguments) => string, macFun: (CommandArguments) => string) {
@@ -131,7 +124,8 @@ function platformCheckCommand(win32Fun: (CommandArguments) => string, linuxFun: 
   }
 }
 
-interface CommandArguments { args: Array<number | string>
+interface CommandArguments {
+  args: Array<number | string>
 } //0:ip,1:port
 
 function pingWin32Command(ca: CommandArguments) {
@@ -176,7 +170,13 @@ export async function oracleReportQueue(): Promise<[DatabaseConnectInfo, string,
   let monitorCode: string[][] = await Promise.all(reportConf.map((m: Report) => getCodeByReport(m).then(code => [m.name, code])))
 
   return flatten(databaseConf.filter((db: Database) => db.status).map((db: Database) => oracleMonitorConf.map((m: Report) => {
-    let dci: DatabaseConnectInfo = {ip: db.ip, port: db.port, service: db.service, user: db.user, password: db.password}
+    let dci: DatabaseConnectInfo = {
+      ip: db.ip,
+      port: db.port,
+      service: db.service,
+      user: db.user,
+      password: db.password
+    }
     const code: string = monitorCode.filter(c => c[0] === m.name)[0][1]
     return [dci, m.name, code]
   })))
@@ -252,13 +252,13 @@ export async function alertStart(): Promise<void> {
 }
 
 export function startCheck() {
-  setInterval(() => {
-    // databasePortCheck()
-    // nodePingCheck()
-    executeAllCheck()
-    // execOracleAlert()
-    // monitorStart()
-  }, 5000)
+  executeNodeCheck()
+  executePortCheck()
+  // setInterval(() => {
+  //   // executeNodeCheck()
+  //   // executePortCheck()
+  //   console.info(NodeCheckDB)
+  // }, 1000)
 }
 
 export async function abc(ctx) {

@@ -4,6 +4,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiServices} from "./api.services";
 import {Node} from './node.class'
+import {isUndefined} from "util";
 
 @Component({
   selector: 'monitor-nodes',
@@ -14,9 +15,39 @@ import {Node} from './node.class'
 
 export class NodesComponent implements OnInit {
   ngOnInit() {
-    this._api.getNodes().toPromise().then(nodes => this._nodes = nodes)
-    setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 5000)
+    setInterval(()=> {
+      this._api.getxxx().toPromise().then(nodes => {
+        this._nodes = nodes
+        this._nodes.forEach(node=> {
+          if (this.bb[node.ip] === undefined) {
+            this.bb[node.ip] = {timestamp: 0, status: true}
+          }
+          this._api.getNodeCheck(node.ip).toPromise().then((checkInfo)=> {
+            this.bb[node.ip] = checkInfo
+          })
+        })
+      })
+    }, 5000)
+
+    // setInterval(()=> {
+    //   this._api.getxxx().toPromise().then(nodes => {
+    //     this._nodes = nodes
+    //     this.bbb = nodes.map(node=> [node.ip, this._api.getNodeCheck(node.ip).toPromise()])
+    //   })
+    // }, 10000)
+    // setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 5000)
   }
+
+
+  bb = {}
+  //
+  // getbbb(ip) {
+  //   return this.bb[ip]
+  // }
+
+  // nodeCheck(ip:string){
+  //   this._api.getNodeCheck(ip).toPromise().then(bool=>bool)
+  // }
 
   reportDatabase(ip, service) {
     this.ip = ip
@@ -47,9 +78,7 @@ export class NodesComponent implements OnInit {
   _node_envs: string[] = ["test", "dev", "yali", "lt"]
   // ws: WebSocket = new WebSocket("ws://10.65.103.15:9000/api/nodes");
 
-  fff(){
-    return this._api.getxxx()
-  }
+
   // _status_order(s: string): number {
   //   switch (s) {
   //     case "doubt":
@@ -62,13 +91,13 @@ export class NodesComponent implements OnInit {
   //       return 4;
   //   }
   // }
-  alertdb = []
-
-  getAlertsByDB(ip: string, service: string): string[] {
-    console.info(this.alertdb)
-    console.info(this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2]))
-    return this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2])
-  }
+  // alertdb = []
+  //
+  // getAlertsByDB(ip: string, service: string): string[] {
+  //   console.info(this.alertdb)
+  //   console.info(this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2]))
+  //   return this.alertdb.filter(ad => ad[0] == ip && ad[1] == service).map(ad => ad[2])
+  // }
 
   // _stream_data() {
   //
@@ -93,6 +122,8 @@ export class NodesComponent implements OnInit {
       return {'color': 'red'}
     }
   }
+
+
 }
 
 enum CheckStatus {
