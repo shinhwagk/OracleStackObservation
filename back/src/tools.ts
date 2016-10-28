@@ -24,9 +24,9 @@ export function threeMapToArray(map: Map<string, Map<string, Map<string, string>
 // export function readMonitorFile(monitor: Report): Promise<string> {
 //   let path: string
 //   if (monitor.category === 'oracle') {
-//     path = `conf/monitors/oracle/${monitor.name}.sql`
+//     path = `conf/reports/oracle/${monitor.name}.sql`
 //   } else {
-//     path = `conf/monitors/os/${monitor.name}.sh`
+//     path = `conf/reports/os/${monitor.name}.sh`
 //   }
 
 //   return new Promise((resolve, reject) => {
@@ -118,7 +118,7 @@ function execRemoteBaseFile(osServer: OSConnectionInfo, remoteFile): Promise<str
 export async function getOSInfoByName(osServer: OSConnectionInfo, name: string) {
   return new Promise((resolve, reject) => {
     const remoteFile = `/tmp/${name}`
-    const localFile = `./conf/monitors/os/${name}`
+    const localFile = `./conf/reports/os/${name}`
     OSConnect(osServer, (conn) => {
         conn.sftp(function (err, sftp) {
           if (err) throw err;

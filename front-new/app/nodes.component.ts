@@ -4,7 +4,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiServices} from "./api.services";
 import {Node} from './node.class'
-import {isUndefined} from "util";
+import {CheckStatus} from './checkstatus.enum'
 
 @Component({
   selector: 'monitor-nodes',
@@ -15,29 +15,13 @@ import {isUndefined} from "util";
 
 export class NodesComponent implements OnInit {
   ngOnInit() {
-    setInterval(()=> {
-      this._api.getxxx().toPromise().then(nodes => {
-        this._nodes = nodes
-        this._nodes.forEach(node=> {
-          if (this.bb[node.ip] === undefined) {
-            this.bb[node.ip] = {timestamp: 0, status: true}
-          }
-          this._api.getNodeCheck(node.ip).toPromise().then((checkInfo)=> {
-            this.bb[node.ip] = checkInfo
-          })
-        })
-      })
-    }, 5000)
-
-    // setInterval(()=> {
-    //   this._api.getxxx().toPromise().then(nodes => {
-    //     this._nodes = nodes
-    //     this.bbb = nodes.map(node=> [node.ip, this._api.getNodeCheck(node.ip).toPromise()])
-    //   })
-    // }, 10000)
-    // setInterval(() => this._api.getNodes().toPromise().then(nodes => this._nodes = nodes), 5000)
+    this.genNodes()
+    setInterval(() => this.genNodes(), 1000)
   }
 
+  genNodes() {
+    this._api.getNodes().toPromise().then(nodes => this._nodes = nodes)
+  }
 
   bb = {}
   //
@@ -123,12 +107,6 @@ export class NodesComponent implements OnInit {
     }
   }
 
+  checkStatus = CheckStatus
 
-}
-
-enum CheckStatus {
-  DIE = 1,
-  STOP = 2,
-  NORMAL = 3,
-  DOUBT = 4
 }

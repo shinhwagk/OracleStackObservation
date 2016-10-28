@@ -51,7 +51,8 @@ export async function getOracleReportQueue(ip: string, service: string): Promise
 
 export async function getOSReportQueue(ip: string) {
   const monitorConf: Report[] = await getReportConf()
-  return monitorConf.filter((m: Report) => m.category === 'shell').map(m=>m.name)
+  console.info(monitorConf)
+  return monitorConf.filter((m: Report) => m.category === 'os').map(m=>m.name)
 }
 
 export interface DatabaseAlert {
@@ -146,3 +147,4 @@ function genShellAlerts(nodes: Node[], m: Report): ShellAlert[] {
     return {name: m.alert.name, ip: node.ip, osConnectionInfo: sa}
   })
 }
+

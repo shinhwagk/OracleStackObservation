@@ -19,7 +19,7 @@ export function genConnection(dci: DatabaseConnectInfo): IPromise<IConnection> {
   return oracledb.getConnection({user: dci.user, password: dci.password, connectString: genConnecString(dci)})
 }
 
-export async function fff(dci: DatabaseConnectInfo, sql: string): Promise<Array<Array<any>> | Array<any>> {
+export async function sqlToArray(dci: DatabaseConnectInfo, sql: string): Promise<Array<Array<any>> | Array<any>> {
   const conn: oracledb.IConnection = await genConnection(dci)
   const result: oracledb.IExecuteReturn = await conn.execute(sql)
   const colName = result.metaData.map(e => e.name)
@@ -30,6 +30,6 @@ export async function fff(dci: DatabaseConnectInfo, sql: string): Promise<Array<
 
 export async function xx(alert: DatabaseAlert): Promise<boolean> {
   const sql: string = await getCodeByAlert({name: alert.name, category: "oracle"})
-  const rows = await fff(alert.databaseConnectInfo, sql)
+  const rows = await sqlToArray(alert.databaseConnectInfo, sql)
   return rows[1][0] >= 1 ? true : false
 }

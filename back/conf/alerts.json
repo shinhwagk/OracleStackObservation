@@ -1,0 +1,12 @@
+[
+  {
+    "name": "aaaa",
+    "category": "oracle",
+    "cron": "* * * * * * "
+  },
+  {
+    "name": "xxxx",
+    "category": "os",
+    "cron": "* * * * * *"
+  }
+]

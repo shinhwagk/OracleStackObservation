@@ -2,9 +2,9 @@ import * as db from '../src/db'
 import * as fs from '../src/tools'
 
 async function a() {
-  let b: string = await fs.readFile('conf/monitors/oracle/tablespace_space.sql')
+  let b: string = await fs.readFile('conf/reports/oracle/tablespace_space.sql')
 
-  db.fff({
+  db.sqlToArray({
     ip: "122.225.54.25",
     port: 1521,
     service: 'test',

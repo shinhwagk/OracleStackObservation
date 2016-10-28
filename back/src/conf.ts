@@ -9,6 +9,10 @@ export function getReportConf(): Promise<Report[]> {
   return readFile('./conf/reports.json').then(JSON.parse)
 }
 
+export function getAlertConf(): Promise<Alert[]> {
+  return readFile('./conf/alerts.json').then(JSON.parse)
+}
+
 export function getCodeByReport(report: Report): Promise<string> {
   if (report.category === 'oracle') {
     return readFile(`./conf/reports/oracle/${report.name}.sql`)
@@ -43,6 +47,7 @@ export interface Report {
 export interface Alert {
   name: string
   category: string
+  cron: string
 }
 
 export interface Node {

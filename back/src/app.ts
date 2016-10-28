@@ -26,27 +26,27 @@ apiSocket.get('/api/', (ctx) => {
 
 api
   .get("/api/nodes", getAllNodeInfo)
-  .get('/api/check/port/:ip/:port', async(ctx)=> {
-    const ip = ctx.params.ip
-    const port = ctx.params.port
-    const bool = await executeCheckCommand({args: [ip, port]}, ncCheckCommand)
-    const timestamp = new Date().getTime()
-    ctx.type = 'application/json';
-    const ff = {timestamp: timestamp, status: bool}
-    ctx.body = JSON.stringify(ff)
-  })
-  .get('/api/check/node/:ip', async(ctx)=> {
-    const ip = ctx.params.ip
-    const bool = await executeCheckCommand({args: [ip]}, pingCheckCommand)
-    const timestamp = new Date().getTime()
-    ctx.type = 'application/json';
-    const ff = {timestamp: timestamp, status: bool}
-    ctx.body = JSON.stringify(ff)
-  })
-  .get("/api/nodestest", getAllNodeBaseInfo)
-  .get("/api/node/:ip", md_monitor.abc)
-  .get("/api/node/:ip/:service", md_monitor.abc)
-  .get("/api/node/:ip/:service/:name", (ctx) => ctx.body = "!1")
+  // .get('/api/check/port/:ip/:port', async(ctx)=> {
+  //   const ip = ctx.params.ip
+  //   const port = ctx.params.port
+  //   const bool = await executeCheckCommand({args: [ip, port]}, ncCheckCommand)
+  //   const timestamp = new Date().getTime()
+  //   ctx.type = 'application/json';
+  //   const ff = {timestamp: timestamp, status: bool}
+  //   ctx.body = JSON.stringify(ff)
+  // })
+  // .get('/api/check/node/:ip', async(ctx)=> {
+  //   const ip = ctx.params.ip
+  //   const bool = await executeCheckCommand({args: [ip]}, pingCheckCommand)
+  //   const timestamp = new Date().getTime()
+  //   ctx.type = 'application/json';
+  //   const ff = {timestamp: timestamp, status: bool}
+  //   ctx.body = JSON.stringify(ff)
+  // })
+  // .get("/api/nodestest", getAllNodeBaseInfo)
+  // .get("/api/node/:ip", md_monitor.abc)
+  // .get("/api/node/:ip/:service", md_monitor.abc)
+  // .get("/api/node/:ip/:service/:name", (ctx) => ctx.body = "!1")
   .get("/api/node/oracle/alerts", (ctx) => {
     ctx.type = 'application/json';
     ctx.body = JSON.stringify(md_store.AlertOracleDB);

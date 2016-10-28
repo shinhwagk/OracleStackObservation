@@ -33,13 +33,13 @@ export async function getAllNodeInfo(ctx) {
   let temp = []
   const currTIme = new Date().getTime()
   ncs.forEach((nc: Node) => {
-    const pingKey = makeKey({type: CheckType.PING, args: {args: [nc.ip]}})
+    const pingKey = makeKey(CheckType.PING, {args: [nc.ip]})
     let pci: CheckInfo = NodeCheckDB.get(pingKey)
-    console.info(pci,"pci")
+    // console.info(pci, "pci")
     let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
-      const ncKey = makeKey({type: CheckType.PORT, args: {args: [dc.ip, dc.port]}})
+      const ncKey = makeKey(CheckType.PORT, {args: [dc.ip, dc.port]})
       let nci: CheckInfo = PortCheckDB.get(ncKey)
-      console.info(PortCheckDB,ncKey,"nci")
+      // console.info(PortCheckDB, ncKey, "nci")
       return {
         service: dc.service,
         timestamp: (currTIme - nci.timestamp),
