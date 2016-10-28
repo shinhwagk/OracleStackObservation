@@ -6,6 +6,7 @@ import {MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB} from "./sto
 import {DatabaseConnectInfo, sqlToArray} from "./db";
 import {flatten} from "./common";
 import {key} from "nconf";
+import * as cron from 'cron'
 
 export enum CheckType{
   PING,
@@ -369,9 +370,15 @@ function portCheckExecute() {
 nodeCheckExecute()
 portCheckExecute()
 
-setInterval(()=> {
+// setInterval(()=> {
+//   nodeCheckExecute()
+//   portCheckExecute()
+//   // console.info(NodeCheckDB)
+//   // console.info(PortCheckDB)
+// }, 10000)
+
+new cron.CronJob('0 */1 * * * *', function() {
   nodeCheckExecute()
   portCheckExecute()
-  // console.info(NodeCheckDB)
-  // console.info(PortCheckDB)
-}, 10000)
+  console.log('You will see this message every second');
+}, null, true);
