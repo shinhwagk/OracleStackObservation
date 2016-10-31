@@ -50,8 +50,6 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   })
 }
 
-
-
 export async function execAlertRemoteShellCommand(sa: ShellAlert) {
   const code = await getCodeByAlert({category: 'shell', name: sa.name})
   return execRemoteShellCommand(sa.osConnectionInfo, code)
@@ -59,7 +57,7 @@ export async function execAlertRemoteShellCommand(sa: ShellAlert) {
 
 export function execRemoteShellCommand(node: { host: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    var conn = new md_ssh2.Client();
+    const conn = new md_ssh2.Client();
     conn.on('ready', () => {
       // console.log('Client :: ready');
       conn.exec(shellCommand, (err, stream) => {

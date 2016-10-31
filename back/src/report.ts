@@ -1,14 +1,14 @@
 import * as os from "os";
-import {getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf} from "./conf";
+import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf } from "./conf";
 import * as md_tools from "./tools";
-import {getOSInfoByName} from "./tools";
-import {MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB} from "./store";
-import {DatabaseConnectInfo, sqlToArray} from "./db";
-import {flatten} from "./common";
-import {key} from "nconf";
+import { getOSInfoByName } from "./tools";
+import { MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB } from "./store";
+import { DatabaseConnectInfo, sqlToArray } from "./db";
+import { flatten } from "./common";
+import { key } from "nconf";
 import * as cron from 'cron'
 
-export enum CheckType{
+export enum CheckType {
   PING,
   PORT
 }
@@ -18,8 +18,6 @@ export enum CheckType{
 //     db.set(key, {status: CheckStatus.DOUBT, timestamp: new Date().getTime(), retry: 0})
 //   }
 // }
-
-
 
 
 export function makeKey(type: CheckType, ca: CommandArguments): string {
@@ -64,30 +62,30 @@ export function makeKey(type: CheckType, ca: CommandArguments): string {
 
 async function removeDBByCheckConf(checkDB, checkConf) {
   let checkList = (await getNodeConf()).map((n) => {
-    return {type: CheckType.PING, status: n.status, args: {args: [n.ip]}}
+    return { type: CheckType.PING, status: n.status, args: { args: [n.ip] } }
   })
 
   const b = []
   for (let cc of checkConf) {
-    for (let [k,v] of checkDB) {
+    for (let [k, v] of checkDB) {
       cc.ip !== k
-      b .push(k)
+      b.push(k)
     }
   }
-  b.forEach(key=>checkDB.delete(key))
+  b.forEach(key => checkDB.delete(key))
 }
 
 async function xxx(checkConf, checkType, makeCheckCommand, makeCheckArgs, db) {
   let checkConfList = await checkConf()
-  let checkList = []
-  let noCheckList = []
+  let checkList: CommandArguments[] = []
+  let noCheckList: CommandArguments[] = []
   for (let checkConf of checkConfList) {
     const newCheckConf: CommandArguments = makeCheckArgs(checkConf)
     const key: string = makeKey(checkType, newCheckConf)
     if (checkConf.status) {
       if (db.has(key)) {
         const cci = db.get(key)
-        if (cci.status === CheckStatus.DOUBT || cci.status === CheckStatus.NORMAL || (cci.status === CheckStatus.DIE && ((cci.timestamp + 1000 * 60) < new Date().getTime()))) {
+        if (cci.status === CheckStatus.DOUBT || cci.status === CheckStatus.NORMAL || (cci.status === CheckStatus.DIE && ((cci.timestamp + 1000 * 60 * 5) < new Date().getTime()))) {
           checkList.push(newCheckConf)
         }
       } else {
@@ -98,44 +96,46 @@ async function xxx(checkConf, checkType, makeCheckCommand, makeCheckArgs, db) {
     }
   }
 
-  let mmm = checkList.map(args=> executeCheckCommand(args, makeCheckCommand).then(bool=>[makeKey(checkType, args), bool]))
+  let mmm: Promise<[string, boolean]>[] = checkList.map(args => executeCheckCommand(args, makeCheckCommand).then(bool => {
+    return [makeKey(checkType, args), bool]
+  }))
 
-  noCheckList.forEach(c=> {
+  noCheckList.forEach(c => {
     const key = makeKey(checkType, c)
-    db.set(key, {status: CheckStatus.STOP, timestamp: new Date().getTime()})
+    db.set(key, { status: CheckStatus.STOP, timestamp: new Date().getTime() })
   })
 
-  const bbb = await Promise.all(mmm)
+  const bbb: [string, boolean][] = await Promise.all(mmm)
 
-  bbb.forEach(c=> verifyCheckStatus2(c[0], c[1], db))
+  bbb.forEach(c => verifyCheckStatus2(c[0], c[1], db))
 }
 
 function verifyCheckStatus2(key: string, currStatus: boolean, db): void {
   if (currStatus) {
-    db.set(key, {timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0})
+    db.set(key, { timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0 })
   } else {
     if (db.has(key)) {
       const cci = db.get(key)
       if (cci.retry >= 5) {
-        db.set(key, {timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0})
+        db.set(key, { timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0 })
       } else {
         // console.info(cci.retry)
-        db.set(key, {timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1})
+        db.set(key, { timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1 })
       }
     } else {
-      db.set(key, {timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: 3})
+      db.set(key, { timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: 3 })
     }
   }
 }
 
 function verifyCheckStatus(currStatus: boolean, cci: CheckInfo): CheckInfo {
   if (currStatus) {
-    return {timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0}
+    return { timestamp: new Date().getTime(), status: CheckStatus.NORMAL, retry: 0 }
   } else {
     if (cci.retry >= 5) {
-      return {timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0}
+      return { timestamp: new Date().getTime(), status: CheckStatus.DIE, retry: 0 }
     } else {
-      return {timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1}
+      return { timestamp: new Date().getTime(), status: CheckStatus.DOUBT, retry: cci.retry + 1 }
     }
   }
 }
@@ -327,7 +327,7 @@ export async function abc(ctx) {
 }
 
 export async function reportOracleMonitorByName(ctx) {
-  const sql: string = await getCodeByReport({name: ctx.params.name, category: "oracle"})
+  const sql: string = await getCodeByReport({ name: ctx.params.name, category: "oracle" })
   const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
   ctx.type = 'application/json';
   ctx.body = JSON.stringify(await sqlToArray({
@@ -352,14 +352,14 @@ export async function reportOSMonitorByName(ctx) {
 
 // xxx(getNodeConf, CheckType.PING, pingCheckCommand, (n)=>[n.ip]).then(console.info)
 function nodeCheckExecute() {
-  xxx(getNodeConf, CheckType.PING, pingCheckCommand, (n)=> {
-    return {args: [n.ip]}
+  xxx(getNodeConf, CheckType.PING, pingCheckCommand, (n) => {
+    return { args: [n.ip] }
   }, NodeCheckDB)
 }
 
 function portCheckExecute() {
-  xxx(getDatabaseConf, CheckType.PORT, ncCheckCommand, (n)=> {
-    return {args: [n.ip, n.port]}
+  xxx(getDatabaseConf, CheckType.PORT, ncCheckCommand, (n) => {
+    return { args: [n.ip, n.port] }
   }, PortCheckDB)
 }
 
@@ -377,7 +377,7 @@ portCheckExecute()
 //   // console.info(PortCheckDB)
 // }, 10000)
 
-new cron.CronJob('0 */1 * * * *', function() {
+new cron.CronJob('0 */1 * * * *', () => {
   nodeCheckExecute()
   portCheckExecute()
   console.log('You will see this message every second');

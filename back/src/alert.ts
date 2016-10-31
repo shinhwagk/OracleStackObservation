@@ -6,7 +6,7 @@ import {OSConnectionInfo} from "./tools";
 
 async function getLinuxAlertQueue() {
   const monitorConf: Report[] = await getReportConf()
-  const monitorConfFilterAlert: Report[] = monitorConf.filter((m: Report) => m.alert !== undefined && m.category === 'shell')
+  const monitorConfFilterAlert: Report[] = monitorConf.filter((m: Report) => m.alert !== undefined && m.category === "shell")
   const nodes: Node[] = await getNodeConf()
 
   return flatten(monitorConfFilterAlert.map((m: Report) => {

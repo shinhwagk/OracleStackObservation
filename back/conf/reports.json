@@ -26,5 +26,14 @@
     "name": "no_primary_key",
     "category": "oracle",
     "version": ""
+  },
+  {
+    "name": "backup_datapump",
+    "category": "os",
+    "alert": {
+      "name": "backup_datapump",
+      "include": [["10.65.193.13","10.65.193.11"]]
+    },
+    "version": ""
   }
 ]

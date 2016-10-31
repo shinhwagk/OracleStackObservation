@@ -1,36 +1,50 @@
-import {Component, OnInit, Input} from "@angular/core";
-import {node} from "./node";
-import {ApiServices} from "./api.services"
-import {isUndefined} from "util";
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, Params} from "@angular/router";
+import {Location} from '@angular/common'
+
+import {ApiServices} from "./api.services";
 
 @Component({
+  moduleId: module.id,
   selector: 'report-os',
-  templateUrl: 'app/report.os.component.html',
-  styleUrls: ['app/report.os.component.css'],
+  templateUrl: 'report.os.component.html',
+  styleUrls: ['report.os.component.css'],
   providers: [ApiServices]
 })
 
 export class ReportOsComponent implements OnInit {
   ngOnInit(): void {
-    this._api.getOSReportNames(this.ip).toPromise().then((names: string[])=> {
-      this.names = names
-      this.names.forEach(name=>this.report_a.set(name, []))
+    this.route.params.forEach((params: Params) => {
+      this.ip = params['ip'];
 
-      this.report = Array.from(this.report_a)
-      this.names.forEach(name=> {
-        this.getReportByName(name)
+      this._api.getOSReportNames(this.ip).toPromise().then((names: string[])=> {
+        this.names = names
+        this.names.forEach(name=>this.report_a.set(name, []))
+
+        this.report = Array.from(this.report_a)
+        this.names.forEach(name=> {
+          this.getReportByName(name)
+        })
       })
-    })
+    });
+
   }
 
-  constructor(private _api: ApiServices) {
+  constructor(private _api: ApiServices,
+              private route: ActivatedRoute,
+              private location: Location) {
   }
 
-  @Input() ip: string
+  goBack(): void {
+    this.location.back();
+  }
 
+  //
+  ip: string
+  //
   date = new Date()
   names: string[]
-
+  //
   report_a = new Map<string,Array<any>>()
   report = []
 

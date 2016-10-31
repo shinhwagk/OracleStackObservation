@@ -8,10 +8,13 @@ import {NodesComponent} from "./nodes.component";
 import {ReportDatabaseComponent} from "./report.database.component";
 import {ReportOsComponent} from "./report.os.component";
 
+import {AppRoutingModule}     from './app-routing.module';
+
 @NgModule({
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,

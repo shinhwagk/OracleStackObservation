@@ -4,11 +4,11 @@ import {getCodeByAlert} from "./conf";
 import {DatabaseAlert} from "./alert";
 
 export interface DatabaseConnectInfo {
-  ip: string
-  port: number
-  service: string
-  user: string
-  password: string
+  ip: string;
+  port: number;
+  service: string;
+  user: string;
+  password: string;
 }
 
 function genConnecString(dci: DatabaseConnectInfo): string {

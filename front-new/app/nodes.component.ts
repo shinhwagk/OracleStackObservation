@@ -3,13 +3,15 @@
  */
 import {Component, OnInit} from "@angular/core";
 import {ApiServices} from "./api.services";
-import {Node} from './node.class'
-import {CheckStatus} from './checkstatus.enum'
+import {Node} from "./node.class";
+import {CheckStatus} from "./checkstatus.enum";
+import {Router} from "@angular/router";
 
 @Component({
+  moduleId: module.id,
   selector: 'monitor-nodes',
-  templateUrl: 'app/nodes.component.html',
-  styleUrls: ['app/nodes.component.css'],
+  templateUrl: 'nodes.component.html',
+  styleUrls: ['nodes.component.css'],
   providers: [ApiServices]
 })
 
@@ -21,6 +23,14 @@ export class NodesComponent implements OnInit {
 
   genNodes() {
     this._api.getNodes().toPromise().then(nodes => this._nodes = nodes)
+  }
+
+  gotoReportOS(ip: string): void {
+    this.router.navigate(['/report/os', ip]);
+  }
+
+  gotoReportDatabase(ip: string, service: string): void {
+    this.router.navigate(['/report/oracle', ip, service]);
   }
 
   bb = {}
@@ -88,7 +98,9 @@ export class NodesComponent implements OnInit {
   //   // setInterval(() => this._api.getDBAlert().toPromise().then(alerts => this.alertdb = alerts), 5000)
   // }
 
-  constructor(private _api: ApiServices) {
+  constructor(private _api: ApiServices,
+              private router: Router) {
+
   }
 
   _env_filter(env) {

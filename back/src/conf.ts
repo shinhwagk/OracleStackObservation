@@ -47,7 +47,7 @@ export interface Report {
 export interface Alert {
   name: string
   category: string
-  cron: string
+  cron?: string
 }
 
 export interface Node {
