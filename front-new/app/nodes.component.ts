@@ -18,7 +18,7 @@ import {Router} from "@angular/router";
 export class NodesComponent implements OnInit {
   ngOnInit() {
     this.genNodes()
-    setInterval(() => this.genNodes(), 1000)
+    setInterval(() => this.genNodes(), 2000)
   }
 
   genNodes() {

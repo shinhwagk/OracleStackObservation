@@ -15,12 +15,12 @@
                 </span>
                 <div *ngFor="let d of n.databases">
                 <span *ngIf=" d.status !== checkStatus.NORMAL">
-                  service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp }}
+                  service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
                 </span>
                   <a (click)="gotoReportDatabase(n.ip,d.service)"
                      *ngIf="d.status === checkStatus.NORMAL "
                      class="list-group-item list-group-item-success" [class.list-group-item-danger]="n.status === checkStatus.DIE">
-                    service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp }}
+                    service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
                   </a>
                 </div>
               </div>
