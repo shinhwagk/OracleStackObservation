@@ -74,6 +74,7 @@ gulp_compile(){
 }
 
 check_env(){
+    $ENV_COMMAND | grep ORACLE_HOME || { echo >&2 "env: ORACLE_HOME, no set "; exit 1; }
     $ENV_COMMAND | grep OCI_LIB_DIR || { echo >&2 "env: OCI_LIB_DIR, no set "; exit 1; }
     $ENV_COMMAND | grep OCI_INC_DIR || { echo >&2 "env: OCI_INC_DIR, no set "; exit 1; }
 }

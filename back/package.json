@@ -1,6 +1,6 @@
 {
   "name": "ci",
-  "version": "0.1-alpha-1",
+  "version": "0.1-beta",
   "description": "Minimal koa repository",
   "main": "app.js",
   "scripts": {

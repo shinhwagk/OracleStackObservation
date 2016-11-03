@@ -1,0 +1,27 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\zhangxu\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'default' ]
+2 info using npm@3.10.9
+3 info using node@v6.2.2
+4 verbose stack Error: Invalid version: "0.1-alpha"
+4 verbose stack     at Object.module.exports.fixVersionField (C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\normalize-package-data\lib\fixer.js:191:13)
+4 verbose stack     at C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\normalize-package-data\lib\normalize.js:32:38
+4 verbose stack     at Array.forEach (native)
+4 verbose stack     at normalize (C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\normalize-package-data\lib\normalize.js:31:15)
+4 verbose stack     at final (C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\read-package-json\read-json.js:349:5)
+4 verbose stack     at then (C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\read-package-json\read-json.js:124:5)
+4 verbose stack     at C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\read-package-json\read-json.js:243:12
+4 verbose stack     at C:\Users\zhangxu\AppData\Roaming\npm\node_modules\npm\node_modules\graceful-fs\graceful-fs.js:78:16
+4 verbose stack     at tryToString (fs.js:449:3)
+4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:436:12)
+5 verbose cwd E:\github\oracle-observation\back
+6 error Windows_NT 10.0.14393
+7 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\zhangxu\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "default"
+8 error node v6.2.2
+9 error npm  v3.10.9
+10 error Invalid version: "0.1-alpha"
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]

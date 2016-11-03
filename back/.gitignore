@@ -5,3 +5,4 @@ conf/nodes.json
 log
 .idea
 .vscode
+RUNNING_PID

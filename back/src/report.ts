@@ -187,7 +187,7 @@ function pingWin32Command(ca: CommandArguments) {
 }
 
 function pingLinuxCommand(ca: CommandArguments) {
-  return `ping -n 2 -w 2 ${ca.args[0]}`
+  return `ping -c 2 ${ca.args[0]}`
 }
 
 function pingMacCommand(ca: CommandArguments) {
