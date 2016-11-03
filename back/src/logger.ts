@@ -1,10 +1,10 @@
 import * as winston from 'winston';
 import * as fs from 'fs'
 
-if (fs.existsSync('./log')) {
-  console.info("log dir exists")
-} else {
-  fs.mkdirSync('./log')
+export function createLogFolderIfNotExist() {
+  if (!fs.existsSync('./log')) {
+    fs.mkdirSync('./log')
+  }
 }
 
 export const logger = new (winston.Logger)({
@@ -18,6 +18,11 @@ export const logger = new (winston.Logger)({
       name: 'error-file',
       filename: 'log/filelog-error.log',
       level: 'error'
+    }),
+    new (winston.transports.File)({
+      name: 'debug-file',
+      filename: 'log/filelog-debug.log',
+      level: 'debug'
     })
   ]
 });

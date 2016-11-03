@@ -1,12 +1,11 @@
 import * as os from "os";
-import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf } from "./conf";
+import {getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf} from "./conf";
 import * as md_tools from "./tools";
-import { getOSInfoByName } from "./tools";
-import { MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB } from "./store";
-import { DatabaseConnectInfo, sqlToArray } from "./db";
-import { flatten } from "./common";
-import { key } from "nconf";
-import * as cron from 'cron'
+import {getOSInfoByName} from "./tools";
+import {MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB} from "./store";
+import {DatabaseConnectInfo, sqlToArray} from "./db";
+import {flatten} from "./common";
+import * as cron from "cron";
 
 export enum CheckType {
   PING,
