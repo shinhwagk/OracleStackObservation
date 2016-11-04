@@ -13,14 +13,14 @@
 
 <br>
 <div class="col-lg-12"*ngFor="let name of report">
-  <h3 id="{{name[0]}}">{{name[0]}}</h3>
+  <h3 id="{{name[0]}}">{{name[0]}}</h3> <button (click)="getReportByName(name[0])">retry</button>
 
-  <div *ngIf="name[1].length == 0">
+  <div *ngIf="report_a.get(name[0]).length == 0">
     <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
     <span class="sr-only">Loading...</span>
   </div>
 
-  <table border="1" *ngIf="name[1].length >= 1">
+  <table border="1" *ngIf="report_a.get(name[0]).length >= 1">
     <tr>
       <th class="awrbg" *ngFor="let col of name[1][0]"> {{col}}</th>
     </tr>

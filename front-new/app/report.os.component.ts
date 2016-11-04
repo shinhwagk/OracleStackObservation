@@ -51,11 +51,13 @@ export class ReportOsComponent implements OnInit {
   report_err = []
 
   getReportByName(name: string): void {
+    
+    this.report_a.set(name, [])
     this._api.getOSReportByName(this.ip, name).toPromise().then(str => {
       this.report_a.set(name, str)
       this.report = Array.from(this.report_a).slice()
     }).catch(err => {
-      this.report_err_a.set(name,err)
+      this.report_err_a.set(name, err)
       this.report_err = Array.from(this.report_err_a).slice()
     })
   }
