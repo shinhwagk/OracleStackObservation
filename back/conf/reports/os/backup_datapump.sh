@@ -21,17 +21,17 @@ if [ -d $dmpDir ] && [ `fileOfDirCnt ${dmpDir}` -gt 1 ]; then
       for logFileName in `${LS} ${dmpDir} | grep -e 'log$'`
       do
         logFile="$dmpDir/$logFileName"
-        cat ${logFile} | tail -n 1 | grep 'successfully' >/dev/null 2>&1
         dmpFileName=`echo ${logFileName} | sed 's/log$/dmp/'`
         dmpFile="$dmpDir/$dmpFileName"
+        cat ${logFile} | tail -n 1 | grep 'successfully' >/dev/null 2>&1
         if [ $? == 0 ]; then
           if [ -f $dmpFile ]; then
             rs=${rs}"[\"${dmpFileName}\",\"successfully\"]"
           else
-            rs=${rs}"[\"${dmpFileName}\",\"'File no exist\"]"
+            rs=${rs}"[\"${dmpFileName}\",\"File no exist\"]"
           fi
         else
-          rs=${rs}"[\"${dmpFileName}\",\"'dump failure\"]"
+          rs=${rs}"[\"${dmpFileName}\",\"dump failure\"]"
         fi
       done
       rs=`echo $rs | sed 's/\]\[/\],\[/g'`
@@ -45,3 +45,4 @@ else
 fi
 
 echo $rs
+

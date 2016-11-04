@@ -340,12 +340,14 @@ export async function reportOracleMonitorByName(ctx) {
 
 export async function reportOSMonitorByName(ctx) {
   const node = await getNodeByIp(ctx.params.ip)
+  const key = require('fs').readFileSync('./conf/privateKey')
   ctx.type = 'application/json';
   ctx.body = await getOSInfoByName({
     host: node.ip,
     port: node.port,
     username: node.username,
-    password: node.password
+    // password: node.password
+    privateKey: key
   }, ctx.params.name + ".sh")
 }
 

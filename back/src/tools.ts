@@ -113,44 +113,44 @@ function execRemoteBaseFile(osServer: OSConnectionInfo, remoteFile): Promise<str
   })
 }
 
-export async function getOSInfoByName(osServer: OSConnectionInfo, name: string) {
+export async function getOSInfoByName(osServer: OSConnectionInfoByKey, name: string) {
   return new Promise((resolve, reject) => {
     const remoteFile = `/tmp/${name}`
     const localFile = `./conf/reports/os/${name}`
     OSConnect(osServer, (conn) => {
-        conn.sftp(function (err, sftp) {
-          if (err) throw err;
-          sftp.fastPut(localFile, remoteFile, (err) => {
-            if (err) {
-              console.info(err)
-            } else {
-              OSConnect(osServer, (conn2) => {
-                conn2.exec(`chmod +x ${remoteFile}`, (err, stream) => {
-                  stream.on('close', (code, signal) => {
-                    console.info("chmod")
-                    OSConnect(osServer, (conn3)=> {
-                      conn3.exec(`/bin/bash ${remoteFile}`, (err, stream) => {
-                          stream.on('close', (code, signal) => {
-                            conn.end();
-                            conn2.end();
-                            conn3.end()
-                          }).on('data', (data)=> {
-                            resolve(data.toString())
-                          }).stderr.on('data', (data) => reject(data.toString()));
-                        }
-                      )
-                    })
-                  }).on('data', (data) => {
-                    console.info(data.toString())
-                  }).stderr.on('data', (data) => reject(data.toString()));
-                })
+      conn.sftp(function (err, sftp) {
+        if (err) throw err;
+        sftp.fastPut(localFile, remoteFile, (err) => {
+          if (err) {
+            reject(err.toString())
+          } else {
+            OSConnect(osServer, (conn2) => {
+              conn2.exec(`chmod +x ${remoteFile}`, (err, stream) => {
+                stream.on('close', (code, signal) => {
+                  console.info("chmod")
+                  OSConnect(osServer, (conn3)=> {
+                    conn3.exec(`cd /tmp && /bin/bash ${remoteFile}`, (err, stream) => {
+                        stream.on('close', (code, signal) => {
+                          conn.end();
+                          conn2.end();
+                          conn3.end()
+                        }).on('data', (data)=> {
+                          console.info(`/bin/bash ${remoteFile}`, data.toString())
+                          resolve(data.toString())
+                        }).stderr.on('data', (data) => reject(data.toString()));
+                      }
+                    )
+                  })
+                }).on('data', (data) => {
+                  console.info(data.toString())
+                }).stderr.on('data', (data) => reject(data.toString()));
               })
-              console.info("sftp")
-            }
-          })
+            })
+            console.info("sftp")
+          }
         })
-      }
-    )
+      })
+    })
   })
 }
 
@@ -167,6 +167,13 @@ export interface OSConnectionInfo {
   port: number
   username: string
   password: string
+}
+
+export interface OSConnectionInfoByKey {
+  host: string;
+  port: number;
+  username: string;
+  privateKey: string | Buffer
 }
 
 export interface OSConnectionInfoForPublicKey {
