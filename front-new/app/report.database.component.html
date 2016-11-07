@@ -1,6 +1,6 @@
 <p> 1</p>
 <p> 1</p>
-<h3 class="awr">check list: ip: {{ip}}, service: {{service}}; report date: {{ date | date }}</h3>
+<h3 class="awr">check list: ip: {{ip}}, service: {{service}}; report date: {{ date | date :"MM/dd/yy" }}</h3>
   <div class="container">
     <div class="row">
       <div class="col-lg-2" *ngFor="let name of report">
