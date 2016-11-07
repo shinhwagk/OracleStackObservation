@@ -45,4 +45,4 @@ FROM
        and num_rows > 0 
        and table_owner != 'SYS') b 
 WHERE
-    (chain_cnt/num_rows)*100 > 10;
+    (chain_cnt/num_rows)*100 > 10
