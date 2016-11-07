@@ -9,6 +9,10 @@
     "version": ""
   },
   {
+    "name":"tables_suffering_from_row_chaining_migration",
+    "category":"oracle"
+  },
+  {
     "name": "invalid_object",
     "category": "oracle",
     "version": ""
