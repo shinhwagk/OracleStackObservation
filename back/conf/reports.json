@@ -13,6 +13,10 @@
     "category":"oracle"
   },
   {
+    "name":"tables_nodata",
+    "category":"oracle"
+  },
+  {
     "name": "invalid_object",
     "category": "oracle",
     "version": ""
