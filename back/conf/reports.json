@@ -17,6 +17,10 @@
     "category":"oracle"
   },
   {
+    "name":"num_index_5",
+    "category":"oracle"
+  },
+  {
     "name": "invalid_object",
     "category": "oracle",
     "version": ""
