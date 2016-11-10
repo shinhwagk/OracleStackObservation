@@ -26,7 +26,7 @@ select owner,
                        position
                   from dba_cons_columns
                  where owner not in
-                       ('XDB', 'APEX_030200', 'DBSNMP', 'ORDDATA')
+                       ('XDB', 'APEX_030200', 'DBSNMP', 'ORDDATA','SCOTT')
                    AND owner not like '%SYS%') a,
                dba_constraints b
          where a.constraint_name = b.constraint_name
