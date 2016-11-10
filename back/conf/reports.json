@@ -42,6 +42,10 @@
     "category": "oracle"
   },
   {
+    "name": "ts_temp_usage",
+    "category": "oracle"
+  },
+  {
     "name": "table_parallel",
     "category": "oracle"
   },
