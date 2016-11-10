@@ -38,6 +38,10 @@
     "category": "oracle"
   },
   {
+    "name": "ts_undo_usage",
+    "category" :"ts_undo_usage"
+  },
+  {
     "name": "noindex_wjkey",
     "category": "oracle"
   },
