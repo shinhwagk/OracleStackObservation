@@ -21,6 +21,10 @@
     "category":"oracle"
   },
   {
+    "name":"jxdl_index",
+    "category":"oracle"
+  },
+  {
     "name": "invalid_object",
     "category": "oracle",
     "version": ""
