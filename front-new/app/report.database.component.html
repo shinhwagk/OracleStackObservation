@@ -1,34 +1,35 @@
 <p> 1</p>
 <p> 1</p>
 <h3 class="awr">check list: ip: {{ip}}, service: {{service}}; report date: {{ date | date :"yyyy/MM/dd" }}</h3>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-2" *ngFor="let name of report">
-        <a href="#{{name[0]}}">{{name[0]}}</a>
-      </div>
+<div id="top" class="container">
+  <div class="row">
+    <div class="col-lg-2" *ngFor="let name of report">
+      <a href="#{{name[0]}}">{{name[0]}}</a>
     </div>
   </div>
-  <p></p>
+</div>
+<p></p>
 
+<br>
+<div *ngFor="let name of report">
+  <p id="{{name[0]}}">{{name[0]}}</p>
+
+  <div *ngIf="name[1].length ==0">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+
+  <table border="1" *ngIf="name[1].length > 0">
+    <tr>
+      <th class="awrbg" *ngFor="let col of name[1][0]"> {{col}}</th>
+    </tr>
+    <tr *ngFor="let cols of name[1]; let i=index">
+      <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
+        <span *ngIf="i >=1">{{col}}</span>
+      </td>
+    </tr>
+  </table>
+  <a href="#top">TOP</a>
   <br>
-  <div *ngFor="let name of report">
-    <p id="{{name[0]}}">{{name[0]}}</p>
-
-    <div *ngIf="name[1].length ==0">
-      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-      <span class="sr-only">Loading...</span>
-    </div>
-
-    <table border="1" *ngIf="name[1].length > 0">
-      <tr>
-        <th class="awrbg" *ngFor="let col of name[1][0]"> {{col}}</th>
-      </tr>
-      <tr *ngFor="let cols of name[1]; let i=index">
-        <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
-          <span *ngIf="i >=1">{{col}}</span>
-        </td>
-      </tr>
-    </table>
-    <br>
-  </div>
+</div>
 <button (click)="goBack()">Back</button>
