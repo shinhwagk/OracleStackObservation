@@ -6,4 +6,4 @@ select d.TABLE_OWNER,
    AND TABLE_OWNER not like '%SYS%' 
  group by TABLE_OWNER, table_name
 having count(distinct(column_name)) / count(*) < 1
- order by cross_idx_rate desc
+ order by cross_idx_rate asc
