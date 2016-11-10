@@ -3,7 +3,7 @@
 <h3 class="awr">check list: ip: {{ip}}, service: {{service}}; report date: {{ date | date :"yyyy/MM/dd" }}</h3>
 <div id="top" class="container">
   <div class="row">
-    <div class="col-lg-2" *ngFor="let name of report">
+    <div class="col-lg-1" *ngFor="let name of report">
       <a href="#{{name[0]}}">{{name[0]}}</a>
     </div>
   </div>
