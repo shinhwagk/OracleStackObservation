@@ -19,7 +19,7 @@
                 </span>
                   <a (click)="gotoReportDatabase(n.ip,d.service)"
                      *ngIf="d.status === checkStatus.NORMAL "
-                     class="list-group-item list-group-item-success" [class.list-group-item-danger]="n.status === checkStatus.DIE">
+                     class="list-group-item list-group-item-success" [class.list-group-item-danger]="d.status === checkStatus.DIE" [class.list-group-item-warning]="d.status === checkStatus.DOUBT">
                     service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
                   </a>
                 </div>
