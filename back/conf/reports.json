@@ -30,6 +30,10 @@
     "version": ""
   },
   {
+    "name": "noindex_wjkey",
+    "category": "oracle"
+  },
+  {
     "name": "disk_space",
     "category": "os",
     "alert": {
