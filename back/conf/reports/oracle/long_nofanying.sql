@@ -1,5 +1,4 @@
-SELECT a.INST_ID,
-       A.USERNAME,
+SELECT A.USERNAME,
        A.LOGON_TIME,
        A.STATUS,
        A.SID,
@@ -12,7 +11,6 @@ FROM   v$session A
 WHERE  A.STATUS IN ('INACTIVE')
 AND    A.USERNAME IS NOT NULL
 AND    A.LAST_CALL_ET >= 60 * 60 * 10
-ORDER  BY a.INST_ID,
-          a.LAST_CALL_ET DESC,
+ORDER  BY a.LAST_CALL_ET DESC,
           a.USERNAME,
           a.LOGON_TIME
