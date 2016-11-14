@@ -8,18 +8,18 @@
             <div class="list-group">
               <div class="list-group-item list-group-item-info" [class.list-group-item-danger]="n.status === checkStatus.DIE" [class.list-group-item-warning]="n.status === checkStatus.DOUBT">
                 <a (click)="gotoReportOS(n.ip)" *ngIf="n.status === checkStatus.NORMAL ">
-                  ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp }}
+                  ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp / 1000 | number : '1.0-0' }}s
                 </a>
                 <span *ngIf=" n.status !== checkStatus.NORMAL">
-                  ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp }}
+                  ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp / 1000 | number : '1.0-0' }}s
                 </span>
                 <div *ngFor="let d of n.databases">
                   <span *ngIf=" d.status !== checkStatus.NORMAL">
-                  service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
+                  service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 | number : '1.0-0' }}s
                 </span>
                   <div *ngIf="d.status === checkStatus.NORMAL " class="list-group-item list-group-item-success" [class.list-group-item-danger]="d.status === checkStatus.DIE"
                     [class.list-group-item-warning]="d.status === checkStatus.DOUBT">
-                    service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
+                    service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 | number : '1.0-0' }}s
                     <div class="btn-group btn-group-sm" role="group" style=" width:100%">
                       <button (click)="gotoReportDatabase(n.ip,d.service)" type="button" class="btn btn-outline-success btn-sm" [style.width]="d.alert.length >=1 ? '50%' : '100%'">Report</button>
                       <button *ngIf="d.alert.length >=1" (click)="gotoAlertDatabase(n.ip,d.service,d.alert)" type="button" class="btn btn-outline-danger btn-sm "
