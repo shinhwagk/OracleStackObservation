@@ -3,7 +3,6 @@ import * as md_ssh2 from "ssh2";
 import * as fs from "fs";
 import {logger} from "./logger";
 import {getCodeByAlert} from "./conf";
-import {ShellAlert} from "./alert";
 import {OSConnect} from "./ssh";
 
 export function readFile(path: string): Promise<string> {
@@ -50,10 +49,10 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   })
 }
 
-export async function execAlertRemoteShellCommand(sa: ShellAlert) {
-  const code = await getCodeByAlert({category: 'shell', name: sa.name})
-  return execRemoteShellCommand(sa.osConnectionInfo, code)
-}
+// export async function execAlertRemoteShellCommand(sa: ShellAlert) {
+//   const code = await getCodeByAlert({category: 'shell', name: sa.name})
+//   return execRemoteShellCommand(sa.osConnectionInfo, code)
+// }
 
 export function execRemoteShellCommand(node: { host: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {

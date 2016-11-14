@@ -1,10 +1,10 @@
 import * as os from "os";
-import {getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf} from "./conf";
+import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf, getCodeByAlert, Category } from './conf';
 import * as md_tools from "./tools";
-import {getOSInfoByName} from "./tools";
-import {MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB} from "./store";
-import {DatabaseConnectInfo, sqlToArray} from "./db";
-import {flatten} from "./common";
+import { getOSInfoByName } from "./tools";
+import { MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB } from "./store";
+import { DatabaseConnectInfo, sqlToArray } from "./db";
+import { flatten } from "./common";
 import * as cron from "cron";
 
 export enum CheckType {
@@ -327,6 +327,19 @@ export async function abc(ctx) {
 
 export async function reportOracleMonitorByName(ctx) {
   const sql: string = await getCodeByReport({ name: ctx.params.name, category: "oracle" })
+  const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
+  ctx.type = 'application/json';
+  ctx.body = JSON.stringify(await sqlToArray({
+    ip: dbconf.ip,
+    port: dbconf.port,
+    service: dbconf.service,
+    user: dbconf.user,
+    password: dbconf.password
+  }, sql))
+}
+
+export async function alertOracleMonitorByName(ctx) {
+  const sql: string = await getCodeByAlert({ name: ctx.params.name, category: Category.ORACLE })
   const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
   ctx.type = 'application/json';
   ctx.body = JSON.stringify(await sqlToArray({

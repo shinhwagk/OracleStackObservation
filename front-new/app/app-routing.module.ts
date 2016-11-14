@@ -1,17 +1,19 @@
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {NodesComponent} from "./nodes.component";
-import {ReportOsComponent} from "./report.os.component";
-import {ReportDatabaseComponent} from "./report.database.component";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { NodesComponent } from "./nodes.component";
+import { ReportOsComponent } from "./report.os.component";
+import { ReportDatabaseComponent } from "./report.database.component";
+import { AlertDatabaseComponent } from "./alert.database.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/nodes', pathMatch: 'full'},
-  {path: 'nodes', component: NodesComponent},
-  {path: 'report/os/:ip', component: ReportOsComponent},
-  {path: 'report/oracle/:ip/:service', component: ReportDatabaseComponent}
+  { path: '', redirectTo: '/nodes', pathMatch: 'full' },
+  { path: 'nodes', component: NodesComponent },
+  { path: 'report/os/:ip', component: ReportOsComponent },
+  { path: 'report/oracle/:ip/:service', component: ReportDatabaseComponent },
+  { path: 'alert/oracle/:ip/:service/:alerts', component: AlertDatabaseComponent }
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

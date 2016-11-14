@@ -6,8 +6,8 @@ import './rxjs-extensions';
 import { AppComponent } from './app.component'
 import { NodesComponent } from "./nodes.component";
 import { ReportDatabaseComponent } from "./report.database.component";
+import { AlertDatabaseComponent } from "./alert.database.component";
 import { ReportOsComponent } from "./report.os.component";
-
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
@@ -20,6 +20,7 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent,
     NodesComponent,
     ReportDatabaseComponent,
+    AlertDatabaseComponent,
     ReportOsComponent
   ],
   bootstrap: [AppComponent]

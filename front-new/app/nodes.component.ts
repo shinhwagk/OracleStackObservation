@@ -1,11 +1,11 @@
 /**
  * Created by zhangxu on 2016/8/3.
  */
-import {Component, OnInit} from "@angular/core";
-import {ApiServices} from "./api.services";
-import {Node} from "./node.class";
-import {CheckStatus} from "./checkstatus.enum";
-import {Router} from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ApiServices } from "./api.services";
+import { Node } from "./node.class";
+import { CheckStatus } from "./checkstatus.enum";
+import { Router } from "@angular/router";
 
 @Component({
   moduleId: module.id,
@@ -31,6 +31,11 @@ export class NodesComponent implements OnInit {
 
   gotoReportDatabase(ip: string, service: string): void {
     this.router.navigate(['/report/oracle', ip, service]);
+  }
+
+  gotoAlertDatabase(ip: string, service: string, alerts): void {
+    // const alerts = this._nodes.filter(n => n.ip === ip)[0].databases.filter(d => d.servcie === service)[0].alter
+    this.router.navigate(['/alert/oracle', ip, service, JSON.stringify(alerts)]);
   }
 
   bb = {}
@@ -99,7 +104,7 @@ export class NodesComponent implements OnInit {
   // }
 
   constructor(private _api: ApiServices,
-              private router: Router) {
+    private router: Router) {
 
   }
 
@@ -109,13 +114,13 @@ export class NodesComponent implements OnInit {
 
   setStyles(status: CheckStatus) {
     if (status === CheckStatus.NORMAL) {
-      return {'color': '#00AA00'}
+      return { 'color': '#00AA00' }
     } else if (status === CheckStatus.DOUBT) {
-      return {'color': 'yellow'}
+      return { 'color': 'yellow' }
     } else if (status === CheckStatus.STOP) {
-      return {'color': 'Silver'}
+      return { 'color': 'Silver' }
     } else {
-      return {'color': 'red'}
+      return { 'color': 'red' }
     }
   }
 

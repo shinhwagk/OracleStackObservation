@@ -1,7 +1,7 @@
 import * as oracledb from "oracledb";
-import {IPromise, IConnection} from "oracledb";
-import {getCodeByAlert} from "./conf";
-import {DatabaseAlert} from "./alert";
+import { IPromise, IConnection } from "oracledb";
+import { getCodeByAlert, Category } from "./conf";
+import { DatabaseAlert } from "./alert";
 
 export interface DatabaseConnectInfo {
   ip: string;
@@ -16,7 +16,7 @@ function genConnecString(dci: DatabaseConnectInfo): string {
 }
 
 export function genConnection(dci: DatabaseConnectInfo): IPromise<IConnection> {
-  return oracledb.getConnection({user: dci.user, password: dci.password, connectString: genConnecString(dci)})
+  return oracledb.getConnection({ user: dci.user, password: dci.password, connectString: genConnecString(dci) })
 }
 
 export async function sqlToArray(dci: DatabaseConnectInfo, sql: string): Promise<Array<Array<any>> | Array<any>> {
@@ -28,8 +28,18 @@ export async function sqlToArray(dci: DatabaseConnectInfo, sql: string): Promise
   return [colName].concat(rows)
 }
 
+export async function sqlToCount(dci: DatabaseConnectInfo, sql: string): Promise<boolean> {
+  const conn: oracledb.IConnection = await genConnection(dci)
+  const result: oracledb.IExecuteReturn = await conn.execute(sql)
+  const colName = result.metaData.map(e => e.name)
+  const rows = result.rows
+  await conn.close();
+  return rows[0][0] >= 1 ? true : false;
+}
+
 export async function xx(alert: DatabaseAlert): Promise<boolean> {
-  const sql: string = await getCodeByAlert({name: alert.name, category: "oracle"})
-  const rows = await sqlToArray(alert.databaseConnectInfo, sql)
-  return rows[1][0] >= 1 ? true : false
+  const sql: string = await getCodeByAlert({ name: alert.name, category: Category.ORACLE, cron: alert.cron })
+  const countSql: string = `select count(*) from (${sql})`
+  const bool = await sqlToCount(alert.databaseConnectInfo, countSql)
+  return bool
 }

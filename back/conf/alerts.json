@@ -1,12 +1,12 @@
 [
   {
-    "name": "aaaa",
-    "category": "oracle",
-    "cron": "* * * * * * "
+    "name": "tablespace_space",
+    "category": "ORACLE",
+    "cron": "* */1 * * * *"
   },
   {
-    "name": "xxxx",
-    "category": "os",
-    "cron": "* * * * * *"
+    "name": "table_parallel",
+    "category": "ORACLE",
+    "cron": "* */1 * * * *"
   }
 ]

@@ -1,5 +1,5 @@
-import {flatten} from "./common";
-import {readFile} from "./tools";
+import { flatten } from "./common";
+import { readFile } from "./tools";
 
 export function getNodeConf(): Promise<Node[]> {
   return readFile('./conf/nodes.json').then(JSON.parse)
@@ -22,9 +22,9 @@ export function getCodeByReport(report: Report): Promise<string> {
 }
 
 export function getCodeByAlert(alert: Alert): Promise<string> {
-  if (alert.category === 'oracle') {
+  if (alert.category === Category.ORACLE) {
     return readFile(`./conf/alerts/oracle/${alert.name}.sql`)
-  } else if (alert.category === 'os') {
+  } else if (alert.category === Category.OS) {
     return readFile(`./conf/alerts/os/${alert.name}.sh`)
   }
 }
@@ -46,8 +46,10 @@ export interface Report {
 
 export interface Alert {
   name: string
-  category: string
+  category: Category
   cron?: string
+  include?: string[][]
+  exclude?: string[][]
 }
 
 export interface Node {
@@ -70,23 +72,23 @@ export interface Database {
   service: string
 }
 
-enum ReportCategory {
+export enum Category {
   OS,
   ORACLE
 }
 
 export async function getDatabaseConf(): Promise<Database[]> {
   const genDatabaseConf = function (node, db): Database {
-    return {ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password}
+    return { ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password }
   }
-  return flatten((await getNodeConf()).map(node => node.databases.map(db=>genDatabaseConf(node, db))))
+  return flatten((await getNodeConf()).map(node => node.databases.map(db => genDatabaseConf(node, db))))
 }
 
 export async function getDatabase(ip: string, service: string): Promise<Database> {
   const dc = await getDatabaseConf()
-  return dc.filter(d=>d.ip === ip && d.service === service)[0]
+  return dc.filter(d => d.ip === ip && d.service === service)[0]
 }
 
 export async function getNodeByIp(ip: string): Promise<Node> {
-  return (await getNodeConf()).filter(d=>d.ip === ip)[0]
+  return (await getNodeConf()).filter(d => d.ip === ip)[0]
 }

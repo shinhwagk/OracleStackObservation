@@ -1,8 +1,9 @@
-import { Report, getDatabaseConf, Database, getNodeConf, Node, getReportConf } from "./conf";
+import { Report, getDatabaseConf, Database, getNodeConf, Node, getReportConf, Alert, getAlertConf, Category } from './conf';
 import { DatabaseConnectInfo, xx } from "./db";
 import { flatten } from "./common";
 import { AlertOracleDB, replaceData } from "./store";
 import { OSConnectionInfo } from "./tools";
+import { CronJob } from "cron";
 
 async function getLinuxAlertQueue() {
   const monitorConf: Report[] = await getReportConf()
@@ -23,23 +24,21 @@ async function getLinuxAlertQueue() {
     }
   }))
 }
-
-async function getOracleAlertQueue(): Promise<DatabaseAlert[]> {
-  const monitorConf: Report[] = await getReportConf()
-  const monitorConfFilterAlert: Report[] = monitorConf.filter((m: Report) => m.alert !== undefined && m.category === 'oracle')
+//A[A[abc().a]] === A[A.a]
+export async function getOracleAlertQueue(): Promise<DatabaseAlert[]> {
+  const alertConf: Alert[] = await getAlertConf()
+  const oracleAlertConf: Alert[] = alertConf.filter((a: Alert) => Category[Category[a.category]] === Category[Category.ORACLE])
   const databases: Database[] = await getDatabaseConf()
 
-  return flatten(monitorConfFilterAlert.map((m: Report) => {
-    if (m.alert.include) {
-      const i = m.alert.include
-      const dss: Database[] = filterOracleInclude(databases, i)
-      return genDatabaseAlerts(dss, m)
-    } else if (m.alert.exclude) {
-      const e: string[][] = m.alert.exclude
-      const dss: Database[] = filterOracleExclude(databases, e)
-      return genDatabaseAlerts(dss, m)
+  return flatten(oracleAlertConf.map((a: Alert) => {
+    if (a.include) {
+      const dss: Database[] = filterOracleInclude(databases, a.include)
+      return genDatabaseAlerts(dss, a)
+    } else if (a.exclude) {
+      const dss: Database[] = filterOracleExclude(databases, a.exclude)
+      return genDatabaseAlerts(dss, a)
     } else {
-      return genDatabaseAlerts(databases, m)
+      return genDatabaseAlerts(databases, a)
     }
   }))
 }
@@ -49,6 +48,12 @@ export async function getOracleReportQueue(ip: string, service: string): Promise
   return monitorConf.filter((m: Report) => m.category === 'oracle').map(m => m.name)
 }
 
+// export async function getOracleAlertNames(ip: string, service: string): Promise<string[]> {
+
+//   const alertConf: Alert[] = await getAlertConf()
+//   return alertConf.filter((a: Alert) => Category[Category[a.category]] === Category[Category.ORACLE]).map(m => m.name)
+// }
+
 export async function getOSReportQueue(ip: string) {
   const monitorConf: Report[] = await getReportConf()
   console.info(monitorConf)
@@ -57,6 +62,7 @@ export async function getOSReportQueue(ip: string) {
 
 export interface DatabaseAlert {
   name: string
+  cron: string
   ip: string
   service: string
   databaseConnectInfo: DatabaseConnectInfo
@@ -69,12 +75,12 @@ export interface OSAlert {
 }
 
 export function execOracleAlert(): void {
-  getOracleAlertQueue().then(oaqs => ccc(oaqs, []))
+  getOracleAlertQueue().then(oaqs => oaqs.forEach(abc))
 }
 
-export function execOSAlert(): void {
-  getLinuxAlertQueue().then()
-}
+// export function execOSAlert(): void {
+//   getLinuxAlertQueue().then(abc)
+// }
 
 // function bb(OSAlerts: OSAlert[], array) {
 //   if (OSAlerts.length >= 1) {
@@ -93,22 +99,22 @@ export function execOSAlert(): void {
 //   }
 // }
 
-function ccc(databaseAlers: DatabaseAlert[], array) {
-  if (databaseAlers.length >= 1) {
-    const da: DatabaseAlert = databaseAlers.pop()
-    xx(da).then(bool => {
-      if (bool) {
-        array.push([da.ip, da.service, da.name])
-      }
-      ccc(databaseAlers, array)
-    }).catch(err => {
-      array.push([da.ip, da.service, da.name, err])
-      ccc(databaseAlers, array)
-    })
-  } else {
-    replaceData(AlertOracleDB, array)
-  }
-}
+// function ccc(databaseAlers: DatabaseAlert[], array) {
+//   if (databaseAlers.length >= 1) {
+//     const da: DatabaseAlert = databaseAlers.pop()
+//   //   xx(da).then(bool => {
+//   //     if (bool) {
+//   //       array.push([da.ip, da.service, da.name])
+//   //     }
+//   //     ccc(databaseAlers, array)
+//   //   }).catch(err => {
+//   //     array.push([da.ip, da.service, da.name, err])
+//   //     ccc(databaseAlers, array)
+//   //   })
+//   // } else {
+//   //   replaceData(AlertOracleDB, array)
+//   // }
+// }
 
 function filterOracleExclude(databases: Database[], exclude: string[][]): Database[] {
   return databases.filter((db: Database) =>
@@ -134,10 +140,10 @@ function filterShellInclude(nodes: Node[], exclude: string[][]): Node[] {
   )
 }
 
-function genDatabaseAlerts(dss: Database[], m: Report): DatabaseAlert[] {
+function genDatabaseAlerts(dss: Database[], a: Alert): DatabaseAlert[] {
   return dss.map((d: Database) => {
     const dci: DatabaseConnectInfo = { ip: d.ip, port: d.port, service: d.service, user: d.user, password: d.password }
-    return { name: m.alert.name, ip: d.ip, service: d.service, databaseConnectInfo: dci }
+    return { name: a.name, cron: a.cron, ip: d.ip, service: d.service, databaseConnectInfo: dci }
   })
 }
 
@@ -147,3 +153,14 @@ function genOSAlerts(nodes: Node[], m: Report): OSAlert[] {
     return { name: m.alert.name, ip: node.ip, osConnectionInfo: sa }
   })
 }
+
+function abc(da: DatabaseAlert) {
+  const key = `${da.ip}-${da.service}-${da.name}`
+  if (!AlertCronDB.has(key)) {
+    const cronObj: CronJob = new CronJob(da.cron, () => xx(da).then(bool => AlertDB.set(key, bool)), null, true);
+    AlertCronDB.set(key, [cronObj])
+  }
+}
+
+export const AlertCronDB = new Map<string, CronJob[]>()
+export const AlertDB = new Map<string, boolean>()

@@ -1,8 +1,8 @@
 /**
  * Created by zhangxu on 2016/8/3.
  */
-import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import { Injectable } from "@angular/core";
+import { Http, Response } from "@angular/http";
 
 @Injectable()
 export class ApiServices {
@@ -31,6 +31,10 @@ export class ApiServices {
     return this._http.get(`/api/report/oracle/names/${ip}/${service}`).map((res: Response) => res.json())
   }
 
+  getDBAlerttByName(ip: string, service: string, name: string) {
+    return this._http.get(`/api/alert/oracle/${ip}/${service}/${name}`).map((res: Response) => res.json())
+  }
+  
   getOSReportNames(ip: string) {
     return this._http.get(`/api/report/os/names/${ip}`).map((res: Response) => res.json())
   }
@@ -51,11 +55,11 @@ export class ApiServices {
     return this._http.get(`/api/monitor/nc/${ip}/${port}`).map((res: Response) => res.json())
   }
 
-  getxxx(){
+  getxxx() {
     return this._http.get(`/api/nodestest`).map((res: Response) => res.json())
   }
-  
-  getNodeCheck(ip:string){
+
+  getNodeCheck(ip: string) {
     return this._http.get(`/api/check/node/${ip}`).map((res: Response) => res.json())
   }
 }

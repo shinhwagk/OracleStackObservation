@@ -14,14 +14,17 @@
                   ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp }}
                 </span>
                 <div *ngFor="let d of n.databases">
-                <span *ngIf=" d.status !== checkStatus.NORMAL">
+                  <span *ngIf=" d.status !== checkStatus.NORMAL">
                   service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
                 </span>
-                  <a (click)="gotoReportDatabase(n.ip,d.service)"
-                     *ngIf="d.status === checkStatus.NORMAL "
-                     class="list-group-item list-group-item-success" [class.list-group-item-danger]="d.status === checkStatus.DIE" [class.list-group-item-warning]="d.status === checkStatus.DOUBT">
+                  <div *ngIf="d.status === checkStatus.NORMAL " class="list-group-item list-group-item-success" [class.list-group-item-danger]="d.status === checkStatus.DIE"
+                    [class.list-group-item-warning]="d.status === checkStatus.DOUBT">
                     service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 }}
-                  </a>
+                    <div class="btn-group btn-group-sm" role="group" style=" width:100%">
+                      <button (click)="gotoReportDatabase(n.ip,d.service)" type="button" class="btn btn-outline-success btn-sm " style="width:50%">Report</button>
+                      <button *ngIf="d.alert.length >=1" (click)="gotoAlertDatabase(n.ip,d.service,d.alert)" type="button" class="btn btn-outline-danger btn-sm " style="width:50%;">Alert ({{d.alert.length}})</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -31,21 +34,21 @@
     </div>
   </div>
 </div>
-
-<!--<div *ngIf="ff" class="modal fade" id="reportOracle" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">-->
-<!--<div class="modal-dialog modal-lg">-->
-<!--<div class="modal-content">-->
-<!--<report-database [ip]="ip" [service]="service"></report-database>-->
+<!--<div *ngIf="ff " class="modal fade " id="reportOracle " tabindex="-1 " role="dialog " aria-labelledby="myLargeModalLabel
+                      " aria-hidden="true ">-->
+<!--<div class="modal-dialog modal-lg ">-->
+<!--<div class="modal-content ">-->
+<!--<report-database [ip]="ip " [service]="service "></report-database>-->
 <!--</div>-->
 <!--</div>-->
 <!--</div>-->
 
-<!--<div *ngIf="gg" class="modal fade" id="reportOS" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">-->
-<!--<div class="modal-dialog modal-lg">-->
-<!--<div class="modal-content">-->
-<!--<report-os [ip]="ip"></report-os>-->
+<!--<div *ngIf="gg " class="modal fade " id="reportOS " tabindex="-1 " role="dialog " aria-labelledby="myLargeModalLabel
+                      " aria-hidden="true ">-->
+<!--<div class="modal-dialog modal-lg ">-->
+<!--<div class="modal-content ">-->
+<!--<report-os [ip]="ip "></report-os>-->
 <!--</div>-->
 <!--</div>-->
 <!--</div>-->
-
 <router-outlet></router-outlet>

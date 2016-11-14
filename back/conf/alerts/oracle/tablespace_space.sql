@@ -1,4 +1,4 @@
-select count(*) from (select tablespace_name,
+select * from (select tablespace_name,
        round(sum(bytes)) used,
        round(sum(maxbytes)) maxuse,
        round(sum(bytes) / sum(maxbytes) * 100)  userate
