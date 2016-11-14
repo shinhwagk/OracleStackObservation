@@ -1,13 +1,14 @@
 import * as md_store from "./store";
 import { apiNodes } from "./api";
 import * as md_monitor from "./report";
-import { getOracleAlertQueue, getOSReportQueue, execOracleAlert,  getOracleReportQueue } from "./alert";
+import { getOracleAlertQueue, getOSReportQueue, execOracleAlert, getOracleReportQueue } from "./alert";
 import { genPidFile } from "./common";
 import { createLogFolderIfNotExist } from "./logger";
 
 genPidFile()
 createLogFolderIfNotExist()
-execOracleAlert()
+setInterval(() => execOracleAlert(), 60000)
+
 
 const koa = require('koa');
 // const websockify = require('koa-websocket');
