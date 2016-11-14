@@ -8,5 +8,10 @@
     "name": "table_parallel",
     "category": "ORACLE",
     "cron": "0 * * * * *"
+  },
+  {
+    "name": "num_index_5",
+    "category": "ORACLE",
+    "cron": "0 * * * * *"
   }
 ]
