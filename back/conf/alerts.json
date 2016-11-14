@@ -2,11 +2,11 @@
   {
     "name": "tablespace_space",
     "category": "ORACLE",
-    "cron": "* */1 * * * *"
+    "cron": "0 * * * * *"
   },
   {
     "name": "table_parallel",
     "category": "ORACLE",
-    "cron": "* */1 * * * *"
+    "cron": "0 * * * * *"
   }
 ]

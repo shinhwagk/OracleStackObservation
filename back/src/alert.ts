@@ -156,8 +156,14 @@ function genOSAlerts(nodes: Node[], m: Report): OSAlert[] {
 
 function abc(da: DatabaseAlert) {
   const key = `${da.ip}-${da.service}-${da.name}`
+  console.info(key, "    11")
+  console.info(da.cron)
   if (!AlertCronDB.has(key)) {
-    const cronObj: CronJob = new CronJob(da.cron, () => xx(da).then(bool => AlertDB.set(key, bool)), null, true);
+    const cronObj: CronJob = new CronJob(da.cron, () => {
+      xx(da).then(bool => AlertDB.set(key, bool))
+      console.info("cron: " + key + " " + new Date() + " " + da.cron)
+
+    }, null, true);
     AlertCronDB.set(key, [cronObj])
   }
 }
