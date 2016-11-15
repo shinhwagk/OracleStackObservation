@@ -38,7 +38,7 @@
   },
   {
     "name": "ts_undo_usage",
-    "category" :"ts_undo_usage"
+    "category" :"oracle"
   },
   {
     "name": "noindex_wjkey",
@@ -58,8 +58,7 @@
   },
   {
     "name": "no_primary_key",
-    "category": "oracle",
-    "version": ""
+    "category": "oracle"
   },
   {
     "name": "backup_datapump",
