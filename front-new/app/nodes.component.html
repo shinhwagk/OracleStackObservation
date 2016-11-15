@@ -22,7 +22,8 @@
                     service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 | number : '1.0-0' }}s
                     <div class="btn-group btn-group-sm" role="group" style=" width:100%">
                       <button (click)="gotoReportDatabase(n.ip,d.service)" type="button" class="btn btn-outline-success btn-sm" [style.width]="d.alert.length >=1 ? '50%' : '100%'">Report</button>
-                      <button *ngIf="d.alert.length >=1" (click)="gotoAlertDatabase(n.ip,d.service,d.alert)" type="button" class="btn btn-outline-danger btn-sm "
+                      <button *ngIf="d.alert.length >= 1" (click)="gotoAlertDatabase(n.ip,d.service,d.alert)" type="button" class="btn btn-outline-danger btn-sm "
+                        [title]="arrayToString(d.alert)"
                         [style.width]="d.alert.length >=1 ? '50%' : '0%'">Alert ({{d.alert.length}})</button>
                     </div>
                   </div>

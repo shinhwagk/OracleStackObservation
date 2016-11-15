@@ -126,4 +126,10 @@ export class NodesComponent implements OnInit {
 
   checkStatus = CheckStatus
 
+
+  arrayToString(arr: string[]) {
+    let str = ""
+    arr.forEach(o => str += o + '\n')
+    return str
+  }
 }
