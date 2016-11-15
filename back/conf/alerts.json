@@ -13,5 +13,10 @@
     "name": "num_index_5",
     "category": "ORACLE",
     "cron": "0 * * * * *"
+  },
+  {
+    "name": "long_time_exec_of_session",
+    "category": "ORACLE",
+    "cron": "0 * * * * *"
   }
 ]
