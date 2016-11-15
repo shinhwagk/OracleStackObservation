@@ -4,5 +4,6 @@ select
   to_char(START_TIME,'yyyy-mm-dd hh24:mi:ss') START_TIME,
   ELAPSED_SECONDS,
   USERNAME,
-  SQL_ID 
+  SQL_ID,
+  TIME_REMAINING
 from v$SESSION_LONGOPS where ELAPSED_SECONDS >= 10 and TIME_REMAINING >= 1
