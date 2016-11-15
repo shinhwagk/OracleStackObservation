@@ -1,4 +1,4 @@
-import { Node, getNodeConf, getDatabaseConf, Database } from './conf'
+import { NodeConf, getNodeConf, getDatabaseConf, DatabaseConf } from './conf'
 import { makeKey, CheckType } from "./report";
 
 export enum CheckStatus {
@@ -28,15 +28,15 @@ export function replaceData(ar: any[], br: any[]) {
 export const MonitorDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
 
 export async function getAllNodeBaseInfo(ctx) {
-  const ncs: Node[] = await getNodeConf()
-  const dcs: Database[] = await getDatabaseConf()
-  const rep = ncs.map((nc: Node) => {
+  const ncs: NodeConf[] = await getNodeConf()
+  const dcs: DatabaseConf[] = await getDatabaseConf()
+  const rep = ncs.map((nc: NodeConf) => {
     return {
       ip: nc.ip,
       title: nc.title,
       port: nc.port,
       status: nc.status,
-      databases: dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
+      databases: dcs.filter((dc: DatabaseConf) => dc.ip === nc.ip).map((dc: DatabaseConf) => {
         return { service: dc.service, port: dc.port, status: dc.status }
       })
     }

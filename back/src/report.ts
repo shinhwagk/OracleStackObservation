@@ -1,5 +1,5 @@
 import * as os from "os";
-import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf, getCodeByAlert, ReportCategory } from './conf';
+import { getDatabaseConf, DatabaseConf, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf, getCodeByAlert, ReportCategory } from './conf';
 import * as md_tools from "./tools";
 import { getOSInfoByName } from "./tools";
 import { MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB } from "./store";
@@ -219,13 +219,13 @@ export function executeCheckCommand(ca: CommandArguments, f: (commandArguments) 
 
 export async function oracleReportQueue(): Promise<[DatabaseConnectInfo, string, string][]> {
   const reportConf: Report[] = await getReportConf()
-  const databaseConf: Database[] = await getDatabaseConf()
+  const databaseConf: DatabaseConf[] = await getDatabaseConf()
 
   const oracleMonitorConf: Report[] = reportConf.filter((m: Report) => m.category === 'oracle')
 
   let monitorCode: string[][] = await Promise.all(reportConf.map((m: Report) => getCodeByReport(m).then(code => [m.name, code])))
 
-  return flatten(databaseConf.filter((db: Database) => db.status).map((db: Database) => oracleMonitorConf.map((m: Report) => {
+  return flatten(databaseConf.filter((db: DatabaseConf) => db.status).map((db: DatabaseConf) => oracleMonitorConf.map((m: Report) => {
     let dci: DatabaseConnectInfo = {
       ip: db.ip,
       port: db.port,

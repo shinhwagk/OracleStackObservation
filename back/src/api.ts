@@ -1,20 +1,20 @@
-import { getNodeConf, getDatabaseConf, Database, Node } from "./conf";
+import { getNodeConf, getDatabaseConf, DatabaseConf, NodeConf } from "./conf";
 import { CheckInfo, NodeCheckDB, PortCheckDB, AlertOracleDB } from "./store";
 import { CheckType, makeKey } from "./report";
 import { AlertDB } from './alert';
 
 export async function apiNodes(ctx) {
-  const ncs: Node[] = await getNodeConf()
-  const dcs: Database[] = await getDatabaseConf()
+  const ncs: NodeConf[] = await getNodeConf()
+  const dcs: DatabaseConf[] = await getDatabaseConf()
   let temp = []
   const currTIme = new Date().getTime()
 
   const alerts: string[][] = Array.from(AlertDB).filter(a => a[1]).map(a => a[0].split('-'))
-  ncs.forEach((nc: Node) => {
+  ncs.forEach((nc: NodeConf) => {
     const pingKey = makeKey(CheckType.PING, { args: [nc.ip] })
     let pci: CheckInfo = NodeCheckDB.get(pingKey)
     // console.info(pci, "pci")
-    let dc = dcs.filter((dc: Database) => dc.ip === nc.ip).map((dc: Database) => {
+    let dc = dcs.filter((dc: DatabaseConf) => dc.ip === nc.ip).map((dc: DatabaseConf) => {
       const ncKey = makeKey(CheckType.PORT, { args: [dc.ip, dc.port] })
       let nci: CheckInfo = PortCheckDB.get(ncKey)
       // console.info(PortCheckDB, ncKey, "nci")

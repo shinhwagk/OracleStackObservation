@@ -4,8 +4,8 @@ import { readFile } from "./tools";
 let loadConfFun: <T>(string) => Promise<T[]> = (confPath: string) =>
   readFile(confPath).then(JSON.parse).catch(console.info);
 
-export function getNodeConf(): Promise<Node[]> {
-  return loadConfFun<Node>('./conf/nodes.json');
+export function getNodeConf(): Promise<NodeConf[]> {
+  return loadConfFun<NodeConf>('./conf/nodes.json');
 }
 
 export function getReportConf(): Promise<Report[]> {
@@ -73,17 +73,17 @@ export interface AlertConf {
   exclude?: string[][] | string[];
 }
 
-export interface Node {
+export interface NodeConf {
   ip: string
   port: number
   title: string
   status: boolean
   username?: string
   password?: string
-  databases: Database[]
+  databases: DatabaseConf[]
 }
 
-export interface Database {
+export interface DatabaseConf {
   ip?: string
   title?: string
   port: number
@@ -93,18 +93,18 @@ export interface Database {
   service: string
 }
 
-export async function getDatabaseConf(): Promise<Database[]> {
-  const genDatabaseConf = function (node, db): Database {
+export async function getDatabaseConf(): Promise<DatabaseConf[]> {
+  const genDatabaseConf = function (node, db): DatabaseConf {
     return { ip: node.ip, port: db.port, service: db.service, status: db.status, user: db.user, password: db.password }
   }
   return flatten((await getNodeConf()).map(node => node.databases.map(db => genDatabaseConf(node, db))))
 }
 
-export async function getDatabase(ip: string, service: string): Promise<Database> {
+export async function getDatabase(ip: string, service: string): Promise<DatabaseConf> {
   const dc = await getDatabaseConf()
   return dc.filter(d => d.ip === ip && d.service === service)[0]
 }
 
-export async function getNodeByIp(ip: string): Promise<Node> {
+export async function getNodeByIp(ip: string): Promise<NodeConf> {
   return (await getNodeConf()).filter(d => d.ip === ip)[0]
 }
