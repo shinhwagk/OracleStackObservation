@@ -5,8 +5,7 @@
     "title": [
       "rac"
     ],
-    "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]],
-    "version": ""
+    "include": [["10.65.193.13","whlt"],["10.65.193.11","whpay"]]
   },
   {
     "name":"tables_suffering_from_row_chaining_migration",
@@ -55,12 +54,7 @@
   },
   {
     "name": "disk_space",
-    "category": "os",
-    "alert": {
-      "name": "disk_space",
-      "include": [["10.65.193.13","10.65.193.11"]]
-    },
-    "version": ""
+    "category": "os"
   },
   {
     "name": "no_primary_key",
@@ -69,11 +63,6 @@
   },
   {
     "name": "backup_datapump",
-    "category": "os",
-    "alert": {
-      "name": "backup_datapump",
-      "include": [["10.65.193.13","10.65.193.11"]]
-    },
-    "version": ""
+    "category": "os"
   }
 ]

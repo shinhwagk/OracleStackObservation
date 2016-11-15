@@ -1,18 +1,14 @@
 import * as md_cp from "child_process";
 import * as md_ssh2 from "ssh2";
 import * as fs from "fs";
-import {logger} from "./logger";
-import {getCodeByAlert} from "./conf";
-import {OSConnect} from "./ssh";
+import { logger } from "./logger";
+import { getCodeByAlert } from "./conf";
+import { OSConnect } from "./ssh";
 
 export function readFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
+      err ? reject(err) : resolve(data.toString());
     })
   })
 }
@@ -127,17 +123,17 @@ export async function getOSInfoByName(osServer: OSConnectionInfoByKey, name: str
               conn2.exec(`chmod +x ${remoteFile}`, (err, stream) => {
                 stream.on('close', (code, signal) => {
                   console.info("chmod")
-                  OSConnect(osServer, (conn3)=> {
+                  OSConnect(osServer, (conn3) => {
                     conn3.exec(`cd /tmp && /bin/bash ${remoteFile}`, (err, stream) => {
-                        stream.on('close', (code, signal) => {
-                          conn.end();
-                          conn2.end();
-                          conn3.end()
-                        }).on('data', (data)=> {
-                          console.info(`/bin/bash ${remoteFile}`, data.toString())
-                          resolve(data.toString())
-                        }).stderr.on('data', (data) => reject(data.toString()));
-                      }
+                      stream.on('close', (code, signal) => {
+                        conn.end();
+                        conn2.end();
+                        conn3.end()
+                      }).on('data', (data) => {
+                        console.info(`/bin/bash ${remoteFile}`, data.toString())
+                        resolve(data.toString())
+                      }).stderr.on('data', (data) => reject(data.toString()));
+                    }
                     )
                   })
                 }).on('data', (data) => {

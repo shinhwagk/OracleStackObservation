@@ -1,5 +1,5 @@
 import * as os from "os";
-import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf, getCodeByAlert, Category } from './conf';
+import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNodeByIp, getNodeConf, getReportConf, getCodeByAlert, ReportCategory } from './conf';
 import * as md_tools from "./tools";
 import { getOSInfoByName } from "./tools";
 import { MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB } from "./store";
@@ -339,7 +339,7 @@ export async function reportOracleMonitorByName(ctx) {
 }
 
 export async function alertOracleMonitorByName(ctx) {
-  const sql: string = await getCodeByAlert({ name: ctx.params.name, category: Category.ORACLE })
+  const sql: string = await getCodeByAlert({ name: ctx.params.name, category: ReportCategory.DATABASE })
   const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
   ctx.type = 'application/json';
   ctx.body = JSON.stringify(await sqlToArray({

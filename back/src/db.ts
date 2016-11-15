@@ -1,6 +1,6 @@
 import * as oracledb from "oracledb";
 import { IPromise, IConnection } from "oracledb";
-import { getCodeByAlert, Category } from "./conf";
+import { getCodeByAlert, ReportCategory } from "./conf";
 import { DatabaseAlert } from "./alert";
 
 export interface DatabaseConnectInfo {
@@ -38,7 +38,7 @@ export async function sqlToCount(dci: DatabaseConnectInfo, sql: string): Promise
 }
 
 export async function xx(alert: DatabaseAlert): Promise<boolean> {
-  const sql: string = await getCodeByAlert({ name: alert.name, category: Category.ORACLE, cron: alert.cron })
+  const sql: string = await getCodeByAlert({ name: alert.name, category: ReportCategory.DATABASE, cron: alert.cron })
   const countSql: string = `select count(*) from (${sql})`
   const bool = await sqlToCount(alert.databaseConnectInfo, countSql)
   return bool

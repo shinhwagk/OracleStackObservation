@@ -1,4 +1,4 @@
-import { Report, getDatabaseConf, Database, getNodeConf, Node, getReportConf, Alert, getAlertConf, Category } from './conf';
+import { Report, getDatabaseConf, Database, getNodeConf, Node, getReportConf, AlertConf, getAlertConf, ReportCategory } from './conf';
 import { DatabaseConnectInfo, xx } from "./db";
 import { flatten } from "./common";
 import { AlertOracleDB, replaceData } from "./store";
@@ -26,11 +26,11 @@ async function getLinuxAlertQueue() {
 }
 //A[A[abc().a]] === A[A.a]
 export async function getOracleAlertQueue(): Promise<DatabaseAlert[]> {
-  const alertConf: Alert[] = await getAlertConf()
-  const oracleAlertConf: Alert[] = alertConf.filter((a: Alert) => Category[Category[a.category]] === Category[Category.ORACLE])
+  const alertConf: AlertConf[] = await getAlertConf()
+  const oracleAlertConf: AlertConf[] = alertConf.filter((a: AlertConf) => ReportCategory[ReportCategory[a.category]] === ReportCategory[ReportCategory.DATABASE])
   const databases: Database[] = await getDatabaseConf()
 
-  return flatten(oracleAlertConf.map((a: Alert) => {
+  return flatten(oracleAlertConf.map((a: AlertConf) => {
     if (a.include) {
       const dss: Database[] = filterOracleInclude(databases, a.include)
       return genDatabaseAlerts(dss, a)
@@ -140,7 +140,7 @@ function filterShellInclude(nodes: Node[], exclude: string[][]): Node[] {
   )
 }
 
-function genDatabaseAlerts(dss: Database[], a: Alert): DatabaseAlert[] {
+function genDatabaseAlerts(dss: Database[], a: AlertConf): DatabaseAlert[] {
   return dss.map((d: Database) => {
     const dci: DatabaseConnectInfo = { ip: d.ip, port: d.port, service: d.service, user: d.user, password: d.password }
     return { name: a.name, cron: a.cron, ip: d.ip, service: d.service, databaseConnectInfo: dci }

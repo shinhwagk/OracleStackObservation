@@ -1,16 +1,19 @@
 import { flatten } from "./common";
 import { readFile } from "./tools";
 
+let loadConfFun: <T>(string) => Promise<T[]> = (confPath: string) =>
+  readFile(confPath).then(JSON.parse).catch(console.info);
+
 export function getNodeConf(): Promise<Node[]> {
-  return readFile('./conf/nodes.json').then(JSON.parse)
+  return loadConfFun<Node>('./conf/nodes.json');
 }
 
 export function getReportConf(): Promise<Report[]> {
-  return readFile('./conf/reports.json').then(JSON.parse)
+  return loadConfFun<Report>('./conf/reports.json');
 }
 
-export function getAlertConf(): Promise<Alert[]> {
-  return readFile('./conf/alerts.json').then(JSON.parse)
+export function getAlertConf(): Promise<AlertConf[]> {
+  return loadConfFun<AlertConf>('./conf/alerts.json');
 }
 
 export function getCodeByReport(report: Report): Promise<string> {
@@ -21,10 +24,10 @@ export function getCodeByReport(report: Report): Promise<string> {
   }
 }
 
-export function getCodeByAlert(alert: Alert): Promise<string> {
-  if (alert.category === Category.ORACLE) {
+export function getCodeByAlert(alert: AlertConf): Promise<string> {
+  if (alert.category === ReportCategory.DATABASE) {
     return readFile(`./conf/alerts/oracle/${alert.name}.sql`)
-  } else if (alert.category === Category.OS) {
+  } else if (alert.category === ReportCategory.OS) {
     return readFile(`./conf/alerts/os/${alert.name}.sh`)
   }
 }
@@ -44,12 +47,30 @@ export interface Report {
   title?: string[]
 }
 
-export interface Alert {
-  name: string
-  category: Category
-  cron?: string
-  include?: string[][]
-  exclude?: string[][]
+export enum ReportCategory {
+  OS,
+  DATABASE
+}
+
+export interface ReportConf {
+  name: string;
+  title?: string[];
+  category: ReportCategory;
+  include?: string[][] | string[];
+  exclude?: string[][] | string[];
+}
+
+enum DatabaseCategory {
+  ORACLE,
+  MYSQL
+}
+
+export interface AlertConf {
+  name: string;
+  category: ReportCategory;
+  cron: string;
+  include?: string[][] | string[];
+  exclude?: string[][] | string[];
 }
 
 export interface Node {
@@ -70,11 +91,6 @@ export interface Database {
   user?: string
   password?: string
   service: string
-}
-
-export enum Category {
-  OS,
-  ORACLE
 }
 
 export async function getDatabaseConf(): Promise<Database[]> {
