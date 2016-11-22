@@ -50,8 +50,8 @@ stop(){
 help(){
   echo -e "
     -h | -help   print help
-    -start       start data-collect
-    -stop        stop data-collect
+    -start       start oracle-observation
+    -stop        stop oracle-observation
   "
 }
 
