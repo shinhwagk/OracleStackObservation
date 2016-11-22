@@ -60,16 +60,16 @@ npm_install(){
 
   if [ $? -ne 0 ]; then
     echo "npm i error;"
-    echo 1;
+    exit 1;
   fi
 }
 
 gulp_compile(){
-  $NPM_COMMAND run default
+  $NPM_COMMAND run default;
 
   if [ $? -ne 0 ]; then
     echo "npm run default error;"
-    echo 1;
+    exit 1;
   fi
 }
 
