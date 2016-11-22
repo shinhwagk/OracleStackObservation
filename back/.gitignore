@@ -6,3 +6,4 @@ log
 .idea
 .vscode
 RUNNING_PID
+nohup.out
