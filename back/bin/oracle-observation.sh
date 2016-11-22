@@ -56,7 +56,7 @@ help(){
 }
 
 npm_install(){
-  $NPM_COMMAND i;
+  $NPM_COMMAND i --registry=https://registry.npm.taobao.org;
 
   if [ $? -ne 0 ]; then
     echo "npm i error;"
