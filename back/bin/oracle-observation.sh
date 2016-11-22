@@ -28,8 +28,8 @@ process_args(){
 
 start(){
   if [ -f $PID_FILE ]; then
-    echo "pid file exist..."
-    exit 1
+    echo "pid file exist...";
+    exit 1;
   fi
 
   nohup $NODE_COMMAND dist/app.js &
@@ -38,12 +38,12 @@ start(){
 stop(){
   if [ -f $PID_FILE ]
   then
-    app_pid=`cat $PID_FILE`
-    kill -9 $app_pid
-    rm -f $PID_FILE
+    app_pid=`cat $PID_FILE`;
+    kill -9 $app_pid;
+    rm -f $PID_FILE;
   else
-    echo "pid file not exist."
-    exit 1
+    echo "pid file not exist.";
+    exit 1;
   fi
 }
 
@@ -83,4 +83,4 @@ npm_install;
 
 gulp_compile;
 
-process_args $1
+process_args $1;
