@@ -32,7 +32,7 @@ start(){
     exit 1;
   fi
 
-  nohup $NODE_COMMAND dist/app.js &
+  nohup $NODE_COMMAND dist/src/app.js &
 }
 
 stop(){
