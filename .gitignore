@@ -3,3 +3,4 @@ app/**/*.js
 app/**/*.map
 .idea
 npm-debug.log
+dist
