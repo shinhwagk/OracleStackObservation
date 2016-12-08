@@ -1,0 +1,56 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3 col-sm-12" *ngFor="let env of _node_envs">
+      <div class=".column-header">{{env}}</div>
+      <div class=".column-list">
+        <div class="list-group" *ngFor="let n of _env_filter(env); trackBy:trackByHeroes">
+          <div class="list-group-item list-group-item-warning">
+            <div class="list-group">
+              <div class="list-group-item list-group-item-info" [class.list-group-item-danger]="n.status === checkStatus.DIE" [class.list-group-item-warning]="n.status === checkStatus.DOUBT">
+                <a (click)="gotoReportOS(n.ip)" *ngIf="n.status === checkStatus.NORMAL ">
+                  ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp / 1000 | number : '1.0-0' }}s
+                </a>
+                <span *ngIf=" n.status !== checkStatus.NORMAL">
+                  ip: {{ n.ip }} sshPort: {{ n.port }} delay: {{ n.timestamp / 1000 | number : '1.0-0' }}s
+                </span>
+                <div *ngFor="let d of n.databases">
+                  <span *ngIf=" d.status !== checkStatus.NORMAL">
+                  service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 | number : '1.0-0' }}s
+                </span>
+                  <div *ngIf="d.status === checkStatus.NORMAL " class="list-group-item list-group-item-success" [class.list-group-item-danger]="d.status === checkStatus.DIE"
+                    [class.list-group-item-warning]="d.status === checkStatus.DOUBT">
+                    service: {{d.service}} port: {{d.port}} delay: {{ d.timestamp / 1000 | number : '1.0-0' }}s
+                    <div class="btn-group btn-group-sm" role="group" style=" width:100%">
+                      <button (click)="gotoReportDatabase(n.ip,d.service)" type="button" class="btn btn-outline-success btn-sm" [style.width]="d.alert.length >=1 ? '50%' : '100%'">Report</button>
+                      <button *ngIf="d.alert.length >= 1" (click)="gotoAlertDatabase(n.ip,d.service,d.alert)" type="button" class="btn btn-outline-danger btn-sm "
+                        [title]="arrayToString(d.alert)"
+                        [style.width]="d.alert.length >=1 ? '50%' : '0%'">Alert ({{d.alert.length}})</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<div *ngIf="ff " class="modal fade " id="reportOracle " tabindex="-1 " role="dialog " aria-labelledby="myLargeModalLabel
+                      " aria-hidden="true ">-->
+<!--<div class="modal-dialog modal-lg ">-->
+<!--<div class="modal-content ">-->
+<!--<report-database [ip]="ip " [service]="service "></report-database>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div *ngIf="gg " class="modal fade " id="reportOS " tabindex="-1 " role="dialog " aria-labelledby="myLargeModalLabel
+                      " aria-hidden="true ">-->
+<!--<div class="modal-dialog modal-lg ">-->
+<!--<div class="modal-content ">-->
+<!--<report-os [ip]="ip "></report-os>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<router-outlet></router-outlet>
