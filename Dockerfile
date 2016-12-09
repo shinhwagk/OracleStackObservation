@@ -2,8 +2,8 @@ FROM node:latest
 
 RUN npm i -g yarn
 
-RUN mkdir -p workfolder
-WORKDIR workfolder
+RUN mkdir -p workfolder/front
+WORKDIR workfolder/front
 
 # clean docker cache when package.json update 
 ADD package.json .
