@@ -15,4 +15,4 @@ function updateOrCreateSerivce(){
 updateOrCreateSerivce front
 updateOrCreateSerivce nginx
 
-docker-compose up
+docker-compose up --build
