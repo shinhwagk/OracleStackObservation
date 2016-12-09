@@ -4,6 +4,8 @@ services:
     build: 
       context: ./front
       dockerfile: Dockerfile
+    volumes:
+      - ~/.cache:/root/.cache
     container_name: oraclestacklbservation-front
     image: oraclestacklbservation-front:latest
   nginx:
