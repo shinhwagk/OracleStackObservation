@@ -1,3 +1,4 @@
 #!/bin/bash
 mkdir -p /opt/OracleStackObservation && cd /opt/OracleStackObservation;
-git clone -b front https://github.com/shinhwagk/OracleStackObservation --depth=1
+curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/build/docker-compose.yml > docker-compose.yml
+git clone -b front https://github.com/shinhwagk/OracleStackObservation front --depth=1

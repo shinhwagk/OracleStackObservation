@@ -2,4 +2,6 @@ version: '2'
 services: 
   front:
     build: 
-      context: 
+      context: ./front
+      dockerfile: Dockerfile
+    image: oraclestacklbservation-front:latest
