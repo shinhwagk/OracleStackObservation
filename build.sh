@@ -5,13 +5,13 @@ curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/bu
 function updateOrCreateSerivce(){
   itemName=$1
   if [[ -d $itemName ]]; then
-    cd $itemName;
-    git pull;
-    cd ..
+    cd $itemName && git pull
   else
     git clone -b $itemName https://github.com/shinhwagk/OracleStackObservation $itemName --depth=1
   fi
 }
+
+cd /opt/OracleStackObservation;
 
 updateOrCreateSerivce front
 updateOrCreateSerivce nginx
