@@ -1,5 +1,7 @@
 FROM node:latest
 
+RUN npm i -g yarn
+
 RUN mkdir -p workfolder
 WORKDIR workfolder
 
@@ -8,6 +10,7 @@ ADD package.json .
 RUN yarn install
 
 # clean docker cache when app code update
+ADD webpack.config.js   .
 ADD tsconfig.json       .
 ADD systemjs.config.js  .
 ADD index.html          .
