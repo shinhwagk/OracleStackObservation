@@ -6,3 +6,11 @@ services:
       dockerfile: Dockerfile
     container_name: oraclestacklbservation-front
     image: oraclestacklbservation-front:latest
+  nginx:
+    image: nginx:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: oraclestacklbservation-nginx
+    volumes:
+      - oraclestacklbservation-front:/workfolder/dist
