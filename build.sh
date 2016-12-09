@@ -2,17 +2,18 @@
 mkdir -p /opt/OracleStackObservation && cd /opt/OracleStackObservation;
 curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/build/docker-compose.yml > docker-compose.yml
 
-function updateItem(){
-  itemname=$1
-  if [[ -d $1 ]]; then
-    cd $itemname;
+function updateOrCreateSerivce(){
+  itemName=$1
+  if [[ -d $itemName ]]; then
+    cd $itemName;
     git pull;
+    cd ..
   else
-    git clone -b itemname https://github.com/shinhwagk/OracleStackObservation itemname --depth=1
+    git clone -b $itemName https://github.com/shinhwagk/OracleStackObservation $itemName --depth=1
   fi
 }
 
-updateItem front
-updateItem nginx
+updateOrCreateSerivce front
+updateOrCreateSerivce nginx
 
 docker-compose up
