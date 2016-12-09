@@ -17,6 +17,6 @@ services:
     container_name: oraclestacklbservation-nginx
     image: oraclestacklbservation-nginx:latest
     volumes_from:
-      - front:/workfolder/front
+      - front
     ports:
       - "80:80"
