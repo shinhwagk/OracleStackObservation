@@ -5,7 +5,7 @@ WORKDIR workfolder
 
 # clean docker cache when package.json update 
 ADD package.json .
-RUN npm i --registry=https://registry.npm.taobao.org
+RUN yarn install
 
 # clean docker cache when app code update
 ADD tsconfig.json       .
@@ -14,4 +14,4 @@ ADD index.html          .
 ADD styles.css          .
 ADD app                 app
 
-RUN npm run webpack
+RUN yarn run webpack
