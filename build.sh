@@ -12,8 +12,6 @@ function updateOrCreateSerivce(){
   fi
 }
 
-cd /opt/OracleStackObservation;
-
 updateOrCreateSerivce front
 updateOrCreateSerivce nginx
 
