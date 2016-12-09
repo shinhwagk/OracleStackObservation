@@ -5,8 +5,9 @@ curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/bu
 function updateOrCreateSerivce(){
   itemName=$1
   if [[ -d $itemName ]]; then
-    cd $itemName && git pull
+    git --git-dir=$itemName/.git pull
   else
+    echo "info: git clone branch ${itemName}.";
     git clone -b $itemName https://github.com/shinhwagk/OracleStackObservation $itemName --depth=1
   fi
 }
