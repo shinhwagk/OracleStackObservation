@@ -12,8 +12,8 @@ function updateOrCreateSerivce(){
   fi
 }
 
-updateOrCreateSerivce front
-updateOrCreateSerivce nginx
+updateOrCreateSerivce "front"
+updateOrCreateSerivce "nginx"
 
 docker-compose rm -f # delete service front volumes
 docker-compose up --build --force-recreate -d
