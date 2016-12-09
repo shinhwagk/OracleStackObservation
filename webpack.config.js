@@ -23,7 +23,7 @@ module.exports = {
       { from: 'systemjs.config.js', to: '.' }
     ]),
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: 'webpack.template.html',
       title: 'Note Back',
       inject: 'head'
     }),
