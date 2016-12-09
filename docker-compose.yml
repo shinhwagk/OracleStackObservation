@@ -12,5 +12,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: oraclestacklbservation-nginx
-    volumes:
-      - oraclestacklbservation-front:/workfolder/dist
+    volumes_from:
+      - front:/workfolder/front
+    ports:
+      - "80:80"
