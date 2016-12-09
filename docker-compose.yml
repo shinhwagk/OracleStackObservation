@@ -8,12 +8,13 @@ services:
       - ~/.cache:/root/.cache
     container_name: oraclestacklbservation-front
     image: oraclestacklbservation-front:latest
-  nginx:
+  web:
     image: nginx:latest
     build:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: oraclestacklbservation-nginx
+    image: oraclestacklbservation-nginx:latest
     volumes_from:
       - front:/workfolder/front
     ports:
