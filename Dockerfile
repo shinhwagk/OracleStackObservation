@@ -10,11 +10,10 @@ ADD package.json .
 RUN yarn install
 
 # clean docker cache when app code update
-ADD systemjs.config.js  .
-ADD webpack.config.js   .
-ADD tsconfig.json       .
-ADD index.html          .
-ADD styles.css          .
-ADD app                 app
+ADD webpack.config.js     .
+ADD tsconfig.json         .
+ADD webpack.template.html .
+ADD styles.css            .
+ADD app                   app
 
 RUN yarn run webpack
