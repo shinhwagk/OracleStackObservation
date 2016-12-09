@@ -14,4 +14,4 @@ ADD index.html          .
 ADD styles.css          .
 ADD app                 app
 
-RUN npm run wbpack
+RUN npm run webpack
