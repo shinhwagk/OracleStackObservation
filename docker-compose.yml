@@ -6,9 +6,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ~/.cache:/root/.cache
+      - /workfolder
     container_name: oraclestacklbservation-front
     image: oraclestacklbservation-front:latest
-  web:
+  nginx:
     image: nginx:latest
     build:
       context: ./nginx
