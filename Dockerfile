@@ -1,8 +1,6 @@
 FROM nginx:latest
 
-WORKDIR /etc/nginx/
-
-ADD nginx.conf .
+ADD nginx.conf /etc/nginx
 
 EXPOSE 80 443
 
