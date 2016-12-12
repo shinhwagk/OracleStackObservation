@@ -20,7 +20,6 @@ module.exports = {
       { from: 'app/**/*.html', to: '.' },
       { from: 'app/**/*.css', to: '.' },
       { from: 'styles.css', to: '.' },
-      { from: 'systemjs.config.js', to: '.' }
     ]),
     new HtmlWebpackPlugin({
       template: 'webpack.template.html',
