@@ -1,4 +1,9 @@
-.navbar {
+/*.navbar {
     background-color: #4AA9EA;
     padding: 0.1rem 1rem;
+}*/
+
+.dropdown-menu {
+    min-width: 10rem;
+    border-color:snow
 }

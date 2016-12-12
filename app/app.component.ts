@@ -8,4 +8,7 @@ import { Component } from "@angular/core";
 
 export class AppComponent {
   b = false
+
+
+  ser_test = [['10.65.193.11','whpay'],['10.65.193.27','whdb2']]
 }

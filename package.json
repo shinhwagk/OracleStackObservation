@@ -2,6 +2,7 @@
   "name": "oraclestackobservation-front",
   "version": "1.0.0",
   "scripts": {
+    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "webpack": "webpack"
