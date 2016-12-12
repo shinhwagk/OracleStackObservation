@@ -31,7 +31,9 @@
           </div>
           <div class="col-sm-6">
             <div id="test" style="visibility:hidden">
-              <a *ngFor="let ser of ser_test" routerLink="/report/oracle/{{ser[0]}}/{{ser[1]}}">{{ser[0]}}/{{ser[1]}}</a>
+              <div class="list-group">
+                <a *ngFor="let ser of ser_test" class="list-group-item" routerLink="/report/oracle/{{ser[0]}}/{{ser[1]}}">{{ser[0]}}/{{ser[1]}}</a>
+              </div>
             </div>
             <div><a id="dev" style="visibility:hidden">fff2</a></div>
             <div><a id="yali" style="visibility:hidden">fff3</a></div>
