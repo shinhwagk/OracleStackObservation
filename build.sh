@@ -1,6 +1,7 @@
 #!/bin/bash
-mkdir -p /opt/OracleStackObservation && cd /opt/OracleStackObservation;
+# mkdir -p /opt/OracleStackObservation && cd /opt/OracleStackObservation;
 # curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/build/docker-compose.yml > docker-compose.yml;
+cd /opt/OracleStackObservation;
 
 function updateOrCreateSerivce(){
   itemName=$1
