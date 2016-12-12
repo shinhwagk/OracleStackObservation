@@ -5,10 +5,9 @@ import {Location} from "@angular/common";
 import {ApiServices} from "./api.services";
 
 @Component({
-  moduleId: module.id,
   selector: 'report-database',
-  templateUrl: 'report.database.component.html',
-  styleUrls: ['report.database.component.css'],
+  templateUrl: 'app/report.database.component.html',
+  styleUrls: ['app/report.database.component.css'],
   providers: [ApiServices]
 })
 

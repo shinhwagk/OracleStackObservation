@@ -8,10 +8,9 @@ import { CheckStatus } from "./checkstatus.enum";
 import { Router } from "@angular/router";
 
 @Component({
-  moduleId: module.id,
   selector: 'monitor-nodes',
-  templateUrl: 'nodes.component.html',
-  styleUrls: ['nodes.component.css'],
+  templateUrl: 'app/nodes.component.html',
+  styleUrls: ['app/nodes.component.css'],
   providers: [ApiServices]
 })
 

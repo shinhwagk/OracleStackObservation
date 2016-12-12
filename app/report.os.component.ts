@@ -5,10 +5,9 @@ import { Location } from '@angular/common'
 import { ApiServices } from "./api.services";
 
 @Component({
-  moduleId: module.id,
   selector: 'report-os',
-  templateUrl: 'report.os.component.html',
-  styleUrls: ['report.os.component.css'],
+  templateUrl: 'app/report.os.component.html',
+  styleUrls: ['app/report.os.component.css'],
   providers: [ApiServices]
 })
 

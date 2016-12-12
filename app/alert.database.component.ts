@@ -5,10 +5,9 @@ import { Location } from "@angular/common";
 import { ApiServices } from "./api.services";
 
 @Component({
-  moduleId: module.id,
   selector: 'alert-database',
-  templateUrl: 'alert.database.component.html',
-  styleUrls: ['alert.database.component.css'],
+  templateUrl: 'app/alert.database.component.html',
+  styleUrls: ['app/alert.database.component.css'],
   providers: [ApiServices]
 })
 
