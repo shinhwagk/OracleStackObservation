@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p /opt/OracleStackObservation && cd /opt/OracleStackObservation;
-curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/build/docker-compose.yml > docker-compose.yml;
+# curl -LsSf https://raw.githubusercontent.com/shinhwagk/OracleStackObservation/build/docker-compose.yml > docker-compose.yml;
 
 function updateOrCreateSerivce(){
   itemName=$1
@@ -16,4 +16,4 @@ updateOrCreateSerivce "front";
 updateOrCreateSerivce "nginx";
 
 docker-compose rm -f; # delete service front volumes
-docker-compose up --build --force-recreate -d;
+docker-compose up --build -d;
