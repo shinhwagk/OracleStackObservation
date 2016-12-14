@@ -4,6 +4,7 @@
 }*/
 
 .dropdown-menu {
-    min-width: 16rem;
-    border-color:snow
+    min-width: 20rem;
+    /*width: 10rem;*/
+    border-color:snow;
 }

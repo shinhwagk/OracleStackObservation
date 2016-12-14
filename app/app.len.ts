@@ -11,7 +11,7 @@ export class HighlightDirective {
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hiddenAll()
-    document.getElementById(this.id).style.visibility = "visible";
+    document.getElementById(this.id).style.display = "block";
   }
 
   @HostListener('mouseleave') onMouseLeave() {
@@ -19,7 +19,7 @@ export class HighlightDirective {
   }
 
   hiddenAll() {
-    this.sers.forEach(id => document.getElementById(id).style.visibility = "hidden")
+    this.sers.forEach(id => document.getElementById(id).style.display = "none")
   }
 
   sers = ['test', 'dev', 'lt', 'yali']

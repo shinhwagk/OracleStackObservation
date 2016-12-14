@@ -10,6 +10,7 @@ import { AlertDatabaseComponent } from "./alert.database.component";
 import { ReportOsComponent } from "./report.os.component";
 import { AppRoutingModule } from './app-routing.module';
 import { HighlightDirective } from './app.len';
+import { AlertsComponent } from './alert.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { HighlightDirective } from './app.len';
     ReportDatabaseComponent,
     AlertDatabaseComponent,
     ReportOsComponent,
+    AlertsComponent,
     HighlightDirective
   ],
   bootstrap: [AppComponent]
