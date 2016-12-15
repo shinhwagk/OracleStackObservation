@@ -6,7 +6,10 @@ import { node } from './node';
   selector: 'alerts',
   template: `
     <div *ngFor="let n of rsarr">
-      <h2> {{ n[0] }} </h2>
+      <h3> {{ n[0] }} </h3>
+      <div *ngFor="let i of n[1]">
+        {{ i | json }}
+      </div>
     </div>
   `,
   providers: [ApiServices]
