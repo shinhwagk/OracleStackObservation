@@ -7,7 +7,9 @@ import { node } from './node';
   template: `
     <div *ngFor="let n of rsarr">
       <h3> {{ n[0] }} </h3>
-      {{ n[1] | json }}
+      <div *ngFor="let i of n[1]">
+        {{ i | json }}
+      </div>
     </div>
   `,
   providers: [ApiServices]
@@ -39,7 +41,7 @@ export class AlertsComponent implements OnInit {
   getAlertByName(ip, service, name: string): void {
     this._api.getDBAlerttByName(ip, service, name).toPromise().then(str => {
       this.rs.get(ip + " " + service).set(name, str)
-      this.rsarr = Array.from(this.rs).slice()
+      this.rsarr = JSON.parse(JSON.stringify(this.rs))
       // this.report_a.set(name, str)
       // this.report = Array.from(this.report_a).slice()
     })
