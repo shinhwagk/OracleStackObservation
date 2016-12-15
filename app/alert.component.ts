@@ -9,11 +9,64 @@ import { node } from './node';
       <h3> {{ n[0] }} </h3>
       <div *ngFor="let i of n[1]">
         <h4>{{ i[0] }}</h4>
-        <div *ngFor="let d of i[1]">
-          {{ d | json }}
-        </div>
+          <table border="1">
+            <tr>
+              <th class="awrbg" *ngFor="let col of i[1][0]"> {{col}}</th>
+            </tr>
+            <tr *ngFor="let cols of i[1]; let i=index">
+              <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
+                <span *ngIf="i >=1">{{col}}</span>
+              </td>
+            </tr>
+          </table>
       </div>
     </div>
+  `,
+  styles:`
+    th.awrbg {
+        font: bold 8pt Arial, Helvetica, Geneva, sans-serif;
+        color: White;
+        background: #0066CC;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-bottom: 2px
+    }
+
+    td {
+        font: 8pt Arial, Helvetica, Geneva, sans-serif;
+        color: black;
+        vertical-align: top;
+    }
+
+    td.awrcgk {
+        font: 8pt Arial, Helvetica, Geneva, sans-serif;
+        color: black;
+        background: #FFFFCC;
+        vertical-align: top;
+    }
+
+    .body {
+        font: bold 10pt Arial, Helvetica, Geneva, sans-serif;
+        color: black;
+        background: White;
+        padding: 5px 5px 5px;
+    }
+
+    table {
+        border-collapse: separate;
+    }
+
+    .awr {
+        font: bold 19pt Arial, Helvetica, Geneva, sans-serif;
+        color: #336699;
+        background-color: White;
+        border-bottom: 1px solid #cccc99;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        padding: 0px 0px 0px 0px;
+    }
+
+    p {font-weight: bold}
   `,
   providers: [ApiServices]
 })
