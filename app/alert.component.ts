@@ -1,10 +1,40 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
+import { ApiServices } from './api.services';
+import { node } from './node';
 
 @Component({
   selector: 'alerts',
-  template: ``
+  template: `
+    {{rs | json}}
+  `,
+  providers: [ApiServices]
 })
 
-export class AlertsComponent {
+export class AlertsComponent implements OnInit {
+  ngOnInit() {
+    this._api.getNodeInfo().toPromise().then(nodes => {
+      const alertNodes = nodes.filter(node => node.databases[0].alert.length >= 1)
+      alertNodes.forEach(node => {
+        const ip = node.ip
+        const service = node.databases[0].service
+        const alerts: string[] = node.databases[0].alert
+        const alertMap = new Map<string, Array<any>>()
+        this.rs.set(ip, alertMap)
+        alerts.forEach(name => this.getAlertByName(ip, service, name))
+      })
+    })
+  }
+  report_a = new Map<string, Array<any>>()
 
+  rs = new Map<string, Map<string, Array<any>>>()
+
+  constructor(private _api: ApiServices) { }
+
+  getAlertByName(ip, service, name: string): void {
+    this._api.getDBAlerttByName(ip, service, name).toPromise().then(str => {
+      this.rs.get(ip).set(name, str)
+      // this.report_a.set(name, str)
+      // this.report = Array.from(this.report_a).slice()
+    })
+  }
 }
