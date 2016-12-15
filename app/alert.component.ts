@@ -22,7 +22,7 @@ import { node } from './node';
       </div>
     </div>
   `,
-  styles:`
+  styles:[`
     th.awrbg {
         font: bold 8pt Arial, Helvetica, Geneva, sans-serif;
         color: White;
@@ -67,7 +67,7 @@ import { node } from './node';
     }
 
     p {font-weight: bold}
-  `,
+  `],
   providers: [ApiServices]
 })
 
