@@ -5,7 +5,12 @@ import { node } from './node';
 @Component({
   selector: 'alerts',
   template: `
-    {{rs | json}}
+    <div *ngFor="let n of rsarr">
+      <h2> {{ n[0] }}</h2>
+      <div *ngFor="let i of n[1]">
+          {{ i[0] }}
+      </div>
+    </div>
   `,
   providers: [ApiServices]
 })
@@ -19,20 +24,24 @@ export class AlertsComponent implements OnInit {
         const service = node.databases[0].service
         const alerts: string[] = node.databases[0].alert
         const alertMap = new Map<string, Array<any>>()
-        this.rs.set(ip, alertMap)
+        this.rs.set(ip + " " + service, alertMap)
         alerts.forEach(name => this.getAlertByName(ip, service, name))
       })
     })
   }
+
   report_a = new Map<string, Array<any>>()
 
   rs = new Map<string, Map<string, Array<any>>>()
+
+  rsarr = []
 
   constructor(private _api: ApiServices) { }
 
   getAlertByName(ip, service, name: string): void {
     this._api.getDBAlerttByName(ip, service, name).toPromise().then(str => {
-      this.rs.get(ip).set(name, str)
+      this.rs.get(ip + " " + service).set(name, str)
+      this.rsarr = Array.from(this.rs).slice()
       // this.report_a.set(name, str)
       // this.report = Array.from(this.report_a).slice()
     })
