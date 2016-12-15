@@ -8,17 +8,17 @@ import { node } from './node';
     <div *ngFor="let n of rsarr">
       <h3> {{ n[0] }} </h3>
       <div *ngFor="let i of n[1]">
-        <h4>{{ i[0] }}</h4>
-          <table border="1">
-            <tr>
-              <th class="awrbg" *ngFor="let col of i[1][0]"> {{col}}</th>
-            </tr>
-            <tr *ngFor="let cols of i[1]; let i=index">
-              <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
-                <span *ngIf="i >=1">{{col}}</span>
-              </td>
-            </tr>
-          </table>
+        <p>{{ i[0] }}</p>
+        <table border="1">
+          <tr>
+            <th class="awrbg" *ngFor="let col of i[1][0]"> {{col}}</th>
+          </tr>
+          <tr *ngFor="let cols of i[1]; let i=index">
+            <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
+              <span *ngIf="i >=1">{{col}}</span>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   `,
