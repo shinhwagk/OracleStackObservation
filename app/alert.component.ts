@@ -8,7 +8,10 @@ import { node } from './node';
     <div *ngFor="let n of rsarr">
       <h3> {{ n[0] }} </h3>
       <div *ngFor="let i of n[1]">
-        {{ i[0] }}
+        <h4>{{ i[0] }}</h4>
+        <div *ngFor="let d of i[1]">
+          {{ d | json }}
+        </div>
       </div>
     </div>
   `,
