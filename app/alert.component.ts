@@ -7,9 +7,7 @@ import { node } from './node';
   template: `
     <div *ngFor="let n of rsarr">
       <h3> {{ n[0] }} </h3>
-      <div *ngFor="let i of n[1]">
-        {{ i | json }}
-      </div>
+      {{ n[1] | json }}
     </div>
   `,
   providers: [ApiServices]
