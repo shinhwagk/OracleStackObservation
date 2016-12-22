@@ -1,0 +1,17 @@
+<table>
+    <tr *ngFor="let r of _report">
+        <td>r[0]</td>
+        <td>
+            <table border="1" *ngIf="r[1].length >= 1">
+                <tr>
+                    <th class="awrbg" *ngFor="let col of r[1][0]"> {{col}}</th>
+                </tr>
+                <tr *ngFor="let cols of r[1]; let i=index">
+                    <td [class.awrcgk]="i % 2 == 0" *ngFor="let col of cols">
+                        <span *ngIf="i >=1">{{col}}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

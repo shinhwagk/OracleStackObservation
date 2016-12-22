@@ -15,6 +15,10 @@ export class ApiServices {
     return this._http.get(this._node_info_url).map((res: Response) => res.json())
   }
 
+  // getDisk(ip: string) {
+  //   return this._http.get(`/api/os/disk/${ip}`).map((res: Response) => res.json())
+  // }
+
   getAlert() {
     return this._http.get("nodes/alert.json").map((res: Response) => res.json())
   }
@@ -34,7 +38,7 @@ export class ApiServices {
   getDBAlerttByName(ip: string, service: string, name: string) {
     return this._http.get(`/api/alert/oracle/${ip}/${service}/${name}`).map((res: Response) => res.json())
   }
-  
+
   getOSReportNames(ip: string) {
     return this._http.get(`/api/report/os/names/${ip}`).map((res: Response) => res.json())
   }
