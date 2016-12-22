@@ -38,4 +38,5 @@ export class DiskComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+  isSpecial= true
 }
