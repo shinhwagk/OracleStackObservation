@@ -7,3 +7,6 @@ log
 .vscode
 RUNNING_PID
 nohup.out
+/project/target
+/target
+/.idea
