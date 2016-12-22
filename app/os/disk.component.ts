@@ -29,8 +29,8 @@ export class DiskComponent implements OnInit {
   _report = []
 
   getDiskInfo(ip: string) {
-    this._api.getOSReportByName(ip, "disk_space").toPromise().then(json =>{
-      this._disk.set(ip, JSON.parse(json))
+    this._api.getOSReportByName(ip, "disk_space").toPromise().then(diskinfo => {
+      this._disk.set(ip, diskinfo)
       this._report = Array.from(this._disk).slice()
     })
   }
