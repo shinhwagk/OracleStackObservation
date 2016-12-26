@@ -1,14 +1,35 @@
 import { Component } from "@angular/core";
 
+import { ApiServices } from './api.services';
+
 @Component({
   selector: 'monitor',
   templateUrl: 'app/app.component.html',
-  styleUrls: ['app/app.component.css']
+  styleUrls: ['app/app.component.css'],
+  providers: [ApiServices]
 })
 
 export class AppComponent {
-  b = false
 
+  constructor(private _api: ApiServices) {
+    this.alertCSS()
+  }
+
+  alertCSS() {
+    this._api.getNodes().toPromise().then(notes => {
+      const t = [].concat.apply([], [].concat.apply([], notes.map(note => note.databases.map(ds => ds.alert))))
+      if (t.length >= 1) {
+        this.alertcss = true
+        this.alertnum = t.length
+      } else {
+        this.alertcss = false
+      }
+    })
+  }
+  alertcss = false
+  alertnum = 0
+
+  b = false
 
   ser_test = [
     ['10.65.193.11', 'whpay'],
