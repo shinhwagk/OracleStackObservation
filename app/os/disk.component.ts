@@ -38,5 +38,15 @@ export class DiskComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-  isSpecial= true
+
+  setStyles(cols) {
+    let val = Number(cols[4].split("%")[0])
+    let styles = { 'background-color': 'normal' }
+    if (val >= 80 && val < 90) {
+      styles = { 'background-color': "yellow" };
+    } else if (val >= 90) {
+      styles = { 'background-color': "red" };
+    }
+    return styles;
+  }
 }

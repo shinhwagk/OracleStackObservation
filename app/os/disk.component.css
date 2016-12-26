@@ -20,6 +20,13 @@ td.awrcgk {
     vertical-align: top;
 }
 
+tr.awrcgk {
+    font: 8pt Arial, Helvetica, Geneva, sans-serif;
+    color: black;
+    background: #FFFFCC;
+    vertical-align: top;
+}
+
 .body {
     font: bold 10pt Arial, Helvetica, Geneva, sans-serif;
     color: black;
