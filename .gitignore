@@ -7,3 +7,6 @@ log
 .vscode
 RUNNING_PID
 nohup.out
+conf/email.json
+conf/phone.json
+pmail.py
