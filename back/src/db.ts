@@ -1,4 +1,4 @@
-import * as oracledb from "oracledb";
+// import * as oracledb from "oracledb";
 // import { IPromise, IConnection } from "oracledb";
 import { getCodeByAlert, Category } from "./conf";
 import { DatabaseAlert } from "./alert";
