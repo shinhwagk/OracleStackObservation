@@ -1,41 +1,43 @@
 {
-  "name": "ci",
-  "version": "0.0.1",
-  "description": "Minimal koa repository",
-  "main": "app.js",
-  "scripts": {
-    "start": "tsc && concurrently \"tsc -w\" \"supervisor src/app.js\" ",
-    "tsc": "tsc",
-    "build": "tsc -p .",
-    "tsc:w": "tsc -w",
-    "watch": "gulp watch",
-    "default": "gulp"
-  },
-  "author": "shinhwagk",
-  "license": "ISC",
-  "dependencies": {
-    "@types/cron": "^1.0.30",
-    "@types/koa": "2.0.33",
-    "@types/koa-router": "7.0.21",
-    "@types/nconf": "0.0.32",
-    "@types/oracledb": "1.5.32",
-    "@types/ssh2": "0.5.33",
-    "@types/winston": "0.0.28",
-    "cron": "1.1.1",
-    "koa": "^2.0.0",
-    "koa-router": "^7.0.0",
-    "nconf": "0.8.4",
-    "oracledb": "^1.11.0",
-    "ssh2": "^0.5.2",
-    "winston": "2.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "^6.0.46",
-    "concurrently": "^2.2.0",
-    "gulp": "3.9.1",
-    "gulp-cli": "1.2.2",
-    "gulp-typescript": "3.0.2",
-    "supervisor": "0.11.0",
-    "typescript": "^2.0.3"
-  }
+    "name": "ci",
+    "version": "0.0.1",
+    "description": "Minimal koa repository",
+    "main": "app.js",
+    "scripts": {
+        "start": "tsc && concurrently \"tsc -w\" \"supervisor src/app.js\" ",
+        "tsc": "tsc",
+        "build": "tsc -p .",
+        "tsc:w": "tsc -w",
+        "watch": "gulp watch",
+        "default": "gulp"
+    },
+    "author": "shinhwagk",
+    "license": "ISC",
+    "dependencies": {
+        "@types/axios": "^0.9.34",
+        "@types/cron": "^1.0.30",
+        "@types/koa": "2.0.33",
+        "@types/koa-router": "7.0.21",
+        "@types/nconf": "0.0.32",
+        "@types/request": "0.0.37",
+        "@types/ssh2": "0.5.33",
+        "@types/winston": "0.0.28",
+        "axios": "^0.15.3",
+        "cron": "1.1.1",
+        "koa": "^2.0.0",
+        "koa-router": "^7.0.0",
+        "nconf": "0.8.4",
+        "request": "^2.79.0",
+        "ssh2": "^0.5.2",
+        "winston": "2.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^6.0.46",
+        "concurrently": "^2.2.0",
+        "gulp": "3.9.1",
+        "gulp-cli": "1.2.2",
+        "gulp-typescript": "3.0.2",
+        "supervisor": "0.11.0",
+        "typescript": "^2.0.3"
+    }
 }

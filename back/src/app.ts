@@ -1,13 +1,15 @@
 import * as md_store from "./store";
 import { apiNodes } from "./api";
 import * as md_monitor from "./report";
-import { getOracleAlertQueue, getOSReportQueue, execOracleAlert, getOracleReportQueue } from "./alert";
+import { getOracleAlertQueue, getOSReportQueue, execOracleAlert, getOracleReportQueue, AlertDB } from './alert';
 import { genPidFile } from "./common";
 import { createLogFolderIfNotExist } from "./logger";
 
 genPidFile()
 createLogFolderIfNotExist()
-setInterval(() => execOracleAlert(), 60000)
+// setInterval(() => execOracleAlert(), 60000)
+execOracleAlert()
+setInterval(()=>console.info(AlertDB),3000)
 
 
 const koa = require('koa');

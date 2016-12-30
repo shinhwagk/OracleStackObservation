@@ -3,9 +3,11 @@ import { getDatabaseConf, Database, getCodeByReport, Report, getDatabase, getNod
 import * as md_tools from "./tools";
 import { getOSInfoByName } from "./tools";
 import { MonitorDB, CheckStatus, CheckInfo, NodeCheckDB, PortCheckDB } from "./store";
-import { DatabaseConnectInfo, sqlToArray } from "./db";
+// import { DatabaseConnectInfo, sqlToArray } from "./db";
+import { DatabaseConnectInfo } from "./db";
 import { flatten } from "./common";
 import * as cron from "cron";
+import * as axios from 'axios';
 
 export enum CheckType {
   PING,
@@ -261,24 +263,24 @@ export async function oracleReportQueue(): Promise<[DatabaseConnectInfo, string,
 
 let c: [string, string, any][] = []
 
-function aaa(dss: [DatabaseConnectInfo, string, string][], rs): void {
-  if (dss.length === 0) {
-    c = rs
-  } else {
-    const ds = dss.pop()
-    const dc = ds[0]
-    const sql = dc[2]
-    const ip = dc.ip
-    const service = dc.service
-    sqlToArray(dc, sql).then(rows => {
-      rs.push([ip, service, rows])
-      aaa(dss, rs)
-    }).catch(e => {
-      console.info(e)
-      aaa(dss, rs)
-    })
-  }
-}
+// function aaa(dss: [DatabaseConnectInfo, string, string][], rs): void {
+//   if (dss.length === 0) {
+//     c = rs
+//   } else {
+//     const ds = dss.pop()
+//     const dc = ds[0]
+//     const sql = dc[2]
+//     const ip = dc.ip
+//     const service = dc.service
+//     sqlToArray(dc, sql).then(rows => {
+//       rs.push([ip, service, rows])
+//       aaa(dss, rs)
+//     }).catch(e => {
+//       console.info(e)
+//       aaa(dss, rs)
+//     })
+//   }
+// }
 
 // oracleReportQueue().then(dss => {
 //   // console.info(dss)
@@ -288,34 +290,34 @@ function aaa(dss: [DatabaseConnectInfo, string, string][], rs): void {
 
 // export const alertDB: Map<string, Map<string, Map<string, any>>> = new Map<string, Map<string, Map<string, any>>>()
 
-export async function alertStart(): Promise<void> {
-  const omq: [DatabaseConnectInfo, string, string][] = await oracleReportQueue()
-  omq.forEach((dss: [DatabaseConnectInfo, string, string]) => {
-    sqlToArray(dss[0], dss[2]).then(rows => {
-      if (!MonitorDB.has(dss[0].ip)) {
-        MonitorDB.set(dss[0].ip, new Map<string, Map<string, any>>())
-      }
+// export async function alertStart(): Promise<void> {
+//   const omq: [DatabaseConnectInfo, string, string][] = await oracleReportQueue()
+//   omq.forEach((dss: [DatabaseConnectInfo, string, string]) => {
+//     sqlToArray(dss[0], dss[2]).then(rows => {
+//       if (!MonitorDB.has(dss[0].ip)) {
+//         MonitorDB.set(dss[0].ip, new Map<string, Map<string, any>>())
+//       }
 
-      let dbMap: Map<string, Map<string, any>> = MonitorDB.get(dss[0].ip)
+//       let dbMap: Map<string, Map<string, any>> = MonitorDB.get(dss[0].ip)
 
-      if (!dbMap.has(dss[0].service)) {
-        dbMap.set(dss[0].service, new Map<string, any>())
-      }
-      let monitorMap = dbMap.get(dss[0].service)
-      monitorMap.set(dss[1], rows)
-    })
-  })
-}
+//       if (!dbMap.has(dss[0].service)) {
+//         dbMap.set(dss[0].service, new Map<string, any>())
+//       }
+//       let monitorMap = dbMap.get(dss[0].service)
+//       monitorMap.set(dss[1], rows)
+//     })
+//   })
+// }
 
-export function startCheck() {
-  // executeNodeCheck()
-  // executePortCheck()
-  // setInterval(() => {
-  //   // executeNodeCheck()
-  //   // executePortCheck()
-  //   console.info(NodeCheckDB)
-  // }, 1000)
-}
+// export function startCheck() {
+// executeNodeCheck()
+// executePortCheck()
+// setInterval(() => {
+//   // executeNodeCheck()
+//   // executePortCheck()
+//   console.info(NodeCheckDB)
+// }, 1000)
+// }
 
 export async function abc(ctx) {
   const monitors: Report[] = await getReportConf()
@@ -325,30 +327,41 @@ export async function abc(ctx) {
   ctx.body = JSON.stringify(md_tools.threeMapToArray(MonitorDB))
 }
 
+/*
+ * scala class
+ *   final case class ConnInfo(jdbcUrl: String, username: String, password: String)
+ * final case class QueryInfo(ci: ConnInfo, sqlText: String, parameters: List[Any])
+*/
+export interface ConnInfo {
+  jdbcUrl: string;
+  username: string;
+  password: string;
+}
+
+export interface QueryInfo {
+  ci: ConnInfo;
+  sqlText: string;
+  parameters: any[];
+}
+
 export async function reportOracleMonitorByName(ctx) {
   const sql: string = await getCodeByReport({ name: ctx.params.name, category: "oracle" })
   const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
   ctx.type = 'application/json';
-  ctx.body = JSON.stringify(await sqlToArray({
-    ip: dbconf.ip,
-    port: dbconf.port,
-    service: dbconf.service,
-    user: dbconf.user,
-    password: dbconf.password
-  }, sql))
+  const ci: ConnInfo = { jdbcUrl: `jdbc:oracle:thin:@${dbconf.ip}:${dbconf.port}/${dbconf.service}`, username: dbconf.user, password: dbconf.password }
+  const qi = { ci: ci, sqlText: sql, parameters: [] }
+  const rep = await axios.post('http://10.65.103.15:8081/query/array', qi)
+  ctx.body = rep.data
 }
 
 export async function alertOracleMonitorByName(ctx) {
   const sql: string = await getCodeByAlert({ name: ctx.params.name, category: Category.ORACLE })
   const dbconf = await getDatabase(ctx.params.ip, ctx.params.service)
   ctx.type = 'application/json';
-  ctx.body = JSON.stringify(await sqlToArray({
-    ip: dbconf.ip,
-    port: dbconf.port,
-    service: dbconf.service,
-    user: dbconf.user,
-    password: dbconf.password
-  }, sql))
+  const ci: ConnInfo = { jdbcUrl: `jdbc:oracle:thin:@${dbconf.ip}:${dbconf.port}/${dbconf.service}`, username: dbconf.user, password: dbconf.password }
+  const qi = { ci: ci, sqlText: sql, parameters: [] }
+  const rep = await axios.post('http://10.65.103.15:8081/query/array', qi)
+  ctx.body = rep.data
 }
 
 export async function reportOSMonitorByName(ctx) {
