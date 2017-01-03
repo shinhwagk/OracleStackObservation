@@ -1,9 +1,10 @@
 .tscache
-node_modules
-dist
+/node_modules
+/dist
 conf/nodes.json
 log
 .idea
 .vscode
 RUNNING_PID
 nohup.out
+/.idea

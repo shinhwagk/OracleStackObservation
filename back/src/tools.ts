@@ -1,18 +1,14 @@
 import * as md_cp from "child_process";
 import * as md_ssh2 from "ssh2";
 import * as fs from "fs";
-import {logger} from "./logger";
-import {getCodeByAlert} from "./conf";
-import {OSConnect} from "./ssh";
+import { logger } from "./logger";
+import { getCodeByAlert } from "./conf";
+import { OSConnect } from "./ssh";
 
 export function readFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
+      if (err) { reject(err); } else { resolve(data); }
     })
   })
 }
@@ -20,20 +16,6 @@ export function readFile(path: string): Promise<string> {
 export function threeMapToArray(map: Map<string, Map<string, Map<string, string>>>) {
   return Array.from(map).map(([l, v]) => [l, Array.from(v).map(([kk, vv]) => [kk, Array.from(vv)])])
 }
-// export function readMonitorFile(monitor: Report): Promise<string> {
-//   let path: string
-//   if (monitor.category === 'oracle') {
-//     path = `conf/reports/oracle/${monitor.name}.sql`
-//   } else {
-//     path = `conf/reports/os/${monitor.name}.sh`
-//   }
-
-//   return new Promise((resolve, reject) => {
-//     fs.readFile(path, 'utf-8', (err: NodeJS.ErrnoException, data: Buffer) => {
-//       if (err) { reject(err); } else { resolve(data); }
-//     })
-//   })
-// }
 
 export function executeNoLoginShellCommand(command: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
@@ -48,11 +30,6 @@ export function executeNoLoginShellCommand(command: string): Promise<boolean> {
     })
   })
 }
-
-// export async function execAlertRemoteShellCommand(sa: ShellAlert) {
-//   const code = await getCodeByAlert({category: 'shell', name: sa.name})
-//   return execRemoteShellCommand(sa.osConnectionInfo, code)
-// }
 
 export function execRemoteShellCommand(node: { host: string, port: number, username: string, password: string }, shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -127,17 +104,17 @@ export async function getOSInfoByName(osServer: OSConnectionInfoByKey, name: str
               conn2.exec(`chmod +x ${remoteFile}`, (err, stream) => {
                 stream.on('close', (code, signal) => {
                   console.info("chmod")
-                  OSConnect(osServer, (conn3)=> {
+                  OSConnect(osServer, (conn3) => {
                     conn3.exec(`cd /tmp && /bin/bash ${remoteFile}`, (err, stream) => {
-                        stream.on('close', (code, signal) => {
-                          conn.end();
-                          conn2.end();
-                          conn3.end()
-                        }).on('data', (data)=> {
-                          console.info(`/bin/bash ${remoteFile}`, data.toString())
-                          resolve(data.toString())
-                        }).stderr.on('data', (data) => reject(data.toString()));
-                      }
+                      stream.on('close', (code, signal) => {
+                        conn.end();
+                        conn2.end();
+                        conn3.end()
+                      }).on('data', (data) => {
+                        console.info(`/bin/bash ${remoteFile}`, data.toString())
+                        resolve(data.toString())
+                      }).stderr.on('data', (data) => reject(data.toString()));
+                    }
                     )
                   })
                 }).on('data', (data) => {

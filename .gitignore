@@ -1,2 +1,5 @@
 /instantclient
 /app
+/.idea
+/node_modules
+/dist
