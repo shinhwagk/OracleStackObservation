@@ -27,6 +27,7 @@ services:
       dockerfile: Dockerfile
     container_name: oraclestacklbservation-query
     image: oraclestacklbservation-query:latest
+    volumes: /root/.ivy2:/root/.ivy2
   ssh:
     image: python:latest
     build:
