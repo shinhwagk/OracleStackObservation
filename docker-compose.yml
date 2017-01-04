@@ -20,3 +20,17 @@ services:
       - front
     ports:
       - "80:80"
+  query:
+    image: centos:latest
+    build:
+      context: ./query
+      dockerfile: Dockerfile
+    container_name: oraclestacklbservation-query
+    image: oraclestacklbservation-query:latest
+  ssh:
+    image: python:latest
+    build:
+      context: ./ssh
+      dockerfile: Dockerfile
+    container_name: oraclestacklbservation-ssh
+    image: oraclestacklbservation-query:latest
