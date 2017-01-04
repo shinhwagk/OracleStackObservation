@@ -33,3 +33,9 @@ services:
       dockerfile: Dockerfile
     image: oso_ssh:latest
     container_name: oso_ssh
+  config:
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    image: oso_config:latest
+    container_name: oso_config
