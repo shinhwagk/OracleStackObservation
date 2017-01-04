@@ -1,30 +1,29 @@
 version: '2'
-services: 
-  front:
-    build: 
+services:
+  web:
+    build:
       context: ./front
       dockerfile: Dockerfile
+    image: oso_web:latest
     volumes:
       - ~/.cache:/root/.cache
-      - /workfolder
-    container_name: oraclestacklbservation-front
-    image: oraclestacklbservation-front:latest
+      - /oso_web
+    container_name: oso_web
   nginx:
-    image: nginx:latest
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    container_name: oraclestacklbservation-nginx
-    image: oraclestacklbservation-nginx:latest
+    image: oso_nginx:latest
+    container_name: oso-nginx
     volumes_from:
-      - front
+      - web
     ports:
       - "80:80"
   query:
     build:
       context: ./query
       dockerfile: Dockerfile
-    image: oso-query:latest
+    image: oso_query:latest
     container_name: oso_query
     volumes:
       - /root/.ivy2:/root/.ivy2
@@ -32,6 +31,5 @@ services:
     build:
       context: ./ssh
       dockerfile: Dockerfile
-    image: oso-ssh:latest
+    image: oso_ssh:latest
     container_name: oso_ssh
-
