@@ -12,5 +12,5 @@ WORKDIR query
 
 ADD . .
 
-# EXPOSE 8081
+EXPOSE 8081
 CMD sbt test:compile && sbt test && sbt assembly && java -jar OracleStackObjectDetail-Back.jar
