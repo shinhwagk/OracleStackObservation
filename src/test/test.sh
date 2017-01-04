@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8081/query/map -d '{"sqlText":"select table_name,owner from dba_tables where rownum < ? and  owner = ?","parameters":[11,"SYS"],"ci":{"jdbcUrl":"jdbc:oracle:thin:@10.65.193.22:1521/whdb2","username":"system","password":"oracle"}}'
