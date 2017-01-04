@@ -29,9 +29,9 @@ services:
     volumes:
       - /root/.ivy2:/root/.ivy2
   ssh:
-    image: python:latest
     build:
       context: ./ssh
       dockerfile: Dockerfile
-    container_name: oraclestacklbservation-ssh
-    image: oraclestacklbservation-query:latest
+    image: oso-ssh:latest
+    container_name: oso_ssh
+
