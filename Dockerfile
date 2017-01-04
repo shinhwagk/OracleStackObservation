@@ -1,4 +1,4 @@
-FROM 3.6.0-onbuild
+FROM python:3.6.0-onbuild
 
 RUN pip install flask
 RUN pip install paramiko
