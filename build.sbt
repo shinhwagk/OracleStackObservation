@@ -6,7 +6,7 @@ scalaVersion := "2.12.1"
 
 resolvers ++= Seq("Spray Repository" at "http://dev.rtmsoft.me/nexus/content/groups/public/")
 
-val akkaVersion = "10.0.1"
+val akkaVersion = "10.0.0"
 
 libraryDependencies ++= Seq(
   "com.wingtech" % "ojdbc" % "7",

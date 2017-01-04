@@ -10,21 +10,22 @@ import spray.json.DefaultJsonProtocol
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   import spray.json._
 
-//  implicit object AnyJsonFormat extends JsonFormat[Any] {
-//    def write(x: Any) = x match {
-//      case n: Int => JsNumber(n)
-//      case s: String => JsString(s)
-//      case b: Boolean if b == true => JsTrue
-//      case b: Boolean if b == false => JsFalse
-//    }
-//
-//    def read(value: JsValue) = value match {
-//      case JsNumber(n) => n.intValue()
-//      case JsString(s) => s
-//      case JsTrue => true
-//      case JsFalse => false
-//    }
-//  }
+  implicit object AnyJsonFormat extends JsonFormat[Any] {
+    def write(x: Any) = x match {
+      case n: Int => JsNumber(n)
+      case s: String => JsString(s)
+      case b: Boolean if b == true => JsTrue
+      case b: Boolean if b == false => JsFalse
+    }
+
+    def read(value: JsValue) = value match {
+      case JsNumber(n) => n.intValue()
+      case JsString(s) => s
+      case JsTrue => true
+      case JsFalse => false
+      case _ => throw new Exception("match error")
+    }
+  }
 
   implicit val ConnInfoFormat = jsonFormat3(ConnInfo)
   implicit val QueryInfoFormat = jsonFormat3(QueryInfo)

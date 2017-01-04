@@ -1,5 +1,5 @@
-.idea
-project/target
-project/project
-target
+/.idea
+/project/target
+/project/project
+/target
 OracleStackObjectDetail-Back.jar
