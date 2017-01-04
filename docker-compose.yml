@@ -39,3 +39,5 @@ services:
       dockerfile: Dockerfile
     image: oso_config:latest
     container_name: oso_config
+    volumes:
+      - /root/.ssh:/root/.ssh
