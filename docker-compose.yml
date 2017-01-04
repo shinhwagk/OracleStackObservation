@@ -27,7 +27,7 @@ services:
     build:
       context: ./query
       dockerfile: Dockerfile
-    container_name: oraclestacklbservation-query
+    container_name: oraclestacklbservation_query
     image: oraclestacklbservation-query:latest
   ssh:
     image: python:latest
