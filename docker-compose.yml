@@ -46,3 +46,11 @@ services:
       dockerfile: Dockerfile
     image: oso_config:latest
     container_name: oso_config
+  alert:
+    build:
+      context: ./alert
+      dockerfile: Dockerfile
+    image: oso_alert:latest
+    container_name: oso_alert
+    expose: 
+      - 9004
