@@ -22,6 +22,7 @@ services:
       - query:oso_query
       - ssh:oso_ssh
       - config:oso_config
+      - alert:oso_alert
   query:
     build:
       context: ./query
