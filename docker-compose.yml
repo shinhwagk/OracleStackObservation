@@ -34,7 +34,8 @@ services:
     container_name: oso_ssh
     volumes:
       - ~/.ssh:/root/.ssh
-    expose: 5000
+    expose: 
+      - 5000
   config:
     build:
       context: ./config
