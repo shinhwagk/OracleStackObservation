@@ -18,6 +18,10 @@ services:
       - web
     ports:
       - "80:80"
+    links:
+      - query:oso_query
+      - ssh:oso_ssh
+      - config:oso_config
   query:
     build:
       context: ./query
