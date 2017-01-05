@@ -10,11 +10,10 @@ services:
       - /oso_web
     container_name: oso_web
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: oso_nginx:latest
+    image: openresty/openresty:centos
     container_name: oso-nginx
+    volumes:
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
     volumes_from:
       - web
     ports:
