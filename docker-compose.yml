@@ -30,7 +30,7 @@ services:
     image: oso_query:latest
     container_name: oso_query
     volumes:
-      - /root/.ivy2:/root/.ivy2
+      - ~/.ivy2:/root/.ivy2
   ssh:
     build:
       context: ./ssh
@@ -39,7 +39,7 @@ services:
     container_name: oso_ssh
     volumes:
       - ~/.ssh:/root/.ssh
-    expose: 
+    expose:
       - 5000
   config:
     build:
@@ -53,5 +53,5 @@ services:
       dockerfile: Dockerfile
     image: oso_alert:latest
     container_name: oso_alert
-    expose: 
+    expose:
       - 9004
