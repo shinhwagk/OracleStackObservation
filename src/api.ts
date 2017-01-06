@@ -1,11 +1,14 @@
 import { getNodeConfFile, getAlertConfFile } from './conf';
+import { flatten } from './common';
+import { UserAlertOS, UserAlertOracle } from './objects';
 import {
   ConfNode, ConfDatabase, UserNode, UserDatabase, ConfAlertOracle, ConfAlertOS, AlertCategory, ConfAlert,
   filterNodes,
-  filterNodesForOracle
+  filterNodesForOracle,
+  UserAlertOracle
 } from './objects';
 
-function getTrueOfStatusNodes(): ConfNode[] {
+async function getTrueOfStatusNodes(): Promise<ConfNode[]> {
   const nodes = (await getNodeConfFile()).filter(node => node.status);
   for (let node of nodes) {
     node.databases = node.databases.filter(database => database.status);
@@ -48,69 +51,62 @@ export async function api_nodes() {
 
 export async function api_alerts() {
   const alerts: Array<ConfAlert> = await getAlertConfFile();
-  const userAlerts: { ip: string, cron: string, category: AlertCategory, name: string, dName?: string }[] = []
-  const nodes: ConfNode[] = getTrueOfStatusNodes();
-
-  const c = (alert, fi, fe) => {
-    return generateAlertsForUser(nodes, alert, fi, fe)
-  }
+  let userAlerts: Array<UserAlertOracle | UserAlertOS> = []
+  const nodes: ConfNode[] = await getTrueOfStatusNodes();
 
   for (const alert of alerts) {
+    let cn: ConfNode[] = [];
     switch (AlertCategory[alert.category]) {
       case AlertCategory.ORACLE:
-        // const alertOracle =
-        const alertNodes: any[] = await c(alert, filterOracleInclude, filterOracleExclude)
-      // alertNodes.forEach(n => userAlerts.push(n))
-      // if (alertOracle.include) {
-      //   filterOracleInclude(nodes, alertOracle.exclude)
-      //     .forEach(n => n.databases.forEach(d => userAlerts.push([n.ip, d.name, alert.name, alert.cron, alert.category])))
-      // } else if (alertOracle.exclude) {
-      //   filterOracleExclude(nodes, alertOracle.exclude)
-      //     .forEach(n => n.databases.forEach(d => userAlerts.push([n.ip, d.name, alert.name, alert.cron, alert.category])))
-      // } else {
-      //   return genOSAlerts(nodes, m)
-      // }
+        cn = await generateAlertsForUser(nodes, alert, filterIncludeForOracle, filterExcludeForOracle);
+        cn.map(n => n.databases.map(d => {
+          userAlerts.push({
+            ip: n.ip,
+            name: alert.name,
+            category: alert.category,
+            cron: alert.cron,
+            dname: d.name
+          })
+        }))
+        break;
       case AlertCategory.OS:
-        const alertNodes: any[] = await generateAlertsForUser(nodes, alert, filterOSInclude, filterOSExclude)
-      // const alertOS = <ConfAlertOS>alert
-      // if (alertOS.include) {
-      //   filterOSInclude(nodes, alertOS.include)
-      //     .forEach(n => n.databases
-      //       .forEach(d => userAlerts.push([n.ip, alert.name, alert.cron, alert.category])))
-      // } else if (alertOS.exclude) {
-      //   filterOSExclude(nodes, alertOS.exclude)
-      //     .forEach(n => n.databases.forEach(d => userAlerts.push([n.ip, alert.name, alert.cron, alert.category])))
-      // } else {
-
-      // }
+        cn = await generateAlertsForUser(nodes, alert, filterIncludeForOS, filterExcludeForOS)
+        cn.map(n => {
+          userAlerts.push({
+            ip: n.ip,
+            name: alert.name,
+            category: alert.category,
+            cron: alert.cron
+          })
+        });
+        break;
     }
   }
 }
 
-function filterOSInclude(nodes: ConfNode[], include: string[]): ConfNode[] {
-  return nodes.filter(node => include.indexOf(node.ip) >= 0)
+function filterIncludeForOS(nodes: ConfNode[], include: string[]): ConfNode[] {
+  return nodes.filter(n => include.indexOf(n.ip) >= 0)
 }
 
-function filterOSExclude(nodes: ConfNode[], exclude: string[]): ConfNode[] {
-  return nodes.filter((n: ConfNode) => exclude.indexOf(n.ip) === -1)
+function filterExcludeForOS(nodes: ConfNode[], exclude: string[]): ConfNode[] {
+  return nodes.filter(n => exclude.indexOf(n.ip) === -1)
 }
 
-function filterOracleInclude(nodes: ConfNode[], include: [string, string[]]): ConfNode[] {
-  for (const [ip, names] of include) {
-    let ds = nodes.filter(node => node.ip == ip)[0].databases
-    nodes.filter(node => node.ip == ip)[0].databases = ds.filter(d => names.indexOf(name) >= 0)
-    //   const new_ds = []
-    //   for (const d of ds) {
-    //     if (names.indexOf(d.name) >= 0) { new_ds.push(d) }
-    //   }
-    //   nodes.filter(node => node.ip == ip)[0].databases = new_ds;
-    // }
-    // return nodes.filter(node => node.databases.length >= 1);
+function filterIncludeForOracle(nodes: ConfNode[], include: [string, string[]][]): ConfNode[] {
+  const ips: string[] = include.map(([ip, names]) => ip)
+  const new_nodes = nodes.filter(n => ips.indexOf(n.ip) >= 0)
+
+  for (const node of new_nodes) {
+    const ds = node.databases;
+    const names: string[] = include.filter(([ip, names]) => node.ip === ip)[0][1]
+
+    node.databases = ds.filter(d => names.indexOf(d.name) >= 0)
   }
-  return nodes.filter(node => node.databases.length >= 1);
+
+  return new_nodes.filter(node => node.databases.length >= 1);
 }
 
-function filterOracleExclude(nodes: ConfNode[], exclude: string[][]): ConfNode[] {
+function filterExcludeForOracle(nodes: ConfNode[], exclude: string[][]): ConfNode[] {
   for (const node of nodes) {
     for (const [ip, names] of exclude) {
       if (node.ip === ip) {
@@ -121,58 +117,27 @@ function filterOracleExclude(nodes: ConfNode[], exclude: string[][]): ConfNode[]
   return nodes.filter(node => node.databases.length >= 1);
 }
 
-// function filterOracleOfCategory(nodes: ConfNode[], alert: ConfAlert) {
+// function genNodesByAlert(nodes: ConfNode[], alert: ConfAlert, f_i, f_e) {
 //   const i = (<filterNodes>alert).include
 //   const e = (<filterNodes>alert).exclude
+//   let alertNode = [];
 //   if (i.length >= 1) {
-//     return nodes.filter((n: ConfNode) => i.filter(([ip, name]) => n.ip === ip && n.databases.filter(d => d.name === name).length >= 1))
+//     alertNode = f_i(nodes, i)
 //   } else if (e.length >= 1) {
-//     return nodes.filter((n: ConfNode) => i.filter(([ip, name]) => n.ip === ip && n.databases.filter(d => d.name === name).length >= 1))
+//     alertNode = f_e(nodes, e)
 //   } else {
-//     return nodes
+//     alertNode = nodes
 //   }
 // }
 
-function genNodesByAlert(nodes: ConfNode[], alert: ConfAlert, f_i, f_e) {
+function generateAlertsForUser(nodes: ConfNode[], alert: ConfAlert, f_include, f_exclude): ConfNode[] {
   const i = (<filterNodes>alert).include
   const e = (<filterNodes>alert).exclude
   if (i.length >= 1) {
-    return f_i(nodes, i)
+    return f_include(nodes, i)
   } else if (e.length >= 1) {
-    return f_e(nodes, e)
+    return f_exclude(nodes, e)
   } else {
     return nodes
   }
 }
-
-// function filterNodeByNodeFilter(nodes: ConfNode[], alert: ConfAlert, f) {
-//   f(nodes, alert)
-
-// }
-
-function generateAlertsForUser(nodes: ConfNode[], alert: ConfAlert, f_i, f_e) {
-  const nodesByFilter = f(nodes, alert)
-}
-
-function abc(nodes: ConfNode[], alert: ConfAlert) {
-  genNodesByAlert(nodes, alert, filterOracleInclude, filterOracleExclude)
-}
-
-// function filterNodeByExclude(nodes: ConfNode[], exclude: string[][]): ConfNode[] { }
-
-// async function genNodesByAlert(alert, f) {
-//   // const nodes: ConfNode[] = await getTrueOfStatusNodes();
-//   // const alterItem = <T & U>alert;
-//   // const i = alterItem.include;
-//   // const e = alterItem.exclude;
-//   // if (i.length >= 1) {
-//   //   f()
-//   //   filterNodeByInclude(nodes, i)
-//   //   return []// .forEach(n => n.databases.forEach(d => userAlerts.push([n.ip, d.name, alert.name, alert.cron, alert.category])))
-//   // } else {
-//   //   filterNodeByExclude(nodes, e)
-//   //   // .forEach(n => n.databases.forEach(d => userAlerts.push([n.ip, d.name, alert.name, alert.cron, alert.category])))
-//   //   return []
-//   // }
-
-// }

@@ -1,15 +1,22 @@
-export interface IP {
+export interface Ip {
   ip: string;
 }
 
-export interface Node extends IP {
+export interface Name {
+  name: string;
+}
+
+export interface AlertDatabaseName {
+  dname: string
+}
+
+export interface Node extends Ip {
   hostname: string;
   port: number
   tag: string[];
 }
 
-export interface Database {
-  name: string;
+export interface Database extends Name {
   tag: string[];
 }
 
@@ -34,8 +41,7 @@ export interface UserNode extends Node {
 
 export interface UserDatabase extends Database { }
 
-export interface ConfAlert {
-  name: string;
+export interface ConfAlert extends Name {
   cron: string;
   category: string;
 }
@@ -71,8 +77,8 @@ export enum AlertCategory {
   ORACLE, OS
 }
 
-export interface UserAlertOS extends ConfAlert, ArgsOS, IP { }
+export interface UserAlert extends ConfAlert, Ip { }
 
-export interface UserAlertOracle extends ConfAlert, ArgsOracle, IP {
-  name: string
-}
+export interface UserAlertOS extends UserAlert { }
+
+export interface UserAlertOracle extends UserAlert, AlertDatabaseName { }
