@@ -51,7 +51,7 @@ services:
     # build:
     #   context: ./alert
     #   dockerfile: Dockerfile
-    # image: oso_alert:latest
+    image: python:latest
     container_name: oso_alert
     expose:
       - 9004
