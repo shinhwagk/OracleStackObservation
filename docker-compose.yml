@@ -57,5 +57,5 @@ services:
       - 9004
     volumes:
       - ./ssh/main.py:/oso_alert/main.py
-    command: 
+    command:
       - python main.py
