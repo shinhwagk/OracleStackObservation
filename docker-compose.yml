@@ -51,11 +51,11 @@ services:
     # build:
     #   context: ./alert
     #   dockerfile: Dockerfile
-    image: oso_alert:latest
+    # image: oso_alert:latest
     container_name: oso_alert
     expose:
       - 9004
     volumes:
-      - ./main.py:/oso_alert/main.py
+      - ./ssh/main.py:/oso_alert/main.py
     command: 
       - python main.py
