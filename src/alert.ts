@@ -6,7 +6,7 @@ export async function alertOSDisk() {
   const alertName = 'disk_space';
   const ips = await axios.get("http://10.65.193.29:3000/api/nodes").then(rep => rep.data).then((nodes: any[]) => nodes.map(node => node.ip))
   ips.forEach((ip: string) => {
-    axios.get(`http://10.65.193.29:3000/api/report/os/${ip}/${alertName}`)
+    axios.get(`http://ssh.oso.org:5000/v1/report/${ip}/${alertName}`)
       .then(rep => rep.data)
       .then((diskinfos: string[][]) => diskinfos.slice(1))
       .then((diskinfos: string[][]) => diskinfos.filter((diskinfo: string[]) => Number(diskinfo[4].split('%')[0]) >= 80))
