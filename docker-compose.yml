@@ -32,15 +32,14 @@ services:
     volumes:
       - ~/.ivy2:/root/.ivy2
   ssh:
-    image: python:latest
+    build:
+      context: ./ssh
+      dockerfile: Dockerfile
     container_name: oso_ssh
     volumes:
-      - ~/.ssh:/root/.
-      - ./ssh/main.py:/oso_alert/main.py
-    expose:
-      - 5000
-    ommand:
-      - python main.py
+      - ./ssh/main.py:/oso_ssh/main.py
+      - ~/.ssh:/root/.ssh
+    command: python /oso_ssh/main.py
   config:
     build:
       context: ./config
