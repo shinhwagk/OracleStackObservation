@@ -2,19 +2,11 @@
 # yarn lockfile v1
 
 
-"@types/axios@^0.9.34":
-  version "0.9.34"
-  resolved "https://registry.yarnpkg.com/@types/axios/-/axios-0.9.34.tgz#6989cc08948eb0824d8661c5ab5775766ab552b5"
-
 "@types/cookies@*":
   version "0.5.30"
   resolved "https://registry.yarnpkg.com/@types/cookies/-/cookies-0.5.30.tgz#de798b61d6c6da77d6559ab1db4c6f3c8b4935bd"
   dependencies:
     "@types/node" "*"
-
-"@types/cron@^1.0.30":
-  version "1.0.30"
-  resolved "https://registry.yarnpkg.com/@types/cron/-/cron-1.0.30.tgz#04cd0f5b24269f96011363a79d7bca054bfb0853"
 
 "@types/koa-router@7.0.21":
   version "7.0.21"
@@ -95,12 +87,6 @@ array-unique@^0.2.1:
 async@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/async/-/async-1.0.0.tgz#f8fc04ca3a13784ade9e1641af98578cfbd647a9"
-
-axios@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
-  dependencies:
-    follow-redirects "1.0.0"
 
 balanced-match@^0.4.1:
   version "0.4.2"
@@ -237,12 +223,6 @@ cookies@~0.6.1:
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
-
-cron@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/cron/-/cron-1.1.1.tgz#02719d4ef480dfc8ee24d81a3603460ba39013ce"
-  dependencies:
-    moment-timezone "~0.5.5"
 
 cross-spawn@^0.2.9:
   version "0.2.9"
@@ -440,12 +420,6 @@ first-chunk-stream@^1.0.0:
 flagged-respawn@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/flagged-respawn/-/flagged-respawn-0.3.2.tgz#ff191eddcd7088a675b2610fffc976be9b8074b5"
-
-follow-redirects@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.0.0.tgz#8e34298cbd2e176f254effec75a1c78cc849fd37"
-  dependencies:
-    debug "^2.2.0"
 
 for-in@^0.1.5:
   version "0.1.6"
@@ -1202,13 +1176,7 @@ mkdirp@^0.5.0:
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@~0.5.5:
-  version "0.5.11"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.11.tgz#9b76c03d8ef514c7e4249a7bbce649eed39ef29f"
-  dependencies:
-    moment ">= 2.6.0"
-
-"moment@>= 2.6.0", moment@^2.11.2:
+moment@^2.11.2:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
 
@@ -1350,10 +1318,6 @@ path-to-regexp@^1.1.1:
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz#59fde0f435badacba103a84e9d3bc64e96b9937d"
   dependencies:
     isarray "0.0.1"
-
-pkginfo@0.3.x:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.3.1.tgz#5b29f6a81f70717142e09e765bbeab97b4f81e21"
 
 preserve@^0.2.0:
   version "0.2.0"
@@ -1708,16 +1672,15 @@ window-size@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.4.tgz#f8e1aa1ee5a53ec5bf151ffa09742a6ad7697876"
 
-winston@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/winston/-/winston-2.2.0.tgz#2c853dd87ab552a8e8485d72cbbf9a2286f029b7"
+winston@^2.2.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/winston/-/winston-2.3.0.tgz#207faaab6fccf3fe493743dd2b03dbafc7ceb78c"
   dependencies:
     async "~1.0.0"
     colors "1.0.x"
     cycle "1.0.x"
     eyes "0.1.x"
     isstream "0.1.x"
-    pkginfo "0.3.x"
     stack-trace "0.0.x"
 
 wrap-ansi@^2.0.0:

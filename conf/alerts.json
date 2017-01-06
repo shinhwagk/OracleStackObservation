@@ -1,0 +1,52 @@
+[{
+        "name": "tablespace_space",
+        "category": "ORACLE",
+        "cron": "0 * * * * *",
+        "status": true,
+        "include": [
+            ["10.65.193.13", ["xxxx"]]
+        ],
+        "exclude": []
+    },
+    {
+        "name": "table_parallel",
+        "category": "ORACLE",
+        "cron": "0 * * * * *"
+    },
+    {
+        "name": "num_index_5",
+        "category": "ORACLE",
+        "cron": "0 * * * * *"
+    },
+    {
+        "name": "long_time_exec_of_session",
+        "category": "ORACLE",
+        "cron": "0 * * * * *",
+        "args": [
+            ["1.1.1.1", "name", [22]]
+        ]
+    },
+    {
+        "name": "disk_space",
+        "category": "OS",
+        "cron": "0 * * * * *"
+    },
+    {
+        "name": "backup_datapump",
+        "category": "OS",
+        "cron": "0 * * * * *",
+        "include": ["10.65.193.13"],
+        "exclude": []
+    },
+    {
+        "name": "ping_test",
+        "category": "OS",
+        "args": [
+            ["1.1.1.1", [22]]
+        ]
+    },
+    {
+        "name": "port_test_1521",
+        "category": "OS"
+    }
+]
