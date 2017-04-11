@@ -1,38 +1,29 @@
 [{
         "name": "tablespace_space",
-        "alias": "",
         "category": "ORACLE",
-        "cron": "0 * * * * *",
         "status": true,
         "include": [
             ["10.65.193.13", ["xxxx"]]
         ],
-        "args": [
-            ["1.1.1.1", "name", [22]]
-        ],
-        "exclude": [],
-        "alarm": {
-            "content": [0, 1, 1],
-            "msg": ["dba"],
-            "mail": ["dba"]
-        }
+        "exclude": []
     },
     {
         "name": "table_parallel",
         "category": "ORACLE",
-        "cron": "0 * * * * *",
         "status": true
     },
     {
         "name": "num_index_5",
         "category": "ORACLE",
-        "cron": "0 * * * * *",
-        "status": true
+        "status": true,
+        "args": [
+            ["1.1.1.1", "name", [22]]
+        ]
     },
     {
         "name": "long_time_exec_of_session",
+        "alias": "",
         "category": "ORACLE",
-        "cron": "0 * * * * *",
         "args": [
             ["1.1.1.1", "name", [22]]
         ],
@@ -41,13 +32,14 @@
     {
         "name": "disk_space",
         "category": "OS",
-        "cron": "0 * * * * *",
-        "status": true
+        "status": true,
+        "args": [
+            ["a1.1.1.1", []]
+        ]
     },
     {
         "name": "backup_datapump",
         "category": "OS",
-        "cron": "0 * * * * *",
         "include": ["10.65.193.13"],
         "exclude": [],
         "status": true

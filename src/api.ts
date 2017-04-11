@@ -1,11 +1,14 @@
 import { getNodeConfFile, getAlertConfFile } from './conf';
 import { flatten } from './common';
-import { UserAlertOS, UserAlertOracle } from './objects';
+// import { UserAlert, ConfAlert, ConfNode } from './alert.objects';
 import {
-  ConfNode, ConfDatabase, UserNode, UserDatabase, ConfAlertOracle, ConfAlertOS, AlertCategory, ConfAlert,
+  ConfNode, ConfDatabase, UserNode, UserDatabase, ConfAlertOracle, ConfAlertOS,
+  AlertCategory,
   filterNodes,
   filterNodesForOracle,
-  UserAlertOracle
+  UserAlertOracle,
+  UserAlertOS,
+  ConfAlert
 } from './objects';
 
 async function getTrueOfStatusNodes(): Promise<ConfNode[]> {
@@ -15,8 +18,6 @@ async function getTrueOfStatusNodes(): Promise<ConfNode[]> {
   }
   return nodes;
 }
-
-// function getDatabaseB
 
 export async function api_nodes() {
   const nodes: ConfNode[] = await getTrueOfStatusNodes();
@@ -39,49 +40,11 @@ export async function api_nodes() {
     })
 }
 
-// export async function api_alerts_os(): Promise<ConfAlertOS[]> {
-//   return (await getAlertConfFile())
-//     .filter(alert => alert.category == AlertCategory[AlertCategory.OS])
-//     .map((alert: ConfAlertOS) => alert.)
-// }
-
-// export async function api_alerts_oracle(): Promise<ConfAlertOracle[]> {
-//   return (await getAlertConfFile()).filter(alert => alert.category == AlertCategory[AlertCategory.ORACLE])
-// }
-
 export async function api_alerts() {
   const alerts: Array<ConfAlert> = await getAlertConfFile();
-  let userAlerts: Array<UserAlertOracle | UserAlertOS> = []
   const nodes: ConfNode[] = await getTrueOfStatusNodes();
+  return generateAlertEntries(alerts, nodes)
 
-  for (const alert of alerts) {
-    let cn: ConfNode[] = [];
-    switch (AlertCategory[alert.category]) {
-      case AlertCategory.ORACLE:
-        cn = await generateAlertsForUser(nodes, alert, filterIncludeForOracle, filterExcludeForOracle);
-        cn.map(n => n.databases.map(d => {
-          userAlerts.push({
-            ip: n.ip,
-            name: alert.name,
-            category: alert.category,
-            cron: alert.cron,
-            dname: d.name
-          })
-        }))
-        break;
-      case AlertCategory.OS:
-        cn = await generateAlertsForUser(nodes, alert, filterIncludeForOS, filterExcludeForOS)
-        cn.map(n => {
-          userAlerts.push({
-            ip: n.ip,
-            name: alert.name,
-            category: alert.category,
-            cron: alert.cron
-          })
-        });
-        break;
-    }
-  }
 }
 
 function filterIncludeForOS(nodes: ConfNode[], include: string[]): ConfNode[] {
@@ -99,7 +62,6 @@ function filterIncludeForOracle(nodes: ConfNode[], include: [string, string[]][]
   for (const node of new_nodes) {
     const ds = node.databases;
     const names: string[] = include.filter(([ip, names]) => node.ip === ip)[0][1]
-
     node.databases = ds.filter(d => names.indexOf(d.name) >= 0)
   }
 
@@ -117,27 +79,57 @@ function filterExcludeForOracle(nodes: ConfNode[], exclude: string[][]): ConfNod
   return nodes.filter(node => node.databases.length >= 1);
 }
 
-// function genNodesByAlert(nodes: ConfNode[], alert: ConfAlert, f_i, f_e) {
-//   const i = (<filterNodes>alert).include
-//   const e = (<filterNodes>alert).exclude
-//   let alertNode = [];
-//   if (i.length >= 1) {
-//     alertNode = f_i(nodes, i)
-//   } else if (e.length >= 1) {
-//     alertNode = f_e(nodes, e)
-//   } else {
-//     alertNode = nodes
-//   }
-// }
+function makeAlertEntryForOracle(ns: ConfNode[], alert: ConfAlert, userAlerts: UserAlertOracle[]) {
+  ns.forEach(n => n.databases.map(d => {
+    userAlerts.push({
+      ip: n.ip,
+      name: alert.name,
+      category: alert.category,
+      cron: alert.cron,
+      dname: d.name
+    })
+  }))
+}
 
-function generateAlertsForUser(nodes: ConfNode[], alert: ConfAlert, f_include, f_exclude): ConfNode[] {
+function makeAlertEntryForOS(ns: ConfNode[], alert: ConfAlert, userAlerts: UserAlertOS[]) {
+  ns.forEach(n => {
+    userAlerts.push({
+      ip: n.ip,
+      name: alert.name,
+      category: alert.category,
+      cron: alert.cron
+    })
+  });
+}
+
+function generateAlertsForItem(alert: ConfAlert, nodes: ConfNode[], f_include, f_exclude, f_make, userAlerts) {
   const i = (<filterNodes>alert).include
   const e = (<filterNodes>alert).exclude
+
+  let new_nodes = []
+
   if (i.length >= 1) {
-    return f_include(nodes, i)
+    new_nodes = f_include(nodes, i)
   } else if (e.length >= 1) {
-    return f_exclude(nodes, e)
+    new_nodes = f_exclude(nodes, e)
   } else {
-    return nodes
+    new_nodes = nodes
   }
+
+  f_make(new_nodes, alert, userAlerts)
+}
+
+function generateAlertEntries(alerts: ConfAlert[], nodes: ConfNode[]) {
+  const userAlerts: Array<UserAlertOracle | UserAlertOS> = []
+  for (const alert of alerts) {
+    switch (AlertCategory[alert.category]) {
+      case AlertCategory.ORACLE:
+        generateAlertsForItem(alert, nodes, filterIncludeForOracle, filterExcludeForOracle, makeAlertEntryForOracle, userAlerts)
+        break
+      case AlertCategory.OS:
+        generateAlertsForItem(alert, nodes, filterIncludeForOS, filterExcludeForOS, makeAlertEntryForOS, userAlerts)
+        break
+    }
+  }
+  return userAlerts;
 }

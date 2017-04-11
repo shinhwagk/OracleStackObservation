@@ -1,0 +1,12 @@
+{
+    "name": "table object",
+    "input": {
+        "type": "option",
+        "value": "select 'a', 'b' from dual"
+    },
+    "objects": [{
+        "query": "select * from abc where a=? and b=?"
+    }, {
+        "query": "select * from ccc where a=? and b=?"
+    }]
+}
